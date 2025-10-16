@@ -51,6 +51,8 @@ class MainActivity : AppCompatActivity() {
                 "contrast" -> adjustManager.params.contrast = slider.value / 100f
                 "highlights" -> adjustManager.params.highlights = slider.value / 100f
                 "shadows" -> adjustManager.params.shadows = slider.value / 100f
+                "whites" -> adjustManager.params.whites = slider.value / 100f
+                "blacks" -> adjustManager.params.blacks = slider.value / 100f
                 "saturation" -> adjustManager.params.saturation = slider.value / 100f
                 // thêm các slider khác sau này nếu cần
             }

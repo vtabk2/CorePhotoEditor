@@ -6,5 +6,7 @@ data class AdjustParams(
     var contrast: Float = 0f,
     var highlights: Float = 0f,
     var shadows: Float = 0f,
+    var whites: Float = 0f,
+    var blacks: Float = 0f,
     var saturation: Float = 0f,
 )

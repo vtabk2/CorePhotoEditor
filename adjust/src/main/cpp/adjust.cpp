@@ -27,7 +27,6 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
         return;
     }
 
-    // === Lấy các field từ AdjustParams ===
     jclass paramsCls = env->GetObjectClass(paramsObj);
     if (!paramsCls) {
         LOGE("Failed to find params class");
@@ -39,12 +38,15 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
         return env->GetFieldID(paramsCls, name, "F");
     };
 
+    // === Các tham số điều chỉnh ===
     jfieldID exposureField = getField("exposure");
     jfieldID brightnessField = getField("brightness");
     jfieldID contrastField = getField("contrast");
     jfieldID saturationField = getField("saturation");
     jfieldID highlightsField = getField("highlights");
     jfieldID shadowsField = getField("shadows");
+    jfieldID whitesField = getField("whites");
+    jfieldID blacksField = getField("blacks");
 
     float exposure = env->GetFloatField(paramsObj, exposureField);
     float brightness = env->GetFloatField(paramsObj, brightnessField);
@@ -52,20 +54,15 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
     float saturation = env->GetFloatField(paramsObj, saturationField);
     float highlights = env->GetFloatField(paramsObj, highlightsField);
     float shadows = env->GetFloatField(paramsObj, shadowsField);
+    float whites = env->GetFloatField(paramsObj, whitesField);
+    float blacks = env->GetFloatField(paramsObj, blacksField);
 
     // === Chuẩn bị thông số ===
-    // Giảm cường độ Exposure xuống cho mượt (x0.25)
     float exposureFactor = powf(2.0f, exposure * 0.25f);
-
-    // Contrast mềm hơn, tránh xám ảnh
-    float contrastFactor;
-    if (contrast >= 0.0f) {
-        contrastFactor = 1.0f + (contrast * 0.8f);
-    } else {
-        contrastFactor = 1.0f / (1.0f - (contrast * 0.5f));
-    }
-
-    float satAdj = saturation + 1.0f; // 0 giữ nguyên
+    float contrastFactor = (contrast >= 0.0f)
+                           ? 1.0f + (contrast * 0.8f)
+                           : 1.0f / (1.0f - (contrast * 0.5f));
+    float satAdj = saturation + 1.0f;
 
     int width = info.width;
     int height = info.height;
@@ -85,10 +82,8 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
             g *= exposureFactor;
             b *= exposureFactor;
 
-            // --- Brightness (mềm, -100..+100) ---
-            // brightness ∈ [-1, 1] tương ứng slider [-100..100]
+            // --- Brightness ---
             if (brightness != 0.0f) {
-                // 0.4f là độ nhạy: kéo 100 => sáng ~1.4x, kéo -100 => tối ~0.6x
                 float brightnessFactor = 1.0f + (brightness * 0.4f);
                 r *= brightnessFactor;
                 g *= brightnessFactor;
@@ -100,28 +95,47 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
             g = ((g - 128.0f) * contrastFactor) + 128.0f;
             b = ((b - 128.0f) * contrastFactor) + 128.0f;
 
-            // --- Highlights & Shadows ---
+            // --- Highlights, Shadows, Whites, Blacks ---
             float rf = r / 255.0f;
             float gf = g / 255.0f;
             float bf = b / 255.0f;
             float luminance = 0.299f * rf + 0.587f * gf + 0.114f * bf;
 
-            float shadowFactor = shadows * 0.5f;     // -1..+1
-            float highlightFactor = highlights * 0.5f; // -1..+1
+            float shadowFactor = shadows * 0.5f;
+            float highlightFactor = highlights * 0.5f;
+            float blackFactor = blacks * 0.7f;
+            float whiteFactor = whites * 0.7f;
 
-            // Tăng sáng vùng tối
+            // Shadows (vùng tối trung bình)
             if (luminance < 0.5f && shadowFactor != 0.0f) {
                 float boost = (0.5f - luminance) * shadowFactor;
                 rf += boost;
                 gf += boost;
                 bf += boost;
             }
-            // Giảm sáng vùng sáng
+
+            // Highlights (vùng sáng trung bình)
             if (luminance > 0.5f && highlightFactor != 0.0f) {
                 float reduce = (luminance - 0.5f) * highlightFactor;
                 rf -= reduce;
                 gf -= reduce;
                 bf -= reduce;
+            }
+
+            // Blacks (vùng tối sâu)
+            if (luminance < 0.35f && blackFactor != 0.0f) {
+                float blackAdj = (0.35f - luminance) * blackFactor;
+                rf += blackAdj;
+                gf += blackAdj;
+                bf += blackAdj;
+            }
+
+            // Whites (vùng sáng cực cao)
+            if (luminance > 0.65f && whiteFactor != 0.0f) {
+                float whiteAdj = (luminance - 0.65f) * whiteFactor;
+                rf += whiteAdj;
+                gf += whiteAdj;
+                bf += whiteAdj;
             }
 
             rf = fminf(fmaxf(rf, 0.0f), 1.0f);
@@ -134,7 +148,7 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
             gf = gray + (gf - gray) * satAdj;
             bf = gray + (bf - gray) * satAdj;
 
-            // Clamp và scale lại 0-255
+            // Clamp 0–255
             r = fminf(fmaxf(rf * 255.0f, 0.0f), 255.0f);
             g = fminf(fmaxf(gf * 255.0f, 0.0f), 255.0f);
             b = fminf(fmaxf(bf * 255.0f, 0.0f), 255.0f);
