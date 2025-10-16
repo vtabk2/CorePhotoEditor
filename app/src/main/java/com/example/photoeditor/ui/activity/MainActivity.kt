@@ -6,9 +6,9 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.core.adjust.AdjustManager
 import com.example.photoeditor.databinding.ActivityMainBinding
 import com.example.photoeditor.utils.LoadUtils
-import com.example.photoeditor.utils.extensions.BitmapExt.ensureMutable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -17,9 +17,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
+    private lateinit var adjustManager: AdjustManager
+
     // Photo Picker launcher (Android 13+ compatible)
-    private val pickImageLauncher =
-        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
             uri?.let { onImagePicked(it) }
         }
 
@@ -28,6 +29,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        adjustManager = AdjustManager(lifecycleScope)
 
         binding.btnPickImage.setOnClickListener {
             pickImageLauncher.launch(
@@ -41,10 +44,17 @@ class MainActivity : AppCompatActivity() {
             rcvTabs = binding.bottomPanel.rcvAdjustTabs,
             rcvSliders = binding.bottomPanel.rcvSliders
         ) { slider ->
-            // TODO: callback khi người dùng kéo slider
-            // Map key -> tham số native và gọi preview:
-            // when(slider.key) { "exposure" -> params.exposureEV = slider.value/100f, ... }
-            // ImageAdjust.applyInPlace(workBitmap, params); binding.imgAdjusted.invalidate()
+            // ✅ Cập nhật params dựa vào id slider
+            when (slider.key) {
+                "exposure" -> adjustManager.params.exposure = slider.value / 100f
+                "contrast" -> adjustManager.params.contrast = slider.value / 100f
+                "saturation" -> adjustManager.params.saturation = slider.value / 100f
+                // thêm các slider khác sau này nếu cần
+            }
+
+            adjustManager.applyAdjust { updated ->
+                binding.imgAdjusted.setImageBitmap(updated)
+            }
         }
         controller.bind()
 
@@ -57,15 +67,15 @@ class MainActivity : AppCompatActivity() {
                 LoadUtils.loadBitmapForEditingWithMemoryClass(this@MainActivity, uri, freeStyle = false)
             } ?: return@launch
 
-            // 1) Hiển thị ảnh gốc (trái)
+            adjustManager.setOriginalBitmap(src)
+
             binding.imgOriginal.setImageBitmap(src)
-
-            // 2) Chuẩn bị bitmap để Adjust (phải) — tạo bản sao mutable để chỉnh in-place
-            val work = src.ensureMutable() // tránh sửa trực tiếp ảnh gốc
-            binding.imgAdjusted.setImageBitmap(work)
-
-            // 🔜 Khi bạn có params: ImageAdjust.applyInPlace(work, params)
-            // binding.imgAdjusted.invalidate()
+            binding.imgAdjusted.setImageBitmap(adjustManager.getPreviewBitmap())
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        adjustManager.release()
     }
 }
