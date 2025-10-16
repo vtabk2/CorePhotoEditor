@@ -1,8 +1,8 @@
 package com.example.photoeditor.ui.activity
 
 import com.example.photoeditor.R
-import com.example.photoeditor.model.AdjustSlider
-import com.example.photoeditor.model.AdjustTab
+import com.core.adjust.module.AdjustSlider
+import com.core.adjust.module.AdjustTab
 
 object AdjustRepository {
 

@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.photoeditor.R
-import com.example.photoeditor.model.AdjustSlider
+import com.core.adjust.module.AdjustSlider
 
 class AdjustSliderAdapter(
     private val onValueChanged: (slider: AdjustSlider) -> Unit

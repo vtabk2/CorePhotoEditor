@@ -3,8 +3,8 @@ package com.example.photoeditor.ui.activity
 import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.photoeditor.model.AdjustSlider
-import com.example.photoeditor.model.AdjustTab
+import com.core.adjust.module.AdjustSlider
+import com.core.adjust.module.AdjustTab
 import com.example.photoeditor.ui.adapter.AdjustSliderAdapter
 import com.example.photoeditor.ui.adapter.AdjustTabAdapter
 

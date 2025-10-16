@@ -1,7 +1,7 @@
-package com.example.photoeditor.model
+package com.core.adjust.module
 
 data class AdjustSlider(
-    val key: String, // "exposure", "contrast", ...
+    val key: String,
     val label: String,
     val min: Int = -100,
     val max: Int = 100,

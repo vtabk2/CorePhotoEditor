@@ -21,3 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "CorePhotoEditor"
 include(":app")
+include(":adjust")

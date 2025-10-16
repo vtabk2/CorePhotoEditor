@@ -63,4 +63,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
 
     implementation(libs.coil3.core)
+
+    implementation(project(":adjust"))
 }
