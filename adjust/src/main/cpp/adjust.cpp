@@ -1,6 +1,3 @@
-\
-
-
 #include <jni.h>
 #include <android/bitmap.h>
 #include <cmath>
@@ -25,18 +22,12 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
         LOGE("Failed to get bitmap info");
         return;
     }
-    if (info.format != ANDROID_BITMAP_FORMAT_RGBA_8888 &&
-        info.format != ANDROID_BITMAP_FORMAT_RGB_565) {
-        LOGE("Unsupported bitmap format: %d", info.format);
-        // still try if RGBA_8888 expected
-    }
-
     if (AndroidBitmap_lockPixels(env, bitmap, &pixels) < 0) {
         LOGE("Failed to lock pixels");
         return;
     }
 
-    // Get AdjustParams fields
+    // === Lấy các field từ AdjustParams ===
     jclass paramsCls = env->GetObjectClass(paramsObj);
     if (!paramsCls) {
         LOGE("Failed to find params class");
@@ -44,129 +35,113 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
         return;
     }
 
-    jfieldID exposureField = env->GetFieldID(paramsCls, "exposure", "F");
-    jfieldID brightnessField = env->GetFieldID(paramsCls, "brightness", "F");
-    jfieldID contrastField = env->GetFieldID(paramsCls, "contrast", "F");
-    jfieldID saturationField = env->GetFieldID(paramsCls, "saturation", "F");
+    auto getField = [&](const char *name) -> jfieldID {
+        return env->GetFieldID(paramsCls, name, "F");
+    };
 
-    if (!exposureField || !brightnessField || !contrastField || !saturationField) {
-        LOGE("Failed to get one or more field IDs");
-        AndroidBitmap_unlockPixels(env, bitmap);
-        return;
-    }
+    jfieldID exposureField = getField("exposure");
+    jfieldID brightnessField = getField("brightness");
+    jfieldID contrastField = getField("contrast");
+    jfieldID saturationField = getField("saturation");
+    jfieldID highlightsField = getField("highlights");
+    jfieldID shadowsField = getField("shadows");
 
     float exposure = env->GetFloatField(paramsObj, exposureField);
     float brightness = env->GetFloatField(paramsObj, brightnessField);
     float contrast = env->GetFloatField(paramsObj, contrastField);
     float saturation = env->GetFloatField(paramsObj, saturationField);
+    float highlights = env->GetFloatField(paramsObj, highlightsField);
+    float shadows = env->GetFloatField(paramsObj, shadowsField);
 
-    // Precompute factors
-    // Giảm độ nhạy exposure xuống (0.25f = giảm tác động còn 1/4)
-    // -> slider.value = 500 => exposure = 5.0 => 5 * 0.25 = 1.25 -> pow(2,1.25)=2.38x
-    // trước kia là pow(2,5)=32x (quá cháy)
+    // === Chuẩn bị thông số ===
+    // Giảm cường độ Exposure xuống cho mượt (x0.25)
     float exposureFactor = powf(2.0f, exposure * 0.25f);
-    float brightnessOffset = brightness * 255.0f;
-    float contrastFactor = contrast + 1.0f; // 0 -> unchanged
-    float satAdj = saturation + 1.0f; // 0 -> unchanged
+
+    // Contrast mềm hơn, tránh xám ảnh
+    float contrastFactor;
+    if (contrast >= 0.0f) {
+        contrastFactor = 1.0f + (contrast * 0.8f);
+    } else {
+        contrastFactor = 1.0f / (1.0f - (contrast * 0.5f));
+    }
+
+    float satAdj = saturation + 1.0f; // 0 giữ nguyên
 
     int width = info.width;
     int height = info.height;
 
-    // Handle RGBA_8888 and RGB_565 (basic support)
-    if (info.format == ANDROID_BITMAP_FORMAT_RGBA_8888) {
-        uint8_t *line = (uint8_t *) pixels;
-        for (int y = 0; y < height; y++) {
-            uint32_t *px = (uint32_t *) line;
-            for (int x = 0; x < width; x++) {
-                uint32_t color = *px;
-                uint8_t a = (color >> 24) & 0xFF;
-                float r = (color >> 16) & 0xFF;
-                float g = (color >> 8) & 0xFF;
-                float b = color & 0xFF;
+    uint8_t *line = (uint8_t *) pixels;
+    for (int y = 0; y < height; y++) {
+        uint32_t *px = (uint32_t *) line;
+        for (int x = 0; x < width; x++) {
+            uint32_t color = *px;
+            uint8_t a = (color >> 24) & 0xFF;
+            float r = (color >> 16) & 0xFF;
+            float g = (color >> 8) & 0xFF;
+            float b = color & 0xFF;
 
-                // Exposure
-                r *= exposureFactor;
-                g *= exposureFactor;
-                b *= exposureFactor;
+            // --- Exposure ---
+            r *= exposureFactor;
+            g *= exposureFactor;
+            b *= exposureFactor;
 
-                // clamp sớm để tránh overflow sớm
-                r = fminf(fmaxf(r, 0.0f), 255.0f);
-                g = fminf(fmaxf(g, 0.0f), 255.0f);
-                b = fminf(fmaxf(b, 0.0f), 255.0f);
-
-                // Brightness
-                r += brightnessOffset;
-                g += brightnessOffset;
-                b += brightnessOffset;
-
-                // Contrast
-                r = ((r - 128.0f) * contrastFactor) + 128.0f;
-                g = ((g - 128.0f) * contrastFactor) + 128.0f;
-                b = ((b - 128.0f) * contrastFactor) + 128.0f;
-
-                // Saturation (convert to luma and lerp)
-                float gray = 0.299f * r + 0.587f * g + 0.114f * b;
-                r = gray + (r - gray) * satAdj;
-                g = gray + (g - gray) * satAdj;
-                b = gray + (b - gray) * satAdj;
-
-                // Clamp
-                int ir = (int) (r < 0.0f ? 0.0f : (r > 255.0f ? 255.0f : r));
-                int ig = (int) (g < 0.0f ? 0.0f : (g > 255.0f ? 255.0f : g));
-                int ib = (int) (b < 0.0f ? 0.0f : (b > 255.0f ? 255.0f : b));
-
-                *px++ = ((a & 0xFF) << 24) | ((ir & 0xFF) << 16) | ((ig & 0xFF) << 8) | (ib & 0xFF);
+            // --- Brightness (mềm, -100..+100) ---
+            // brightness ∈ [-1, 1] tương ứng slider [-100..100]
+            if (brightness != 0.0f) {
+                // 0.4f là độ nhạy: kéo 100 => sáng ~1.4x, kéo -100 => tối ~0.6x
+                float brightnessFactor = 1.0f + (brightness * 0.4f);
+                r *= brightnessFactor;
+                g *= brightnessFactor;
+                b *= brightnessFactor;
             }
-            line += info.stride;
-        }
-    } else if (info.format == ANDROID_BITMAP_FORMAT_RGB_565) {
-        // Basic support for RGB_565: modify in-place by converting to 8-bit components
-        uint8_t *line = (uint8_t *) pixels;
-        for (int y = 0; y < height; y++) {
-            uint16_t *px = (uint16_t *) line;
-            for (int x = 0; x < width; x++) {
-                uint16_t packed = *px;
-                int r5 = (packed >> 11) & 0x1F;
-                int g6 = (packed >> 5) & 0x3F;
-                int b5 = packed & 0x1F;
 
-                float r = (r5 * 255.0f) / 31.0f;
-                float g = (g6 * 255.0f) / 63.0f;
-                float b = (b5 * 255.0f) / 31.0f;
+            // --- Contrast ---
+            r = ((r - 128.0f) * contrastFactor) + 128.0f;
+            g = ((g - 128.0f) * contrastFactor) + 128.0f;
+            b = ((b - 128.0f) * contrastFactor) + 128.0f;
 
-                r *= exposureFactor;
-                g *= exposureFactor;
-                b *= exposureFactor;
+            // --- Highlights & Shadows ---
+            float rf = r / 255.0f;
+            float gf = g / 255.0f;
+            float bf = b / 255.0f;
+            float luminance = 0.299f * rf + 0.587f * gf + 0.114f * bf;
 
-                r += brightnessOffset;
-                g += brightnessOffset;
-                b += brightnessOffset;
+            float shadowFactor = shadows * 0.5f;     // -1..+1
+            float highlightFactor = highlights * 0.5f; // -1..+1
 
-                r = ((r - 128.0f) * contrastFactor) + 128.0f;
-                g = ((g - 128.0f) * contrastFactor) + 128.0f;
-                b = ((b - 128.0f) * contrastFactor) + 128.0f;
-
-                float gray = 0.299f * r + 0.587f * g + 0.114f * b;
-                r = gray + (r - gray) * satAdj;
-                g = gray + (g - gray) * satAdj;
-                b = gray + (b - gray) * satAdj;
-
-                int ir = (int) (r < 0.0f ? 0.0f : (r > 255.0f ? 255.0f : r));
-                int ig = (int) (g < 0.0f ? 0.0f : (g > 255.0f ? 255.0f : g));
-                int ib = (int) (b < 0.0f ? 0.0f : (b > 255.0f ? 255.0f : b));
-
-                int r5n = (ir * 31) / 255;
-                int g6n = (ig * 63) / 255;
-                int b5n = (ib * 31) / 255;
-
-                uint16_t outPacked = (r5n << 11) | (g6n << 5) | b5n;
-                *px++ = outPacked;
+            // Tăng sáng vùng tối
+            if (luminance < 0.5f && shadowFactor != 0.0f) {
+                float boost = (0.5f - luminance) * shadowFactor;
+                rf += boost;
+                gf += boost;
+                bf += boost;
             }
-            line += info.stride;
+            // Giảm sáng vùng sáng
+            if (luminance > 0.5f && highlightFactor != 0.0f) {
+                float reduce = (luminance - 0.5f) * highlightFactor;
+                rf -= reduce;
+                gf -= reduce;
+                bf -= reduce;
+            }
+
+            rf = fminf(fmaxf(rf, 0.0f), 1.0f);
+            gf = fminf(fmaxf(gf, 0.0f), 1.0f);
+            bf = fminf(fmaxf(bf, 0.0f), 1.0f);
+
+            // --- Saturation ---
+            float gray = 0.299f * rf + 0.587f * gf + 0.114f * bf;
+            rf = gray + (rf - gray) * satAdj;
+            gf = gray + (gf - gray) * satAdj;
+            bf = gray + (bf - gray) * satAdj;
+
+            // Clamp và scale lại 0-255
+            r = fminf(fmaxf(rf * 255.0f, 0.0f), 255.0f);
+            g = fminf(fmaxf(gf * 255.0f, 0.0f), 255.0f);
+            b = fminf(fmaxf(bf * 255.0f, 0.0f), 255.0f);
+
+            *px++ = ((a << 24) | ((uint8_t) r << 16) | ((uint8_t) g << 8) | (uint8_t) b);
         }
-    } else {
-        // Unsupported format: do nothing
-        LOGE("Unsupported bitmap format, skipping");
+        line += info.stride;
     }
 
     AndroidBitmap_unlockPixels(env, bitmap);

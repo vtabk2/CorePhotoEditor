@@ -6,12 +6,10 @@
     android:orientation="vertical"
     android:padding="6dp">
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imvIcon"
         android:layout_width="28dp"
-        android:layout_height="28dp"
-        android:contentDescription="@null"
-        android:tint="#DDDDDD"/>
+        android:layout_height="28dp"/>
 
     <TextView
         android:id="@+id/tvLabel"

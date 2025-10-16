@@ -47,7 +47,10 @@ class MainActivity : AppCompatActivity() {
             // ✅ Cập nhật params dựa vào id slider
             when (slider.key) {
                 "exposure" -> adjustManager.params.exposure = slider.value / 100f
+                "brightness" -> adjustManager.params.brightness = slider.value / 100f
                 "contrast" -> adjustManager.params.contrast = slider.value / 100f
+                "highlights" -> adjustManager.params.highlights = slider.value / 100f
+                "shadows" -> adjustManager.params.shadows = slider.value / 100f
                 "saturation" -> adjustManager.params.saturation = slider.value / 100f
                 // thêm các slider khác sau này nếu cần
             }

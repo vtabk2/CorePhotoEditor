@@ -54,9 +54,11 @@ class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
      */
     fun reset(onUpdated: (Bitmap) -> Unit) {
         params.exposure = 0f
-        params.contrast = 0f
-        params.saturation = 0f
         params.brightness = 0f
+        params.contrast = 0f
+        params.highlights = 0f
+        params.shadows = 0f
+        params.saturation = 0f
         applyAdjust(onUpdated)
     }
 

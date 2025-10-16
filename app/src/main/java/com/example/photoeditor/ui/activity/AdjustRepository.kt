@@ -14,6 +14,7 @@ object AdjustRepository {
                 label = "Light",
                 sliders = listOf(
                     AdjustSlider("exposure", "Exposure", -500, 500, 0), // EV *100
+                    AdjustSlider("brightness", "Brightness", -100, 100, 0),
                     AdjustSlider("contrast", "Contrast", -100, 100, 0),
                     AdjustSlider("highlights", "Highlights", -100, 100, 0),
                     AdjustSlider("shadows", "Shadows", -100, 100, 0),
