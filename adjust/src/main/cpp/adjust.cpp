@@ -48,6 +48,7 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
     jfieldID whitesField = getField("whites");
     jfieldID blacksField = getField("blacks");
     jfieldID temperatureField = getField("temperature");
+    jfieldID tintField = getField("tint"); // 👈 thêm Tint
 
     float exposure = env->GetFloatField(paramsObj, exposureField);
     float brightness = env->GetFloatField(paramsObj, brightnessField);
@@ -58,6 +59,7 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
     float whites = env->GetFloatField(paramsObj, whitesField);
     float blacks = env->GetFloatField(paramsObj, blacksField);
     float temperature = env->GetFloatField(paramsObj, temperatureField);
+    float tint = env->GetFloatField(paramsObj, tintField); // 👈 lấy Tint
 
     // === Chuẩn bị thông số ===
     float exposureFactor = powf(2.0f, exposure * 0.25f);
@@ -135,9 +137,17 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
 
             // --- Temperature ---
             if (temperature != 0.0f) {
-                float warm = temperature * 0.25f; // giảm tác động
+                float warm = temperature * 0.25f; // ấm / lạnh
                 rf += warm;
                 bf -= warm;
+            }
+
+            // --- Tint ---
+            if (tint != 0.0f) {
+                float shift = tint * 0.25f; // tím / xanh lá
+                gf -= shift;
+                rf += shift * 0.5f;
+                bf += shift * 0.5f;
             }
 
             // Clamp 0–1
