@@ -42,9 +42,15 @@ class MainActivity : AppCompatActivity() {
         val controller = BottomPanelController(
             rcvTabs = binding.bottomPanel.rcvAdjustTabs,
             rcvSliders = binding.bottomPanel.rcvSliders,
+            btnReset = binding.bottomPanel.btnReset,
             adjustManager = adjustManager,
             onSliderChanged = { slider ->
                 AdjustRepository.map(adjustSlider = slider, adjustParams = adjustManager.params)
+                adjustManager.applyAdjust { updated ->
+                    binding.imgAdjusted.setImageBitmap(updated)
+                }
+            },
+            onResetTab = { tabKey ->
                 adjustManager.applyAdjust { updated ->
                     binding.imgAdjusted.setImageBitmap(updated)
                 }
@@ -60,10 +66,12 @@ class MainActivity : AppCompatActivity() {
                 LoadUtils.loadBitmapForEditingWithMemoryClass(this@MainActivity, uri, freeStyle = false)
             } ?: return@launch
 
-            adjustManager.setOriginalBitmap(src)
-
             binding.imgOriginal.setImageBitmap(src)
-            binding.imgAdjusted.setImageBitmap(adjustManager.getPreviewBitmap())
+
+            adjustManager.setOriginalBitmap(src)
+            adjustManager.applyAdjust { updated ->
+                binding.imgAdjusted.setImageBitmap(updated)
+            }
         }
     }
 

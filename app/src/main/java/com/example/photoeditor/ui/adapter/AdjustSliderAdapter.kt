@@ -8,8 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.core.adjust.AdjustParams
 import com.core.adjust.module.AdjustSlider
 import com.example.photoeditor.R
+import com.example.photoeditor.ui.activity.AdjustRepository
 
 class AdjustSliderAdapter(
     private val onValueChanged: (slider: AdjustSlider) -> Unit
@@ -49,10 +51,17 @@ class AdjustSliderAdapter(
         }
     }
 
+    fun updateFromParams(adjustParams: AdjustParams) {
+        val newList = currentList.map { it.copy() }
+        AdjustRepository.map(newList, adjustParams)
+        submitList(newList)
+        notifyItemRangeChanged(0, newList.size)
+    }
+
     private companion object {
         val DIFF = object : DiffUtil.ItemCallback<AdjustSlider>() {
             override fun areItemsTheSame(oldItem: AdjustSlider, newItem: AdjustSlider) = oldItem.key == newItem.key
-            override fun areContentsTheSame(oldItem: AdjustSlider, newItem: AdjustSlider) = oldItem == newItem
+            override fun areContentsTheSame(oldItem: AdjustSlider, newItem: AdjustSlider) = oldItem.value == newItem.value
         }
     }
 }

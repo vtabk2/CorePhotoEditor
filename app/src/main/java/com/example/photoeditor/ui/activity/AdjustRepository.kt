@@ -10,7 +10,7 @@ object AdjustRepository {
     fun defaultTabs(): List<AdjustTab> {
         return listOf(
             AdjustTab(
-                id = "light",
+                key = "light",
                 iconRes = R.drawable.ic_tab_light, // tạo vector đơn giản
                 label = "Light",
                 sliders = listOf(
@@ -24,7 +24,7 @@ object AdjustRepository {
                 )
             ),
             AdjustTab(
-                id = "color",
+                key = "color",
                 iconRes = R.drawable.ic_tab_color,
                 label = "Color",
                 sliders = listOf(
@@ -35,7 +35,7 @@ object AdjustRepository {
                 )
             ),
             AdjustTab(
-                id = "effects",
+                key = "effects",
                 iconRes = R.drawable.ic_tab_effects,
                 label = "Effects",
                 sliders = listOf(

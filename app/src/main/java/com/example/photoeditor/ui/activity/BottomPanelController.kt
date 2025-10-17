@@ -1,5 +1,6 @@
 package com.example.photoeditor.ui.activity
 
+import android.widget.Button
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -12,8 +13,10 @@ import com.example.photoeditor.ui.adapter.AdjustTabAdapter
 class BottomPanelController(
     private val rcvTabs: RecyclerView,
     private val rcvSliders: RecyclerView,
+    private val btnReset: Button,
     private val adjustManager: AdjustManager,
-    private val onSliderChanged: (AdjustSlider) -> Unit
+    private val onSliderChanged: (AdjustSlider) -> Unit,
+    private val onResetTab: (tabKey: String) -> Unit
 ) {
 
     private val tabAdapter = AdjustTabAdapter { pos, tab ->
@@ -47,8 +50,22 @@ class BottomPanelController(
         tabAdapter.submitList(tabs)
         tabAdapter.selectedPos = 0
         sliderAdapter.submitList(tabs.first().sliders.map { it.copy() })
+
+        btnReset.setOnClickListener {
+            onResetCurrentTab()
+        }
     }
 
-    fun getCurrentTabId(): String = tabs[currentTabIndex].id
-    fun getCurrentSliders(): List<AdjustSlider> = sliderAdapter.currentList
+    private fun onResetCurrentTab() {
+        val currentTab = tabs.getOrNull(currentTabIndex) ?: return
+
+        when (currentTab.key) {
+            "light" -> adjustManager.resetLight()
+            "color" -> adjustManager.resetColor()
+            "effects" -> adjustManager.resetEffects()
+        }
+
+        sliderAdapter.updateFromParams(adjustParams = adjustManager.params)
+        onResetTab.invoke(currentTab.key)
+    }
 }

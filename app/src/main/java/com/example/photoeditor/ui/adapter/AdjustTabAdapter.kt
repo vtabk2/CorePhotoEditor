@@ -53,7 +53,7 @@ class AdjustTabAdapter(
 
     private companion object {
         val DIFF = object : DiffUtil.ItemCallback<AdjustTab>() {
-            override fun areItemsTheSame(oldItem: AdjustTab, newItem: AdjustTab) = oldItem.id == newItem.id
+            override fun areItemsTheSame(oldItem: AdjustTab, newItem: AdjustTab) = oldItem.key == newItem.key
             override fun areContentsTheSame(oldItem: AdjustTab, newItem: AdjustTab) = oldItem == newItem
         }
     }
