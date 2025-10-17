@@ -49,17 +49,27 @@ class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
         }
     }
 
-    /**
-     * Reset toàn bộ params về mặc định và render lại.
-     */
-    fun reset(onUpdated: (Bitmap) -> Unit) {
+    fun resetLight() {
         params.exposure = 0f
         params.brightness = 0f
         params.contrast = 0f
         params.highlights = 0f
         params.shadows = 0f
+        params.whites = 0f
+        params.blacks = 0f
+    }
+
+    fun resetColor() {
+        params.temperature = 0f
+        params.tint = 0f
+        params.vibrance = 0f
         params.saturation = 0f
-        applyAdjust(onUpdated)
+    }
+
+    fun resetEffects() {
+        params.texture = 0f
+        params.clarity = 0f
+        params.dehaze = 0f
     }
 
     /**

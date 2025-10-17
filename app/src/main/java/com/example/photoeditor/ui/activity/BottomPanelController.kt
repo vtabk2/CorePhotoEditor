@@ -1,26 +1,33 @@
 package com.example.photoeditor.ui.activity
 
-import android.content.Context
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SimpleItemAnimator
+import com.core.adjust.AdjustManager
 import com.core.adjust.module.AdjustSlider
 import com.core.adjust.module.AdjustTab
 import com.example.photoeditor.ui.adapter.AdjustSliderAdapter
 import com.example.photoeditor.ui.adapter.AdjustTabAdapter
 
 class BottomPanelController(
-    private val context: Context,
     private val rcvTabs: RecyclerView,
     private val rcvSliders: RecyclerView,
+    private val adjustManager: AdjustManager,
     private val onSliderChanged: (AdjustSlider) -> Unit
 ) {
 
     private val tabAdapter = AdjustTabAdapter { pos, tab ->
         currentTabIndex = pos
-        sliderAdapter.submitList(tab.sliders.map { it.copy() }) // copy để UI độc lập nếu cần
+        // Tạo list mới từ tab
+        val newList = tab.sliders.map { it.copy() }
+        // Áp giá trị hiện tại từ AdjustParams vào list
+        AdjustRepository.map(newList, adjustManager.params)
+        // Gửi list mới vào adapter
+        sliderAdapter.submitList(newList)
     }
+
     private val sliderAdapter = AdjustSliderAdapter { slider ->
-        onSliderChanged(slider) // callback ra ngoài để apply preview
+        onSliderChanged(slider)
     }
 
     private var tabs: List<AdjustTab> = AdjustRepository.defaultTabs()
@@ -34,6 +41,8 @@ class BottomPanelController(
         rcvSliders.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = sliderAdapter
+            (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
+            itemAnimator = null
         }
         tabAdapter.submitList(tabs)
         tabAdapter.selectedPos = 0

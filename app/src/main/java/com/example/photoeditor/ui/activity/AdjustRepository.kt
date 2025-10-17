@@ -1,8 +1,9 @@
 package com.example.photoeditor.ui.activity
 
-import com.example.photoeditor.R
+import com.core.adjust.AdjustParams
 import com.core.adjust.module.AdjustSlider
 import com.core.adjust.module.AdjustTab
+import com.example.photoeditor.R
 
 object AdjustRepository {
 
@@ -44,5 +45,50 @@ object AdjustRepository {
                 )
             )
         )
+    }
+
+    fun map(list: List<AdjustSlider>, adjustParams: AdjustParams) {
+        list.forEach {
+            when (it.key) {
+                "exposure" -> it.value = (adjustParams.exposure * 100).toInt()
+                "brightness" -> it.value = (adjustParams.brightness * 100).toInt()
+                "contrast" -> it.value = (adjustParams.contrast * 100).toInt()
+                "highlights" -> it.value = (adjustParams.highlights * 100).toInt()
+                "shadows" -> it.value = (adjustParams.shadows * 100).toInt()
+                "whites" -> it.value = (adjustParams.whites * 100).toInt()
+                "blacks" -> it.value = (adjustParams.blacks * 100).toInt()
+                //
+                "temperature" -> it.value = (adjustParams.temperature * 100).toInt()
+                "tint" -> it.value = (adjustParams.tint * 100).toInt()
+                "vibrance" -> it.value = (adjustParams.vibrance * 100).toInt()
+                "saturation" -> it.value = (adjustParams.saturation * 100).toInt()
+                //
+                "texture" -> it.value = (adjustParams.texture * 100).toInt()
+                "clarity" -> it.value = (adjustParams.clarity * 100).toInt()
+                "dehaze" -> it.value = (adjustParams.dehaze * 100).toInt()
+            }
+        }
+    }
+
+    fun map(adjustSlider: AdjustSlider, adjustParams: AdjustParams) {
+        when (adjustSlider.key) {
+            "exposure" -> adjustParams.exposure = adjustSlider.value / 100f
+            "brightness" -> adjustParams.brightness = adjustSlider.value / 100f
+            "contrast" -> adjustParams.contrast = adjustSlider.value / 100f
+            "highlights" -> adjustParams.highlights = adjustSlider.value / 100f
+            "shadows" -> adjustParams.shadows = adjustSlider.value / 100f
+            "whites" -> adjustParams.whites = adjustSlider.value / 100f
+            "blacks" -> adjustParams.blacks = adjustSlider.value / 100f
+            //
+            "temperature" -> adjustParams.temperature = adjustSlider.value / 100f
+            "tint" -> adjustParams.tint = adjustSlider.value / 100f
+            "vibrance" -> adjustParams.vibrance = adjustSlider.value / 100f
+            "saturation" -> adjustParams.saturation = adjustSlider.value / 100f
+            //
+            "texture" -> adjustParams.texture = adjustSlider.value / 100f
+            "clarity" -> adjustParams.clarity = adjustSlider.value / 100f
+            "dehaze" -> adjustParams.dehaze = adjustSlider.value / 100f
+
+        }
     }
 }

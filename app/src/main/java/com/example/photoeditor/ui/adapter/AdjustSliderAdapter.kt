@@ -8,8 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.photoeditor.R
 import com.core.adjust.module.AdjustSlider
+import com.example.photoeditor.R
 
 class AdjustSliderAdapter(
     private val onValueChanged: (slider: AdjustSlider) -> Unit
@@ -31,7 +31,6 @@ class AdjustSliderAdapter(
 
         fun bind(slider: AdjustSlider, onValueChanged: (AdjustSlider) -> Unit) {
             tvName.text = slider.label
-            // map [-100..+100] <-> [0..200]
             val span = (slider.max - slider.min)
             seek.max = span
             seek.progress = slider.value - slider.min

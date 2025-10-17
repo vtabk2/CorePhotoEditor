@@ -40,35 +40,15 @@ class MainActivity : AppCompatActivity() {
 
         // Giả sử bạn đã findViewById hoặc ViewBinding với include_bottom_panel
         val controller = BottomPanelController(
-            context = this,
             rcvTabs = binding.bottomPanel.rcvAdjustTabs,
-            rcvSliders = binding.bottomPanel.rcvSliders
-        ) { slider ->
-            // ✅ Cập nhật params dựa vào id slider
-            when (slider.key) {
-                "exposure" -> adjustManager.params.exposure = slider.value / 100f
-                "brightness" -> adjustManager.params.brightness = slider.value / 100f
-                "contrast" -> adjustManager.params.contrast = slider.value / 100f
-                "highlights" -> adjustManager.params.highlights = slider.value / 100f
-                "shadows" -> adjustManager.params.shadows = slider.value / 100f
-                "whites" -> adjustManager.params.whites = slider.value / 100f
-                "blacks" -> adjustManager.params.blacks = slider.value / 100f
-                //
-                "temperature" -> adjustManager.params.temperature = slider.value / 100f
-                "tint" -> adjustManager.params.tint = slider.value / 100f
-                "vibrance" -> adjustManager.params.vibrance = slider.value / 100f
-                "saturation" -> adjustManager.params.saturation = slider.value / 100f
-                //
-                "texture" -> adjustManager.params.texture = slider.value / 100f
-                "clarity" -> adjustManager.params.clarity = slider.value / 100f
-                "dehaze" -> adjustManager.params.dehaze = slider.value / 100f
-
-            }
-
-            adjustManager.applyAdjust { updated ->
-                binding.imgAdjusted.setImageBitmap(updated)
-            }
-        }
+            rcvSliders = binding.bottomPanel.rcvSliders,
+            adjustManager = adjustManager,
+            onSliderChanged = { slider ->
+                AdjustRepository.map(adjustSlider = slider, adjustParams = adjustManager.params)
+                adjustManager.applyAdjust { updated ->
+                    binding.imgAdjusted.setImageBitmap(updated)
+                }
+            })
         controller.bind()
 
     }
