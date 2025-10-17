@@ -1,3 +1,5 @@
+#include <cmath>
+#include <cstdlib>
 #include "adjust_common.h"
 
 static inline void applyTexture(float &rf, float &gf, float &bf, const AdjustParams &p) {
@@ -51,32 +53,25 @@ static inline void applyDehaze(float &rf, float &gf, float &bf, const AdjustPara
     }
 }
 
-static inline void applyVignette(float &rf, float &gf, float &bf,
-                                 float x, float y, float w, float h,
-                                 const AdjustParams &p) {
-    if (p.vignette <= 0.0f) return;
-    const float cx = w * 0.5f;
-    const float cy = h * 0.5f;
-    const float dx = x - cx;
-    const float dy = y - cy;
-    const float dist = sqrtf(dx * dx + dy * dy);
-    const float maxDist = sqrtf(cx * cx + cy * cy);
-
-    // vignetteFactor giảm dần ra rìa theo cường độ p.vignette
-    float vignetteFactor = 1.0f - p.vignette * (dist / maxDist);
-    if (vignetteFactor < 0.0f) vignetteFactor = 0.0f;
-
-    rf *= vignetteFactor;
-    gf *= vignetteFactor;
-    bf *= vignetteFactor;
+extern "C" void applyVignetteAt(float &rf, float &gf, float &bf,
+                                float x, float y, float w, float h,
+                                const AdjustParams &p) {
+    if (p.vignette <= 0.f) return;
+    const float cx = w * 0.5f, cy = h * 0.5f;
+    const float dx = x - cx, dy = y - cy;
+    const float dist = std::sqrt(dx * dx + dy * dy);
+    const float maxDist = std::sqrt(cx * cx + cy * cy);
+    float f = 1.f - p.vignette * (dist / maxDist);
+    if (f < 0.f) f = 0.f;
+    rf *= f;
+    gf *= f;
+    bf *= f;
 }
 
-static inline void applyGrain(float &rf, float &gf, float &bf, const AdjustParams &p) {
-    if (p.grain <= 0.0f) return;
-
-    // noise trắng đơn giản, biên độ nhỏ để “film-like”
-    // lưu ý: rand() là pseudo-random per-pixel, đủ nhẹ cho realtime preview
-    const float noise = ((rand() % 200 - 100) / 100.0f) * (p.grain * 0.20f);
+extern "C" void applyGrainAt(float &rf, float &gf, float &bf,
+                             const AdjustParams &p) {
+    if (p.grain <= 0.f) return;
+    const float noise = ((std::rand() % 200 - 100) / 100.f) * (p.grain * 0.20f);
     rf = clampf(rf + noise);
     gf = clampf(gf + noise);
     bf = clampf(bf + noise);
@@ -87,9 +82,6 @@ void applyDetailAdjust(float &rf, float &gf, float &bf, float x, float y, float 
     applyTexture(rf, gf, bf, p);
     applyClarity(rf, gf, bf, p);
     applyDehaze(rf, gf, bf, p);
-
-    applyVignette(rf, gf, bf, x, y, width, height, p);
-    applyGrain(rf, gf, bf, p);
 
     rf = clampf(rf);
     gf = clampf(gf);

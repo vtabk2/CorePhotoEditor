@@ -3,6 +3,14 @@
 #include <cmath>
 #include <algorithm>
 
+enum AdjustMask : uint64_t {
+    MASK_LIGHT = 1ull << 0,
+    MASK_COLOR = 1ull << 1,
+    MASK_DETAIL = 1ull << 2,
+    MASK_VIGNETTE = 1ull << 3,
+    MASK_GRAIN = 1ull << 4,
+};
+
 struct AdjustParams {
     float exposure;
     float brightness;
@@ -20,8 +28,9 @@ struct AdjustParams {
     float dehaze;
     float vignette;
     float grain;
+    uint64_t activeMask;
 };
 
-inline float clampf(float v, float minv = 0.0f, float maxv = 1.0f) {
-    return std::fmin(std::fmax(v, minv), maxv);
+static inline float clampf(float v, float lo = 0.f, float hi = 1.f) {
+    return v < lo ? lo : (v > hi ? hi : v);
 }

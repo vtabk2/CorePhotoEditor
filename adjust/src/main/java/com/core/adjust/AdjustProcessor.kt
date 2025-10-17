@@ -14,7 +14,9 @@ object AdjustProcessor {
 
     fun applyAdjust(bitmap: Bitmap?, params: AdjustParams, progress: AdjustProgress?) {
         if (bitmap == null) return
+        val mask = AdjustParams.buildMask(params)
+        if (mask == 0L) return
         Log.d("TAG5", "AdjustProcessor_applyAdjust: params = $params")
-        applyAdjustNative(bitmap, params, progress)
+        applyAdjustNative(bitmap, params.copy(activeMask = mask), progress)
     }
 }
