@@ -70,6 +70,8 @@ class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
         params.texture = 0f
         params.clarity = 0f
         params.dehaze = 0f
+        params.vignette = 0f
+        params.grain = 0f
     }
 
     /**

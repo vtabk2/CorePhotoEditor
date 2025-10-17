@@ -42,6 +42,8 @@ object AdjustRepository {
                     AdjustSlider("texture", "Texture", -100, 100, 0),
                     AdjustSlider("clarity", "Clarity", -100, 100, 0),
                     AdjustSlider("dehaze", "Dehaze", -100, 100, 0),
+                    AdjustSlider("vignette", "Vignette", -100, 100, 0),
+                    AdjustSlider("grain", "Grain", 0, 100, 0),
                 )
             )
         )
@@ -66,6 +68,8 @@ object AdjustRepository {
                 "texture" -> it.value = (adjustParams.texture * 100).toInt()
                 "clarity" -> it.value = (adjustParams.clarity * 100).toInt()
                 "dehaze" -> it.value = (adjustParams.dehaze * 100).toInt()
+                "vignette" -> it.value = (adjustParams.vignette * 100).toInt()
+                "grain" -> it.value = (adjustParams.grain * 100).toInt()
             }
         }
     }
@@ -88,7 +92,8 @@ object AdjustRepository {
             "texture" -> adjustParams.texture = adjustSlider.value / 100f
             "clarity" -> adjustParams.clarity = adjustSlider.value / 100f
             "dehaze" -> adjustParams.dehaze = adjustSlider.value / 100f
-
+            "vignette" -> adjustParams.vignette = adjustSlider.value / 100f
+            "grain" -> adjustParams.grain = adjustSlider.value / 100f
         }
     }
 }
