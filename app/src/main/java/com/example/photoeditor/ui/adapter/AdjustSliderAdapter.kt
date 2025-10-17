@@ -42,11 +42,12 @@ class AdjustSliderAdapter(
                 override fun onProgressChanged(sb: SeekBar?, progress: Int, fromUser: Boolean) {
                     slider.value = slider.min + progress
                     tvValue.text = slider.value.toString()
-                    if (fromUser) onValueChanged(slider)
                 }
 
                 override fun onStartTrackingTouch(sb: SeekBar?) {}
-                override fun onStopTrackingTouch(sb: SeekBar?) {}
+                override fun onStopTrackingTouch(sb: SeekBar?) {
+                    onValueChanged(slider)
+                }
             })
         }
     }

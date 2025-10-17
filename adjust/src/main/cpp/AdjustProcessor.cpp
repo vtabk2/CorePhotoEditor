@@ -15,7 +15,7 @@ applyDetailAdjust(float &, float &, float &, float, float, float, float, const A
 extern "C"
 JNIEXPORT void JNICALL
 Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
-        JNIEnv *env, jclass, jobject bitmap, jobject paramsObj) {
+        JNIEnv *env, jclass, jobject bitmap, jobject paramsObj, jobject progressCb) {
 
     if (!bitmap || !paramsObj) return;
 
@@ -38,8 +38,22 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
             getF("vignette"), getF("grain")
     };
 
+    // --- Progress callback setup ---
+    jclass cbCls = nullptr;
+    jmethodID onProgress = nullptr;
+    bool hasCb = (progressCb != nullptr);
+    if (hasCb) {
+        cbCls = env->GetObjectClass(progressCb);
+        onProgress = env->GetMethodID(cbCls, "onProgress", "(I)V");
+        if (!onProgress) hasCb = false;
+        else env->CallVoidMethod(progressCb, onProgress, 0); // báo 0% khi bắt đầu
+    }
+
+    const int h = (int) info.height;
+    const int strideBytes = (int) info.stride;
     uint8_t *line = static_cast<uint8_t *>(pixels);
-    for (int y = 0; y < info.height; y++) {
+
+    for (int y = 0; y < h; y++) {
         uint32_t *px = reinterpret_cast<uint32_t *>(line);
         for (int x = 0; x < info.width; x++) {
             uint32_t color = *px;
@@ -60,7 +74,23 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
                      (uint32_t(gf * 255.0f) << 8) |
                      uint32_t(bf * 255.0f));
         }
-        line += info.stride;
+
+        line += strideBytes;
+
+        // --- Report progress mỗi 3 hàng ---
+        if (hasCb && ((y % 3 == 0) || y == h - 1)) {
+            int pct = (int) ((y + 1) * 100 / h);
+            env->CallVoidMethod(progressCb, onProgress, pct);
+            if (env->ExceptionCheck()) {
+                env->ExceptionClear();
+                hasCb = false;
+            }
+        }
     }
     AndroidBitmap_unlockPixels(env, bitmap);
+
+    if (hasCb) {
+        env->CallVoidMethod(progressCb, onProgress, 100);
+        if (env->ExceptionCheck()) env->ExceptionClear();
+    }
 }

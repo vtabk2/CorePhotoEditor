@@ -10,11 +10,11 @@ object AdjustProcessor {
 
     // static native method (annotated as @JvmStatic so JNI name matches a static method)
     @JvmStatic
-    external fun applyAdjustNative(bitmap: Bitmap, params: AdjustParams)
+    external fun applyAdjustNative(bitmap: Bitmap, params: AdjustParams, progress: AdjustProgress?)
 
-    fun applyAdjust(bitmap: Bitmap?, params: AdjustParams) {
+    fun applyAdjust(bitmap: Bitmap?, params: AdjustParams, progress: AdjustProgress?) {
         if (bitmap == null) return
         Log.d("TAG5", "AdjustProcessor_applyAdjust: params = $params")
-        applyAdjustNative(bitmap, params)
+        applyAdjustNative(bitmap, params, progress)
     }
 }

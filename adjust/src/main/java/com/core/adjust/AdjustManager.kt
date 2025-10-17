@@ -1,6 +1,7 @@
 package com.core.adjust
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.LifecycleCoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -40,7 +41,11 @@ class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
 
         applyJob = lifecycleScope.launch(Dispatchers.Default) {
             val work = base.copy(Bitmap.Config.ARGB_8888, true)
-            AdjustProcessor.applyAdjust(work, params)
+            AdjustProcessor.applyAdjust(work, params, progress = object : AdjustProgress {
+                override fun onProgress(percent: Int) {
+                    Log.d("TAG5", "AdjustManager_onProgress: percent = $percent")
+                }
+            })
 
             withContext(Dispatchers.Main) {
                 previewBitmap = work
