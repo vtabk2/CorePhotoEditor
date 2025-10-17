@@ -56,9 +56,11 @@ class MainActivity : AppCompatActivity() {
                 //
                 "temperature" -> adjustManager.params.temperature = slider.value / 100f
                 "tint" -> adjustManager.params.tint = slider.value / 100f
-
+                "vibrance" -> adjustManager.params.vibrance = slider.value / 100f
                 "saturation" -> adjustManager.params.saturation = slider.value / 100f
-                // thêm các slider khác sau này nếu cần
+                //
+                "texture" -> adjustManager.params.texture = slider.value / 100f
+
             }
 
             adjustManager.applyAdjust { updated ->

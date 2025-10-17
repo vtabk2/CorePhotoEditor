@@ -11,6 +11,8 @@ data class AdjustParams(
     //
     var temperature: Float = 0f,
     var tint: Float = 0f,
-
+    var vibrance: Float = 0f,
     var saturation: Float = 0f,
+    //
+    var texture: Float = 0f,
 )
