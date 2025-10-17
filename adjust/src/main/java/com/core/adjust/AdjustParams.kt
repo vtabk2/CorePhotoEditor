@@ -8,5 +8,7 @@ data class AdjustParams(
     var shadows: Float = 0f,
     var whites: Float = 0f,
     var blacks: Float = 0f,
+    //
+    var temperature: Float = 0f, // 👈 thêm dòng này
     var saturation: Float = 0f,
 )

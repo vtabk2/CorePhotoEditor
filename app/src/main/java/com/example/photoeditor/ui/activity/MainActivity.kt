@@ -53,6 +53,8 @@ class MainActivity : AppCompatActivity() {
                 "shadows" -> adjustManager.params.shadows = slider.value / 100f
                 "whites" -> adjustManager.params.whites = slider.value / 100f
                 "blacks" -> adjustManager.params.blacks = slider.value / 100f
+                //
+                "temperature" -> adjustManager.params.temperature = slider.value / 100f
                 "saturation" -> adjustManager.params.saturation = slider.value / 100f
                 // thêm các slider khác sau này nếu cần
             }

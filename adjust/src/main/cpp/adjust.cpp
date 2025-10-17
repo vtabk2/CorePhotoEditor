@@ -47,6 +47,7 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
     jfieldID shadowsField = getField("shadows");
     jfieldID whitesField = getField("whites");
     jfieldID blacksField = getField("blacks");
+    jfieldID temperatureField = getField("temperature");
 
     float exposure = env->GetFloatField(paramsObj, exposureField);
     float brightness = env->GetFloatField(paramsObj, brightnessField);
@@ -56,6 +57,7 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
     float shadows = env->GetFloatField(paramsObj, shadowsField);
     float whites = env->GetFloatField(paramsObj, whitesField);
     float blacks = env->GetFloatField(paramsObj, blacksField);
+    float temperature = env->GetFloatField(paramsObj, temperatureField);
 
     // === Chuẩn bị thông số ===
     float exposureFactor = powf(2.0f, exposure * 0.25f);
@@ -67,15 +69,15 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
     int width = info.width;
     int height = info.height;
 
-    uint8_t *line = (uint8_t *) pixels;
+    uint8_t *line = static_cast<uint8_t *>(pixels);
     for (int y = 0; y < height; y++) {
-        uint32_t *px = (uint32_t *) line;
+        uint32_t *px = reinterpret_cast<uint32_t *>(line);
         for (int x = 0; x < width; x++) {
             uint32_t color = *px;
-            uint8_t a = (color >> 24) & 0xFF;
-            float r = (color >> 16) & 0xFF;
-            float g = (color >> 8) & 0xFF;
-            float b = color & 0xFF;
+            uint8_t a = static_cast<uint8_t>((color >> 24) & 0xFF);
+            float r = static_cast<float>((color >> 16) & 0xFF);
+            float g = static_cast<float>((color >> 8) & 0xFF);
+            float b = static_cast<float>(color & 0xFF);
 
             // --- Exposure ---
             r *= exposureFactor;
@@ -106,31 +108,24 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
             float blackFactor = blacks * 0.7f;
             float whiteFactor = whites * 0.7f;
 
-            // Shadows (vùng tối trung bình)
             if (luminance < 0.5f && shadowFactor != 0.0f) {
                 float boost = (0.5f - luminance) * shadowFactor;
                 rf += boost;
                 gf += boost;
                 bf += boost;
             }
-
-            // Highlights (vùng sáng trung bình)
             if (luminance > 0.5f && highlightFactor != 0.0f) {
                 float reduce = (luminance - 0.5f) * highlightFactor;
                 rf -= reduce;
                 gf -= reduce;
                 bf -= reduce;
             }
-
-            // Blacks (vùng tối sâu)
             if (luminance < 0.35f && blackFactor != 0.0f) {
                 float blackAdj = (0.35f - luminance) * blackFactor;
                 rf += blackAdj;
                 gf += blackAdj;
                 bf += blackAdj;
             }
-
-            // Whites (vùng sáng cực cao)
             if (luminance > 0.65f && whiteFactor != 0.0f) {
                 float whiteAdj = (luminance - 0.65f) * whiteFactor;
                 rf += whiteAdj;
@@ -138,6 +133,14 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
                 bf += whiteAdj;
             }
 
+            // --- Temperature ---
+            if (temperature != 0.0f) {
+                float warm = temperature * 0.25f; // giảm tác động
+                rf += warm;
+                bf -= warm;
+            }
+
+            // Clamp 0–1
             rf = fminf(fmaxf(rf, 0.0f), 1.0f);
             gf = fminf(fmaxf(gf, 0.0f), 1.0f);
             bf = fminf(fmaxf(bf, 0.0f), 1.0f);
@@ -148,12 +151,15 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
             gf = gray + (gf - gray) * satAdj;
             bf = gray + (bf - gray) * satAdj;
 
-            // Clamp 0–255
+            // Clamp & scale 0–255
             r = fminf(fmaxf(rf * 255.0f, 0.0f), 255.0f);
             g = fminf(fmaxf(gf * 255.0f, 0.0f), 255.0f);
             b = fminf(fmaxf(bf * 255.0f, 0.0f), 255.0f);
 
-            *px++ = ((a << 24) | ((uint8_t) r << 16) | ((uint8_t) g << 8) | (uint8_t) b);
+            *px++ = ((static_cast<uint32_t>(a) << 24) |
+                     (static_cast<uint32_t>(r) << 16) |
+                     (static_cast<uint32_t>(g) << 8) |
+                     static_cast<uint32_t>(b));
         }
         line += info.stride;
     }
