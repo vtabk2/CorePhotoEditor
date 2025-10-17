@@ -15,4 +15,6 @@ data class AdjustParams(
     var saturation: Float = 0f,
     //
     var texture: Float = 0f,
+    var clarity: Float = 0f,
+    var dehaze: Float = 0f
 )

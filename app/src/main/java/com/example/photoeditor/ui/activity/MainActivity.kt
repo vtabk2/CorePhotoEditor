@@ -60,6 +60,8 @@ class MainActivity : AppCompatActivity() {
                 "saturation" -> adjustManager.params.saturation = slider.value / 100f
                 //
                 "texture" -> adjustManager.params.texture = slider.value / 100f
+                "clarity" -> adjustManager.params.clarity = slider.value / 100f
+                "dehaze" -> adjustManager.params.dehaze = slider.value / 100f
 
             }
 

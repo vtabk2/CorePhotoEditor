@@ -1,20 +1,17 @@
 cmake_minimum_required(VERSION 3.22.1)
-project("adjust")
+project(adjust)
 
-add_library(
-    adjust
-    SHARED
-    adjust.cpp
+add_library(adjust SHARED
+        AdjustProcessor.cpp
+        adjust_light.cpp
+        adjust_color.cpp
+        adjust_detail.cpp
 )
 
-find_library(
-    log-lib
-    log
-)
+find_library(log-lib log)
+find_library(jnigraphics-lib jnigraphics)
 
-target_include_directories(adjust PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(
-    adjust
-    ${log-lib}
-    jnigraphics
+target_link_libraries(adjust
+        ${log-lib}
+        ${jnigraphics-lib}
 )
