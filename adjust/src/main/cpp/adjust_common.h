@@ -18,6 +18,8 @@ struct AdjustParams {
     float texture;
     float clarity;
     float dehaze;
+    float vignette;
+    float grain;
 };
 
 inline float clampf(float v, float minv = 0.0f, float maxv = 1.0f) {

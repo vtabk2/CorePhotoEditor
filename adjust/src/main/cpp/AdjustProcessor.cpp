@@ -7,7 +7,8 @@ extern void applyLightAdjust(float &, float &, float &, const AdjustParams &);
 
 extern void applyColorAdjust(float &, float &, float &, const AdjustParams &);
 
-extern void applyDetailAdjust(float &, float &, float &, const AdjustParams &);
+extern void
+applyDetailAdjust(float &, float &, float &, float, float, float, float, const AdjustParams &);
 
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, "AdjustNative", __VA_ARGS__)
 
@@ -33,7 +34,8 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
             getF("highlights"), getF("shadows"), getF("whites"), getF("blacks"),
             getF("temperature"), getF("tint"), getF("saturation"),
             getF("vibrance"), getF("texture"),
-            getF("clarity"), getF("dehaze")
+            getF("clarity"), getF("dehaze"),
+            getF("vignette"), getF("grain")
     };
 
     uint8_t *line = static_cast<uint8_t *>(pixels);
@@ -49,7 +51,9 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
             applyLightAdjust(r, g, b, p);
             float rf = r / 255.0f, gf = g / 255.0f, bf = b / 255.0f;
             applyColorAdjust(rf, gf, bf, p);
-            applyDetailAdjust(rf, gf, bf, p);
+            applyDetailAdjust(rf, gf, bf,
+                              (float) x, (float) y, (float) info.width, (float) info.height,
+                              p);
 
             *px++ = ((uint32_t(a) << 24) |
                      (uint32_t(rf * 255.0f) << 16) |
