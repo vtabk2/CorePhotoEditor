@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.photoeditor.R
-import com.core.adjust.module.AdjustTab
+import com.core.adjust.model.AdjustTab
 
 class AdjustTabAdapter(
     private val onClick: (position: Int, tab: AdjustTab) -> Unit

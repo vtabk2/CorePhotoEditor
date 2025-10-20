@@ -1,4 +1,4 @@
-package com.core.adjust.module
+package com.core.adjust.model
 
 import androidx.annotation.DrawableRes
 

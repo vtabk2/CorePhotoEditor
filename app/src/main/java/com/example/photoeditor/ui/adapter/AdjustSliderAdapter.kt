@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.core.adjust.AdjustParams
-import com.core.adjust.module.AdjustSlider
+import com.core.adjust.model.AdjustSlider
 import com.example.photoeditor.R
 import com.example.photoeditor.ui.activity.AdjustRepository
 

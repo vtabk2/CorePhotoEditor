@@ -6,8 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.core.adjust.AdjustManager
 import com.core.adjust.AdjustProcessor
-import com.core.adjust.module.AdjustSlider
-import com.core.adjust.module.AdjustTab
+import com.core.adjust.model.AdjustSlider
+import com.core.adjust.model.AdjustTab
 import com.example.photoeditor.ui.adapter.AdjustSliderAdapter
 import com.example.photoeditor.ui.adapter.AdjustTabAdapter
 
