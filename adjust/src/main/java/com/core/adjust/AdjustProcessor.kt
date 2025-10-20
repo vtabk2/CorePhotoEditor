@@ -8,9 +8,9 @@ object AdjustProcessor {
         System.loadLibrary("adjust")
     }
 
-    // static native method (annotated as @JvmStatic so JNI name matches a static method)
-    @JvmStatic
     external fun applyAdjustNative(bitmap: Bitmap, params: AdjustParams, progress: AdjustProgress?)
+
+    external fun clearCache()
 
     fun applyAdjust(bitmap: Bitmap?, params: AdjustParams, progress: AdjustProgress?) {
         if (bitmap == null) return

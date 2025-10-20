@@ -57,7 +57,13 @@ static inline uint64_t hashParams(const AdjustParams &p) {
     return h;
 }
 
-static thread_local uint64_t s_lastHash = 0ull;
+static uint64_t s_lastHash = 0ull;
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_com_core_adjust_AdjustProcessor_clearCache(JNIEnv *, jclass) {
+    s_lastHash = 0ull;
+}
 
 extern "C"
 JNIEXPORT void JNICALL

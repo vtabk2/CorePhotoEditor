@@ -18,6 +18,9 @@ class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
     private var previewBitmap: Bitmap? = null
     private var applyJob: Job? = null
 
+    @Volatile
+    private var isProcessing = false
+
     val params = AdjustParams()
 
     /**
@@ -36,20 +39,30 @@ class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
      */
     fun applyAdjust(onUpdated: (Bitmap) -> Unit) {
         val base = originalBitmap ?: return
+        if (isProcessing) return
+        isProcessing = true
+
         // Nếu đang chạy 1 job cũ thì hủy để không render thừa
         applyJob?.cancel()
 
         applyJob = lifecycleScope.launch(Dispatchers.Default) {
             val work = base.copy(Bitmap.Config.ARGB_8888, true)
-            AdjustProcessor.applyAdjust(work, params, progress = object : AdjustProgress {
-                override fun onProgress(percent: Int) {
-                    Log.d("TAG5", "AdjustManager_onProgress: percent = $percent")
-                }
-            })
 
-            withContext(Dispatchers.Main) {
-                previewBitmap = work
-                onUpdated(work)
+            try {
+                AdjustProcessor.applyAdjust(work, params, progress = object : AdjustProgress {
+                    override fun onProgress(percent: Int) {
+                        Log.d("TAG5", "AdjustManager_onProgress: percent = $percent")
+                    }
+                })
+
+                withContext(Dispatchers.Main) {
+                    previewBitmap = work
+                    onUpdated(work)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+            } finally {
+                isProcessing = false
             }
         }
     }

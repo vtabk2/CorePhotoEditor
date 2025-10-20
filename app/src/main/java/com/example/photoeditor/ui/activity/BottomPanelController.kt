@@ -5,6 +5,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.core.adjust.AdjustManager
+import com.core.adjust.AdjustProcessor
 import com.core.adjust.module.AdjustSlider
 import com.core.adjust.module.AdjustTab
 import com.example.photoeditor.ui.adapter.AdjustSliderAdapter
@@ -52,6 +53,7 @@ class BottomPanelController(
         sliderAdapter.submitList(tabs.first().sliders.map { it.copy() })
 
         btnReset.setOnClickListener {
+            AdjustProcessor.clearCache()
             onResetCurrentTab()
         }
     }
