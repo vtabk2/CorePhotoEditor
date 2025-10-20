@@ -12,6 +12,8 @@ object AdjustProcessor {
 
     external fun clearCache()
 
+    external fun releasePool()
+
     fun applyAdjust(bitmap: Bitmap?, params: AdjustParams, progress: AdjustProgress?) {
         if (bitmap == null) return
         val mask = AdjustParams.buildMask(params)

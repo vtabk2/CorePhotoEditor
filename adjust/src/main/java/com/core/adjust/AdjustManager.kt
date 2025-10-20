@@ -101,5 +101,7 @@ class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
         originalBitmap = null
         previewBitmap = null
         applyJob?.cancel()
+
+        AdjustProcessor.releasePool()
     }
 }
