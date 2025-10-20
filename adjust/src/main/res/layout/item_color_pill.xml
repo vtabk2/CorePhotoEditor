@@ -1,0 +1,13 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootItem"
+    android:layout_width="48dp"
+    android:layout_height="48dp"
+    android:layout_marginHorizontal="6dp">
+
+    <ImageView
+        android:id="@+id/ivCircle"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_gravity="center"
+        android:background="@drawable/bg_pill_circle"/>
+</FrameLayout>
