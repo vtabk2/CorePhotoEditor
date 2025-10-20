@@ -18,6 +18,8 @@ extern "C" void applyVignetteAt(float &, float &, float &,
                                 const AdjustParams &);
 extern "C" void applyGrainAt(float &, float &, float &, const AdjustParams &);
 
+extern "C" void applyHSL(float &, float &, float &, const AdjustParams &);
+
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, "AdjustNative", __VA_ARGS__)
 
 // --- FNV-1a hash cho cache tham số ---
@@ -98,6 +100,20 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
             (uint64_t) getJ("activeMask")
     };
 
+    auto getFArr = [&](const char *n, float *out, int count) {
+        jfieldID fid = env->GetFieldID(cls, n, "[F");
+        if (!fid) return;
+        auto arr = (jfloatArray) env->GetObjectField(paramsObj, fid);
+        if (!arr) return;
+        jfloat *elems = env->GetFloatArrayElements(arr, nullptr);
+        for (int i = 0; i < count; i++) out[i] = elems[i];
+        env->ReleaseFloatArrayElements(arr, elems, 0);
+    };
+
+    getFArr("hslHue", p.hslHue, 8);
+    getFArr("hslSaturation", p.hslSaturation, 8);
+    getFArr("hslLuminance", p.hslLuminance, 8);
+
     // --- setup progress callback (tùy chọn) ---
     jclass cbCls = nullptr;
     jmethodID onProgress = nullptr;
@@ -149,6 +165,8 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
             float r = (float) ((color >> 16) & 0xFF);
             float g = (float) ((color >> 8) & 0xFF);
             float b = (float) (color & 0xFF);
+
+            if (p.activeMask & MASK_HSL) applyHSL(r, g, b, p);
 
             if (p.activeMask & MASK_LIGHT) applyLightAdjust(r, g, b, p);
 

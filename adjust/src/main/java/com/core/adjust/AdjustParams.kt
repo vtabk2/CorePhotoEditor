@@ -22,8 +22,13 @@ data class AdjustParams(
     var dehaze: Float = 0f,
     var vignette: Float = 0f,
     var grain: Float = 0f,
-    val activeMask: Long = 0L
-) {
+    val activeMask: Long = 0L,
+
+    var hslHue: FloatArray = FloatArray(8),
+    var hslSaturation: FloatArray = FloatArray(8),
+    var hslLuminance: FloatArray = FloatArray(8),
+
+    ) {
     companion object {
         fun buildMask(p: AdjustParams, eps: Float = 1e-6f): Long {
             fun nz(v: Float) = kotlin.math.abs(v) > eps
@@ -37,6 +42,11 @@ data class AdjustParams(
             if (nz(p.texture) || nz(p.clarity) || nz(p.dehaze)) m = m or AdjustMask.DETAIL
             if (nz(p.vignette)) m = m or AdjustMask.VIGNETTE
             if (nz(p.grain)) m = m or AdjustMask.GRAIN
+            if (p.hslHue.any { it != 0f } ||
+                p.hslSaturation.any { it != 0f } ||
+                p.hslLuminance.any { it != 0f }) {
+                m = m or AdjustMask.MASK_HSL
+            }
             return m
         }
     }

@@ -9,6 +9,7 @@ enum AdjustMask : uint64_t {
     MASK_DETAIL = 1ull << 2,
     MASK_VIGNETTE = 1ull << 3,
     MASK_GRAIN = 1ull << 4,
+    MASK_HSL = 1ull << 5,
 };
 
 struct AdjustParams {
@@ -29,6 +30,11 @@ struct AdjustParams {
     float vignette;
     float grain;
     uint64_t activeMask;
+
+    // --- HSL (Hue / Saturation / Luminance) ---
+    float hslHue[8];
+    float hslSaturation[8];
+    float hslLuminance[8];
 };
 
 static inline float clampf(float v, float lo = 0.f, float hi = 1.f) {

@@ -6,6 +6,7 @@ add_library(adjust SHARED
         adjust_light.cpp
         adjust_color.cpp
         adjust_detail.cpp
+        adjust_hsl.cpp
 )
 
 find_library(log-lib log)
