@@ -1,63 +1,46 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollColorMixer"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="16dp">
+    android:fillViewport="true"
+    android:overScrollMode="never">
 
-    <!-- Header -->
     <LinearLayout
+        android:id="@+id/rootMixer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:paddingHorizontal="12dp">
 
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="0dp"
+        <!-- 8 nút màu -->
+        <HorizontalScrollView
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Color Mixer"
-            android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:scrollbars="none">
 
-        <ImageButton
-            android:id="@+id/btnTargeted"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Targeted"
-            android:src="@drawable/ic_targeted"/>
+            <LinearLayout
+                android:id="@+id/colorSelectorLayout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"/>
+        </HorizontalScrollView>
 
-        <TextView
-            android:id="@+id/btnResetAll"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
-            android:text="Reset all"
-            android:textAllCaps="true"/>
+        <!-- Slider Hue -->
+        <include
+            android:id="@+id/rowHue"
+            layout="@layout/row_slider_hsl"/>
+
+        <!-- Slider Saturation -->
+        <include
+            android:id="@+id/rowSat"
+            layout="@layout/row_slider_hsl"/>
+
+        <!-- Slider Luminance -->
+        <include
+            android:id="@+id/rowLum"
+            layout="@layout/row_slider_hsl"/>
+
     </LinearLayout>
-
-    <!-- 3 hàng slider -->
-    <include
-        android:id="@+id/rowHue"
-        layout="@layout/row_slider_hsl"/>
-
-    <include
-        android:id="@+id/rowSat"
-        layout="@layout/row_slider_hsl"/>
-
-    <include
-        android:id="@+id/rowLum"
-        layout="@layout/row_slider_hsl"/>
-
-    <!-- Hàng 8 màu -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rcvColors"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:layout_marginTop="12dp"
-        android:clipToPadding="false"
-        android:paddingHorizontal="4dp"/>
-</LinearLayout>
+</androidx.core.widget.NestedScrollView>
