@@ -92,6 +92,13 @@ class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
         params.grain = 0f
     }
 
+    fun resetHsl() {
+        params.hslHue = FloatArray(8)
+        params.hslSaturation = FloatArray(8)
+        params.hslLuminance = FloatArray(8)
+        params.activeMask = AdjustParams.buildMask(params)
+    }
+
     /**
      * Giải phóng bộ nhớ nếu không còn dùng.
      */

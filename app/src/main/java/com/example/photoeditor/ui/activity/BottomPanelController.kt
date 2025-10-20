@@ -1,6 +1,7 @@
 package com.example.photoeditor.ui.activity
 
 import android.widget.Button
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -17,17 +18,31 @@ class BottomPanelController(
     private val btnReset: Button,
     private val adjustManager: AdjustManager,
     private val onSliderChanged: (AdjustSlider) -> Unit,
-    private val onResetTab: (tabKey: String) -> Unit
+    private val onResetTab: (tabKey: String) -> Unit,
+    private val onShowHsl: () -> Unit,
+    private val onHideHsl: () -> Unit,
 ) {
 
     private val tabAdapter = AdjustTabAdapter { pos, tab ->
         currentTabIndex = pos
-        // Tạo list mới từ tab
-        val newList = tab.sliders.map { it.copy() }
-        // Áp giá trị hiện tại từ AdjustParams vào list
-        AdjustRepository.map(newList, adjustManager.params)
-        // Gửi list mới vào adapter
-        sliderAdapter.submitList(newList)
+
+        if (tab.key == "hsl") {
+            // Ẩn slider-list, hiển thị UI Color Mixer (View/Fragment) ở host
+            rcvSliders.isVisible = false
+            onShowHsl.invoke()
+            return@AdjustTabAdapter
+        } else {
+            // Tab thường: show slider-list & hide HSL UI nếu đang mở
+            onHideHsl.invoke()
+            rcvSliders.isVisible = true
+
+            // Tạo list mới từ tab
+            val newList = tab.sliders.map { it.copy() }
+            // Áp giá trị hiện tại từ AdjustParams vào list
+            AdjustRepository.map(newList, adjustManager.params)
+            // Gửi list mới vào adapter
+            sliderAdapter.submitList(newList)
+        }
     }
 
     private val sliderAdapter = AdjustSliderAdapter { slider ->
@@ -65,6 +80,11 @@ class BottomPanelController(
             "light" -> adjustManager.resetLight()
             "color" -> adjustManager.resetColor()
             "effects" -> adjustManager.resetEffects()
+            "hsl" -> {
+                adjustManager.resetHsl() // -> set mảng hslHue/Sat/Lum về 0, rebuild mask
+                onResetTab.invoke("hsl") // để host bảo HSL UI reset về (0,0,0)
+                return // không cần update sliderAdapter
+            }
         }
 
         sliderAdapter.updateFromParams(adjustParams = adjustManager.params)

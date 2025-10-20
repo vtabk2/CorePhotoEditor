@@ -5,8 +5,11 @@ import android.os.Bundle
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.core.adjust.AdjustManager
+import com.core.adjust.ui.ColorMixerFragment
+import com.example.photoeditor.R
 import com.example.photoeditor.databinding.ActivityMainBinding
 import com.example.photoeditor.utils.LoadUtils
 import kotlinx.coroutines.Dispatchers
@@ -51,12 +54,32 @@ class MainActivity : AppCompatActivity() {
                 }
             },
             onResetTab = { tabKey ->
+                if (tabKey == "hsl") {
+//                    hslView.resetToZero()
+                } else {
+
+                }
                 adjustManager.applyAdjust { updated ->
                     binding.imgAdjusted.setImageBitmap(updated)
                 }
+            },
+            onShowHsl = {
+                binding.bottomPanel.hslContainer.isVisible = true
+                showHslUiIfNeeded() // add ChildFragment hoặc inflate ViewBinding HSL
+            },
+            onHideHsl = {
+                binding.bottomPanel.hslContainer.isVisible = false
             })
         controller.bind()
 
+    }
+
+    private fun showHslUiIfNeeded() {
+        if (supportFragmentManager.findFragmentByTag("HSL") == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.hslContainer, ColorMixerFragment(), "HSL")
+                .commitAllowingStateLoss()
+        }
     }
 
     private fun onImagePicked(uri: Uri) {

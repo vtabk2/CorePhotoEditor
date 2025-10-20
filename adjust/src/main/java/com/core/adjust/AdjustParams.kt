@@ -22,7 +22,7 @@ data class AdjustParams(
     var dehaze: Float = 0f,
     var vignette: Float = 0f,
     var grain: Float = 0f,
-    val activeMask: Long = 0L,
+    var activeMask: Long = 0L,
 
     var hslHue: FloatArray = FloatArray(8),
     var hslSaturation: FloatArray = FloatArray(8),
