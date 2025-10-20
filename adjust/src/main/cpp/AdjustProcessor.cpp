@@ -18,7 +18,7 @@ extern "C" void applyVignetteAt(float &, float &, float &,
                                 const AdjustParams &);
 extern "C" void applyGrainAt(float &, float &, float &, const AdjustParams &);
 
-extern "C" void applyHSL(float &, float &, float &, const AdjustParams &);
+extern "C" void applyHSLAdjust(float &, float &, float &, const AdjustParams &);
 
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, "AdjustNative", __VA_ARGS__)
 
@@ -166,9 +166,9 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(
             float g = (float) ((color >> 8) & 0xFF);
             float b = (float) (color & 0xFF);
 
-            if (p.activeMask & MASK_HSL) applyHSL(r, g, b, p);
-
             if (p.activeMask & MASK_LIGHT) applyLightAdjust(r, g, b, p);
+
+            if (p.activeMask & MASK_HSL) applyHSLAdjust(r, g, b, p);
 
             float rf = r / 255.0f, gf = g / 255.0f, bf = b / 255.0f;
 
