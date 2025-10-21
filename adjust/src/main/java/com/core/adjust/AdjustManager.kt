@@ -96,7 +96,6 @@ class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
         params.hslHue = FloatArray(8)
         params.hslSaturation = FloatArray(8)
         params.hslLuminance = FloatArray(8)
-        params.activeMask = AdjustParams.buildMask(params)
     }
 
     /**

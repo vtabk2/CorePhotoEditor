@@ -15,6 +15,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.core.adjust.R
@@ -30,6 +31,7 @@ class ColorMixerFragment : Fragment(R.layout.fragment_color_mixer) {
     private var _b: FragmentColorMixerBinding? = null
     private val b get() = _b!!
     private val vm: ColorMixerViewModel by viewModels()
+    private val sharedVm: AdjustViewModel by activityViewModels()
 
     private val colorViews = EnumMap<ColorChannel, View>(ColorChannel::class.java)      // circle
     private val colorHolders = EnumMap<ColorChannel, FrameLayout>(ColorChannel::class.java) // frame
@@ -58,6 +60,14 @@ class ColorMixerFragment : Fragment(R.layout.fragment_color_mixer) {
                 renderColorSelection(state)
             }
         }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            sharedVm.resetFlow.collect { reset ->
+                if (reset) {
+                    vm.resetAll()
+                }
+            }
+        }
     }
 
     private fun setupSlider(row: RowSliderHslBinding, onChange: (Int) -> Unit) {
@@ -71,7 +81,19 @@ class ColorMixerFragment : Fragment(R.layout.fragment_color_mixer) {
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                val current = vm.state.value
+                val selectedChannel = current.selected.ordinal
+                val triple = current.map[current.selected] ?: HslTriple()
+
+                sharedVm.updateHsl(
+                    selectedChannel,
+                    triple.hue,
+                    triple.saturation,
+                    triple.luminance
+                )
+                sharedVm.applyAdjust()
+            }
         })
     }
 

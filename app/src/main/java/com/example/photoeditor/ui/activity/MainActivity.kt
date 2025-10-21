@@ -4,10 +4,11 @@ import android.net.Uri
 import android.os.Bundle
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import com.core.adjust.AdjustManager
+import com.core.adjust.ui.AdjustViewModel
 import com.core.adjust.ui.ColorMixerFragment
 import com.example.photoeditor.R
 import com.example.photoeditor.databinding.ActivityMainBinding
@@ -20,7 +21,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var adjustManager: AdjustManager
+    private val vm: AdjustViewModel by viewModels {
+        AdjustViewModel.Factory(lifecycleScope)
+    }
 
     // Photo Picker launcher (Android 13+ compatible)
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
@@ -33,8 +36,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        adjustManager = AdjustManager(lifecycleScope)
-
         binding.btnPickImage.setOnClickListener {
             pickImageLauncher.launch(
                 PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
@@ -46,32 +47,29 @@ class MainActivity : AppCompatActivity() {
             rcvTabs = binding.bottomPanel.rcvAdjustTabs,
             rcvSliders = binding.bottomPanel.rcvSliders,
             btnReset = binding.bottomPanel.btnReset,
-            adjustManager = adjustManager,
+            adjustManager = vm.manager,
             onSliderChanged = { slider ->
-                AdjustRepository.map(adjustSlider = slider, adjustParams = adjustManager.params)
-                adjustManager.applyAdjust { updated ->
-                    binding.imgAdjusted.setImageBitmap(updated)
-                }
+                AdjustRepository.map(adjustSlider = slider, adjustParams = vm.params)
+                vm.applyAdjust()
             },
             onResetTab = { tabKey ->
                 if (tabKey == "hsl") {
-//                    hslView.resetToZero()
-                } else {
-
+                    vm.resetHsl()
                 }
-                adjustManager.applyAdjust { updated ->
-                    binding.imgAdjusted.setImageBitmap(updated)
-                }
+                vm.applyAdjust()
             },
             onShowHsl = {
                 binding.bottomPanel.hslContainer.isVisible = true
-                showHslUiIfNeeded() // add ChildFragment hoặc inflate ViewBinding HSL
+                showHslUiIfNeeded()
             },
             onHideHsl = {
                 binding.bottomPanel.hslContainer.isVisible = false
             })
         controller.bind()
 
+        vm.previewBitmap.observe(this) { bmp ->
+            binding.imgAdjusted.setImageBitmap(bmp)
+        }
     }
 
     private fun showHslUiIfNeeded() {
@@ -91,15 +89,8 @@ class MainActivity : AppCompatActivity() {
 
             binding.imgOriginal.setImageBitmap(src)
 
-            adjustManager.setOriginalBitmap(src)
-            adjustManager.applyAdjust { updated ->
-                binding.imgAdjusted.setImageBitmap(updated)
-            }
+            vm.setOriginal(src)
+            vm.applyAdjust()
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        adjustManager.release()
     }
 }
