@@ -10,6 +10,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.SeekBar
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.isVisible
@@ -60,17 +61,23 @@ class ColorMixerFragment : Fragment(R.layout.fragment_color_mixer) {
     }
 
     private fun setupSlider(row: RowSliderHslBinding, onChange: (Int) -> Unit) {
-        row.slider.addOnChangeListener { _, v, fromUser ->
-            if (fromUser) {
-                val value = v.toInt()
-                row.tvValue.text = value.toString()
-                onChange(value)
+        row.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    val value = progress - 100 // convert 0–200 → -100–100
+                    row.tvValue.text = value.toString()
+                    onChange(value)
+                }
             }
-        }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
+        })
     }
 
     private fun setSlider(row: RowSliderHslBinding, value: Int) {
-        row.slider.value = value.toFloat()
+        val progress = value + 100 // convert -100–100 → 0–200
+        row.seekBar.progress = progress
         row.tvValue.text = value.toString()
     }
 

@@ -1,31 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal"
-    android:paddingVertical="8dp">
+    android:layout_height="64dp"
+    android:orientation="vertical"
+    android:paddingVertical="6dp">
 
-    <TextView
-        android:id="@+id/tvLabel"
-        android:layout_width="72dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@android:color/white"/>
+        android:gravity="center"
+        android:orientation="horizontal">
 
-    <com.google.android.material.slider.Slider
-        android:id="@+id/slider"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:stepSize="1"
-        android:valueFrom="-100"
-        android:valueTo="100"/>
+        <TextView
+            android:id="@+id/tvLabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="#EDEDED"
+            android:textSize="14sp"/>
 
-    <TextView
-        android:id="@+id/tvValue"
-        android:layout_width="40dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:gravity="end"
-        android:text="0"
-        android:textColor="@android:color/white"/>
+        <TextView
+            android:id="@+id/tvValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#CFCFCF"
+            android:textSize="14sp"/>
+    </LinearLayout>
+
+    <SeekBar
+        android:id="@+id/seekBar"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:max="200"
+        android:progress="100"
+        android:progressTint="#FFFFFF"
+        android:splitTrack="false"
+        android:thumbTint="#FFFFFF"/>
 </LinearLayout>
