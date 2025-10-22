@@ -2,6 +2,7 @@ package com.example.photoeditor.ui.activity
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -16,6 +17,7 @@ import com.example.photoeditor.utils.LoadUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -89,8 +91,27 @@ class MainActivity : AppCompatActivity() {
 
             binding.imgOriginal.setImageBitmap(src)
 
+            vm.params.lutPath = copyLutFromAssets("filter/table_VIN1_Classic_Film.table")
+
+            Log.d("TAG5", "MainActivity_onImagePicked: " + vm.params)
             vm.setOriginal(src)
             vm.applyAdjust()
+        }
+    }
+
+    fun copyLutFromAssets(assetPath: String): String? {
+        return try {
+            val input = assets.open(assetPath)
+            val outFile = File(cacheDir, assetPath.substringAfterLast("/"))
+            input.use { ins ->
+                outFile.outputStream().use { outs ->
+                    ins.copyTo(outs)
+                }
+            }
+            outFile.absolutePath
+        } catch (e: Exception) {
+            e.printStackTrace()
+            null
         }
     }
 }

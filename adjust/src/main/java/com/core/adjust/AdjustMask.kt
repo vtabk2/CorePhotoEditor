@@ -7,4 +7,5 @@ object AdjustMask {
     const val VIGNETTE = 1L shl 3
     const val GRAIN = 1L shl 4
     const val MASK_HSL = 1L shl 5
+    const val MASK_LUT = 1L shl 6
 }

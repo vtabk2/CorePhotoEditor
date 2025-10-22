@@ -2,6 +2,7 @@
 
 #include <cmath>
 #include <algorithm>
+#include <string>
 
 enum AdjustMask : uint64_t {
     MASK_LIGHT = 1ull << 0,
@@ -10,6 +11,7 @@ enum AdjustMask : uint64_t {
     MASK_VIGNETTE = 1ull << 3,
     MASK_GRAIN = 1ull << 4,
     MASK_HSL = 1ull << 5,
+    MASK_LUT = 1ull << 6,
 };
 
 struct AdjustParams {
@@ -35,6 +37,9 @@ struct AdjustParams {
     float hslHue[8];
     float hslSaturation[8];
     float hslLuminance[8];
+
+    // --- LUT FILTER SUPPORT ---
+    std::string lutPath; // đường dẫn đến file LUT .table
 };
 
 static inline float clampf(float v, float lo = 0.f, float hi = 1.f) {
