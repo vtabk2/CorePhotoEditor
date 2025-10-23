@@ -14,7 +14,6 @@
 #include <cstring>
 #include <string>
 #include <cstdint>
-#include <sys/stat.h>
 
 #include "adjust_common.h"
 
@@ -29,9 +28,7 @@ struct Lut3D {
     int32_t size = 0;
     std::vector<float> data; // size^3 * 3
     bool valid() const {
-        const size_t need =
-                static_cast<size_t>(size) * static_cast<size_t>(size) * static_cast<size_t>(size) *
-                3u;
+        const size_t need = static_cast<size_t>(size) * static_cast<size_t>(size) * static_cast<size_t>(size) * 3u;
         return size > 0 && data.size() == need;
     }
 };
@@ -53,8 +50,7 @@ static bool loadTableFile(const std::string &path, Lut3D &lut) {
         LOGE("Invalid LUT size: %d", lut.size);
         return false;
     }
-    const size_t count = static_cast<size_t>(lut.size) * static_cast<size_t>(lut.size) *
-                         static_cast<size_t>(lut.size) * 3u;
+    const size_t count = static_cast<size_t>(lut.size) * static_cast<size_t>(lut.size) * static_cast<size_t>(lut.size) * 3u;
     lut.data.resize(count);
     f.read(reinterpret_cast<char *>(lut.data.data()), count * sizeof(float));
     if (!f) {
@@ -72,12 +68,7 @@ static bool loadTableFile(const std::string &path, Lut3D &lut) {
 static inline void sampleLUT(const Lut3D &lut, float r, float g, float b,
                              float &rr, float &gg, float &bb) {
     const int32_t S = lut.size;
-    if (S <= 1) {
-        rr = r;
-        gg = g;
-        bb = b;
-        return;
-    }
+    if (S <= 1) { rr = r; gg = g; bb = b; return; }
 
     const float rf = r * static_cast<float>(S - 1);
     const float gf = g * static_cast<float>(S - 1);
@@ -95,8 +86,7 @@ static inline void sampleLUT(const Lut3D &lut, float r, float g, float b,
     const float wb = bf - static_cast<float>(b0);
 
     auto idx = [&](int32_t ir, int32_t ig, int32_t ib) -> size_t {
-        return (static_cast<size_t>(ir) * static_cast<size_t>(S) + static_cast<size_t>(ig)) *
-               static_cast<size_t>(S) + static_cast<size_t>(ib);
+        return (static_cast<size_t>(ir) * static_cast<size_t>(S) + static_cast<size_t>(ig)) * static_cast<size_t>(S) + static_cast<size_t>(ib);
     };
 
     const size_t i000 = idx(r0, g0, b0) * 3u;
@@ -153,13 +143,8 @@ static inline void sampleLUT(const Lut3D &lut, float r, float g, float b,
 extern void applyLightAdjust(float &r, float &g, float &b, const AdjustParams &p);
 extern "C" void applyHSLAdjust(float &r, float &g, float &b, const AdjustParams &p);
 extern void applyColorAdjust(float &rf, float &gf, float &bf, const AdjustParams &p);
-
-extern void
-applyDetailAdjust(float &rf, float &gf, float &bf, float x, float y, float width, float height,
-                  const AdjustParams &p);
-
-extern "C" void applyVignetteAt(float &rf, float &gf, float &bf, float x, float y, float w, float h,
-                                const AdjustParams &p);
+extern void applyDetailAdjust(float &rf, float &gf, float &bf, float x, float y, float width, float height, const AdjustParams &p);
+extern "C" void applyVignetteAt(float &rf, float &gf, float &bf, float x, float y, float w, float h, const AdjustParams &p);
 extern "C" void applyGrainAt(float &rf, float &gf, float &bf, const AdjustParams &p);
 
 // =============================================================
@@ -229,16 +214,16 @@ private:
 };
 
 // =============================================================
-// 🌍 Global Variables
+// 🌍 Globals
 // =============================================================
 static ThreadPool *gPool = nullptr;
 static std::atomic<uint64_t> s_lastHash{0ull};
-static std::string s_lastLutPath;
+static std::string s_lastLutPath; // cache LUT path đã apply gần nhất
 
 // =============================================================
-// ⚙️ Helpers: read fields from AdjustParams Java object
+// ⚙️ JNI helpers
 // =============================================================
-static inline void DeleteLocalRefSafely(JNIEnv *env, jobject obj) {
+static inline void DeleteLocalRefSafely(JNIEnv* env, jobject obj) {
     if (obj) env->DeleteLocalRef(obj);
 }
 
@@ -270,28 +255,28 @@ static void loadParamsFromJava(JNIEnv *env, jobject paramsObj, AdjustParams &p) 
     if (!paramsObj) return;
 
     // Light
-    p.exposure = getFieldF(env, paramsObj, "exposure");
+    p.exposure   = getFieldF(env, paramsObj, "exposure");
     p.brightness = getFieldF(env, paramsObj, "brightness");
-    p.contrast = getFieldF(env, paramsObj, "contrast");
+    p.contrast   = getFieldF(env, paramsObj, "contrast");
     p.highlights = getFieldF(env, paramsObj, "highlights");
-    p.shadows = getFieldF(env, paramsObj, "shadows");
-    p.whites = getFieldF(env, paramsObj, "whites");
-    p.blacks = getFieldF(env, paramsObj, "blacks");
+    p.shadows    = getFieldF(env, paramsObj, "shadows");
+    p.whites     = getFieldF(env, paramsObj, "whites");
+    p.blacks     = getFieldF(env, paramsObj, "blacks");
 
     // Color
     p.temperature = getFieldF(env, paramsObj, "temperature");
-    p.tint = getFieldF(env, paramsObj, "tint");
-    p.vibrance = getFieldF(env, paramsObj, "vibrance");
-    p.saturation = getFieldF(env, paramsObj, "saturation");
+    p.tint        = getFieldF(env, paramsObj, "tint");
+    p.vibrance    = getFieldF(env, paramsObj, "vibrance");
+    p.saturation  = getFieldF(env, paramsObj, "saturation");
 
     // Detail
     p.texture = getFieldF(env, paramsObj, "texture");
     p.clarity = getFieldF(env, paramsObj, "clarity");
-    p.dehaze = getFieldF(env, paramsObj, "dehaze");
+    p.dehaze  = getFieldF(env, paramsObj, "dehaze");
 
     // Effects
     p.vignette = getFieldF(env, paramsObj, "vignette");
-    p.grain = getFieldF(env, paramsObj, "grain");
+    p.grain    = getFieldF(env, paramsObj, "grain");
 
     // HSL arrays
     jfloatArray hueArr = getFloatArray(env, paramsObj, "hslHue");
@@ -317,26 +302,20 @@ static void loadParamsFromJava(JNIEnv *env, jobject paramsObj, AdjustParams &p) 
 
     // Clamp input defensively
     p.vignette = clampf(p.vignette, 0.f, 1.f);
-    p.grain = std::max(0.f, p.grain);
+    p.grain    = std::max(0.f, p.grain);
 }
 
 // =============================================================
-// 🧮 computeAdjustHash (to avoid reprocessing identical params)
+// 🧮 Hash (bao gồm LUT nếu có bật MASK_LUT)
 // =============================================================
 static inline uint64_t bitsOfFloat(float f) {
-    union {
-        float f;
-        uint32_t u;
-    } x{f};
+    union { float f; uint32_t u; } x{f};
     return static_cast<uint64_t>(x.u);
 }
 
 static uint64_t computeAdjustHash(const AdjustParams &p) {
-    uint64_t h = 1469598103934665603ull;
-    auto mix = [&](uint64_t v) {
-        h ^= v;
-        h *= 1099511628211ull;
-    };
+    uint64_t h = 1469598103934665603ull; // FNV-1a basis
+    auto mix = [&](uint64_t v) { h ^= v; h *= 1099511628211ull; }; // FNV-1a prime
 
     mix(bitsOfFloat(p.exposure));
     mix(bitsOfFloat(p.brightness));
@@ -361,19 +340,42 @@ static uint64_t computeAdjustHash(const AdjustParams &p) {
     }
     mix(p.activeMask);
 
-    // ✅ Gộp LUT vào hash nếu có bật MASK_LUT
+    // 🔗 MIX LUT khi có bật MASK_LUT và có đường dẫn
     if ((p.activeMask & MASK_LUT) && !p.lutPath.empty()) {
-        // Cách 1: hash chuỗi đường dẫn (nhanh, đủ tốt)
-        for (unsigned char c: p.lutPath) mix((uint64_t) c);
-
-        // (Tuỳ chọn) Cách 2: thêm hash metadata file để thay file cùng tên vẫn khác hash
-        struct stat st{};
-        if (stat(p.lutPath.c_str(), &st) == 0) {
-            mix((uint64_t) st.st_size);
-            mix((uint64_t) st.st_mtime);
-        }
+        for (unsigned char c : p.lutPath) mix(static_cast<uint64_t>(c));
     }
     return h;
+}
+
+static bool isNoOp(const AdjustParams& p, bool hasLut) {
+    const auto nearZero = [](float v) { return std::fabs(v) < 1e-4f; };
+
+    if (p.activeMask == 0) return true;
+
+    if (p.activeMask & MASK_LIGHT)
+        if (!nearZero(p.exposure) || !nearZero(p.brightness) || !nearZero(p.contrast) ||
+            !nearZero(p.highlights) || !nearZero(p.shadows) || !nearZero(p.whites) || !nearZero(p.blacks))
+            return false;
+
+    if (p.activeMask & MASK_COLOR)
+        if (!nearZero(p.temperature) || !nearZero(p.tint) || !nearZero(p.vibrance) || !nearZero(p.saturation))
+            return false;
+
+    if (p.activeMask & MASK_DETAIL)
+        if (!nearZero(p.texture) || !nearZero(p.clarity) || !nearZero(p.dehaze))
+            return false;
+
+    if (p.activeMask & MASK_HSL)
+        for (int i = 0; i < 8; ++i)
+            if (!nearZero(p.hslHue[i]) || !nearZero(p.hslSaturation[i]) || !nearZero(p.hslLuminance[i]))
+                return false;
+
+    if ((p.activeMask & MASK_VIGNETTE) && !nearZero(p.vignette)) return false;
+    if ((p.activeMask & MASK_GRAIN) && !nearZero(p.grain))       return false;
+
+    if ((p.activeMask & MASK_LUT) && hasLut) return false;
+
+    return true;
 }
 
 // =============================================================
@@ -397,8 +399,8 @@ static void processRange(void *basePixels,
 
         const uint8_t au = static_cast<uint8_t>((color >> 24) & 0xFFu);
         const uint8_t ru = static_cast<uint8_t>((color >> 16) & 0xFFu);
-        const uint8_t gu = static_cast<uint8_t>((color >> 8) & 0xFFu);
-        const uint8_t bu = static_cast<uint8_t>( color & 0xFFu);
+        const uint8_t gu = static_cast<uint8_t>((color >>  8) & 0xFFu);
+        const uint8_t bu = static_cast<uint8_t>( color        & 0xFFu);
 
         float a = static_cast<float>(au);
         float r = static_cast<float>(ru);
@@ -415,7 +417,7 @@ static void processRange(void *basePixels,
         }
 
         if (p.activeMask & MASK_LIGHT) applyLightAdjust(r, g, b, p);
-        if (p.activeMask & MASK_HSL) applyHSLAdjust(r, g, b, p);
+        if (p.activeMask & MASK_HSL)   applyHSLAdjust(r, g, b, p);
 
         r = std::clamp(r, 0.0f, 255.0f);
         g = std::clamp(g, 0.0f, 255.0f);
@@ -425,14 +427,10 @@ static void processRange(void *basePixels,
         float gf = g / 255.0f;
         float bf = b / 255.0f;
 
-        if (p.activeMask & MASK_COLOR) applyColorAdjust(rf, gf, bf, p);
-        if (p.activeMask & MASK_DETAIL)
-            applyDetailAdjust(rf, gf, bf, static_cast<float>(x), static_cast<float>(y),
-                              static_cast<float>(width), static_cast<float>(height), p);
-        if (p.activeMask & MASK_VIGNETTE)
-            applyVignetteAt(rf, gf, bf, static_cast<float>(x), static_cast<float>(y),
-                            static_cast<float>(width), static_cast<float>(height), p);
-        if (p.activeMask & MASK_GRAIN) applyGrainAt(rf, gf, bf, p);
+        if (p.activeMask & MASK_COLOR)    applyColorAdjust(rf, gf, bf, p);
+        if (p.activeMask & MASK_DETAIL)   applyDetailAdjust(rf, gf, bf, static_cast<float>(x), static_cast<float>(y), static_cast<float>(width), static_cast<float>(height), p);
+        if (p.activeMask & MASK_VIGNETTE) applyVignetteAt(rf, gf, bf, static_cast<float>(x), static_cast<float>(y), static_cast<float>(width), static_cast<float>(height), p);
+        if (p.activeMask & MASK_GRAIN)    applyGrainAt(rf, gf, bf, p);
 
         rf = std::clamp(rf, 0.0f, 1.0f);
         gf = std::clamp(gf, 0.0f, 1.0f);
@@ -453,54 +451,11 @@ static void processRange(void *basePixels,
 
         row[x] = (static_cast<uint32_t>(au) << 24)
                  | (static_cast<uint32_t>(static_cast<uint8_t>(rout)) << 16)
-                 | (static_cast<uint32_t>(static_cast<uint8_t>(gout)) << 8)
-                 | static_cast<uint32_t>(static_cast<uint8_t>(bout));
+                 | (static_cast<uint32_t>(static_cast<uint8_t>(gout)) <<  8)
+                 |  static_cast<uint32_t>(static_cast<uint8_t>(bout));
 
         doneCounter.fetch_add(1, std::memory_order_relaxed);
     }
-}
-
-// helper
-static inline bool isZero8(const float a[8]) {
-    for (int i = 0; i < 8; ++i) if (a[i] != 0.0f) return false;
-    return true;
-}
-
-static bool isNoOp(const AdjustParams &p, bool hasLut) {
-    // Không có mask nào bật
-    if (p.activeMask == 0) return true;
-
-    // LIGHT
-    if (p.activeMask & MASK_LIGHT) {
-        if (p.exposure != 0 || p.brightness != 0 || p.contrast != 0 ||
-            p.highlights != 0 || p.shadows != 0 || p.whites != 0 || p.blacks != 0)
-            return false;
-    }
-    // COLOR
-    if (p.activeMask & MASK_COLOR) {
-        if (p.temperature != 0 || p.tint != 0 || p.vibrance != 0 || p.saturation != 0)
-            return false;
-    }
-    // DETAIL
-    if (p.activeMask & MASK_DETAIL) {
-        if (p.texture != 0 || p.clarity != 0 || p.dehaze != 0)
-            return false;
-    }
-    // HSL
-    if (p.activeMask & MASK_HSL) {
-        if (!isZero8(p.hslHue) || !isZero8(p.hslSaturation) || !isZero8(p.hslLuminance))
-            return false;
-    }
-    // Vignette/Grain
-    if ((p.activeMask & MASK_VIGNETTE) && p.vignette != 0) return false;
-    if ((p.activeMask & MASK_GRAIN) && p.grain != 0) return false;
-
-    // LUT
-    if (p.activeMask & MASK_LUT) {
-        if (hasLut) return false; // có LUT path hợp lệ thì KHÔNG phải no-op
-    }
-
-    return true; // mọi thứ đều “0” hoặc mask không bật
 }
 
 // =============================================================
@@ -513,38 +468,18 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
                                                        jobject paramsObj, jobject progressCb) {
     if (!bitmap || !paramsObj) return;
 
-    // Init thread pool
+    // Initialize thread pool on demand
     if (!gPool) {
         const unsigned int hw = std::thread::hardware_concurrency();
-        const unsigned int n = std::max(2u, (hw > 0 ? hw / 2 : 2u));
+        const unsigned int n  = std::max(2u, (hw > 0 ? hw / 2 : 2u));
         gPool = new ThreadPool(static_cast<size_t>(n));
     }
 
-    // Load params
+    // 1) Load params
     AdjustParams p{};
     loadParamsFromJava(env, paramsObj, p);
 
-    // Prepare progress method early (so we can signal on skip)
-    jmethodID onProgress = nullptr;
-    if (progressCb) {
-        jclass cbCls = env->GetObjectClass(progressCb);
-        if (cbCls) onProgress = env->GetMethodID(cbCls, "onProgress", "(I)V");
-        DeleteLocalRefSafely(env, cbCls);
-    }
-
-    // Skip if hash identical (notify 100%)
-    const uint64_t hash = computeAdjustHash(p);
-    const uint64_t last = s_lastHash.load(std::memory_order_relaxed);
-    if (hash == last) { // original early-return path
-        if (onProgress) {
-            env->CallVoidMethod(progressCb, onProgress, static_cast<jint>(100));
-            if (env->ExceptionCheck()) env->ExceptionClear();
-        }
-        return;
-    }
-    s_lastHash.store(hash, std::memory_order_relaxed);
-
-    // Read LUT path from paramsObj.lutPath
+    // 2) Read LUT path from paramsObj.lutPath and store into p.lutPath
     std::string lutPath;
     {
         jclass cls = env->GetObjectClass(paramsObj);
@@ -553,64 +488,77 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
             jstring jstr = static_cast<jstring>(env->GetObjectField(paramsObj, lutField));
             if (jstr) {
                 const char *cstr = env->GetStringUTFChars(jstr, nullptr);
-                if (cstr) {
-                    lutPath.assign(cstr);
-                    env->ReleaseStringUTFChars(jstr, cstr);
-                }
+                if (cstr) { lutPath.assign(cstr); env->ReleaseStringUTFChars(jstr, cstr); }
                 DeleteLocalRefSafely(env, jstr);
             }
         }
         DeleteLocalRefSafely(env, cls);
     }
+    p.lutPath = lutPath; // must set before hashing
 
+    // 3) Hash after we have lutPath
+    const uint64_t hash = computeAdjustHash(p);
+    const uint64_t last = s_lastHash.load(std::memory_order_relaxed);
+    if (hash == last) {
+        LOGI("🔁 Same hash detected — skip all processing");
+        return; // do not call progress on skip
+    }
+    s_lastHash.store(hash, std::memory_order_relaxed);
+
+    // 4) No-op guard (reset = 0 and no LUT)
     const bool hasLut = ((p.activeMask & MASK_LUT) && !lutPath.empty());
     if (isNoOp(p, hasLut)) {
-        LOGI("🟢 No-op detected (all params 0, no LUT) — skip adjust.");
+        LOGI("No-op: all params 0 and no LUT -> skip");
         return;
     }
 
+    // 🔴 FIX: Nếu chỉ có LUT và LUT không đổi, bỏ qua toàn bộ (không lockPixels, không progress)
     const bool onlyLut = (p.activeMask == MASK_LUT);
-    if (onlyLut && !lutPath.empty() && lutPath == s_lastLutPath) {
+    const bool sameLutPath = (hasLut && lutPath == s_lastLutPath);
+    if (onlyLut && sameLutPath) {
+        LOGI("Only LUT active and unchanged -> skip everything");
         return;
     }
 
+
+    // 5) Prepare progress callback
+    jmethodID onProgress = nullptr;
+    if (progressCb) {
+        jclass cbCls = env->GetObjectClass(progressCb);
+        if (cbCls) onProgress = env->GetMethodID(cbCls, "onProgress", "(I)V");
+        DeleteLocalRefSafely(env, cbCls);
+    }
+
+    // 6) Bitmap info
     AndroidBitmapInfo info{};
     if (AndroidBitmap_getInfo(env, bitmap, &info) != ANDROID_BITMAP_RESULT_SUCCESS) return;
     if (info.format != ANDROID_BITMAP_FORMAT_RGBA_8888) return;
 
     void *pixels = nullptr;
     if (AndroidBitmap_lockPixels(env, bitmap, &pixels) != ANDROID_BITMAP_RESULT_SUCCESS) return;
-
-    // Make sure we always unlock on every path
-    auto unlockPixels = [&]() {
-        AndroidBitmap_unlockPixels(env, bitmap);
-    };
-
     const bool premultiplied = (info.flags & ANDROID_BITMAP_FLAGS_ALPHA_PREMUL) != 0;
 
     // ---------------------------------------------------------
-    // LUT Stage (apply BEFORE other adjusts) if path provided
+    // 🎨 LUT Stage (apply BEFORE other adjusts)
     // ---------------------------------------------------------
     if ((p.activeMask & MASK_LUT) && !lutPath.empty()) {
-        bool sameLut = (lutPath == s_lastLutPath);
-        if (sameLut) {
+        const bool sameLutPath = (lutPath == s_lastLutPath);
+        if (sameLutPath) {
             LOGI("🎨 LUT unchanged (%s) — skip LUT reapply", lutPath.c_str());
         } else {
             LOGI("🎨 Applying LUT from path: %s", lutPath.c_str());
             Lut3D lut;
             if (loadTableFile(lutPath, lut)) {
-                s_lastLutPath = lutPath; // remember last LUT path
-
+                s_lastLutPath = lutPath; // remember last LUT
                 uint8_t *base = reinterpret_cast<uint8_t *>(pixels);
                 for (int32_t y = 0; y < static_cast<int32_t>(info.height); ++y) {
-                    auto *row = reinterpret_cast<uint32_t *>(base + static_cast<size_t>(y) *
-                                                                    static_cast<size_t>(info.stride));
+                    auto *row = reinterpret_cast<uint32_t *>(base + static_cast<size_t>(y) * static_cast<size_t>(info.stride));
                     for (int32_t x = 0; x < static_cast<int32_t>(info.width); ++x) {
                         const uint32_t c = row[x];
-                        const uint8_t a = static_cast<uint8_t>((c >> 24) & 0xFFu);
+                        const uint8_t  a = static_cast<uint8_t>((c >> 24) & 0xFFu);
                         float r = static_cast<float>((c >> 16) & 0xFFu) / 255.0f;
-                        float g = static_cast<float>((c >> 8) & 0xFFu) / 255.0f;
-                        float b = static_cast<float>( c & 0xFFu) / 255.0f;
+                        float g = static_cast<float>((c >>  8) & 0xFFu) / 255.0f;
+                        float b = static_cast<float>( c        & 0xFFu) / 255.0f;
 
                         if (premultiplied && a > 0u) {
                             const float af = static_cast<float>(a) / 255.0f;
@@ -636,8 +584,8 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
 
                         row[x] = (static_cast<uint32_t>(a) << 24)
                                  | (static_cast<uint32_t>(static_cast<uint8_t>(rr * 255.0f)) << 16)
-                                 | (static_cast<uint32_t>(static_cast<uint8_t>(gg * 255.0f)) << 8)
-                                 | static_cast<uint32_t>(static_cast<uint8_t>(bb * 255.0f));
+                                 | (static_cast<uint32_t>(static_cast<uint8_t>(gg * 255.0f)) <<  8)
+                                 |  static_cast<uint32_t>(static_cast<uint8_t>(bb * 255.0f));
                     }
                 }
                 LOGI("✅ LUT applied successfully");
@@ -649,7 +597,20 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
         LOGI("⚠️ No LUT mask active or LUT path empty — skipping LUT stage");
     }
 
-    // ---------- APPLY ADJUSTS (multi-threaded) ----------
+    uint64_t effectiveMask = p.activeMask;
+    if ((p.activeMask & MASK_LUT) && sameLutPath) {
+        effectiveMask &= ~MASK_LUT; // bỏ hiệu ứng LUT vì skip apply
+    }
+    if (effectiveMask == 0) {
+        // Không còn hiệu ứng nào để chạy -> không enqueue thread, không progress
+        AndroidBitmap_unlockPixels(env, bitmap);
+        LOGI("Nothing else to do after skipping LUT -> early return");
+        return;
+    }
+
+    // ---------------------------------------------------------
+    // APPLY ADJUSTS (multi-threaded)
+    // ---------------------------------------------------------
     const int32_t W = static_cast<int32_t>(info.width);
     const int32_t H = static_cast<int32_t>(info.height);
     const int64_t total = static_cast<int64_t>(W) * static_cast<int64_t>(H);
@@ -657,18 +618,15 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
 
     std::atomic<int64_t> doneCounter{0};
     const unsigned int nThreads = std::max(1u, std::thread::hardware_concurrency());
-    const int64_t chunk =
-            (total + static_cast<int64_t>(nThreads) - 1) / static_cast<int64_t>(nThreads);
+    const int64_t chunk = (total + static_cast<int64_t>(nThreads) - 1) / static_cast<int64_t>(nThreads);
 
     for (unsigned int t = 0; t < nThreads; ++t) {
         const int64_t start = static_cast<int64_t>(t) * chunk;
-        const int64_t end = std::min<int64_t>(total, start + chunk);
+        const int64_t end   = std::min<int64_t>(total, start + chunk);
         if (start >= end) break;
-
         gPool->enqueue([p, pixels, premultiplied, start, end, W, H, stride, &doneCounter]() {
             processRange(pixels, start, end, W, H, stride, p, doneCounter, premultiplied);
         });
-
     }
 
     // Progress polling
@@ -691,7 +649,7 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
         if (env->ExceptionCheck()) env->ExceptionClear();
     }
 
-    unlockPixels();
+    AndroidBitmap_unlockPixels(env, bitmap);
 }
 
 // =============================================================
@@ -700,6 +658,7 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
 extern "C" JNIEXPORT void JNICALL
 Java_com_core_adjust_AdjustProcessor_clearCache(JNIEnv *, jclass) {
     s_lastHash.store(0ull, std::memory_order_relaxed);
+    s_lastLutPath.clear();
 }
 
 extern "C" JNIEXPORT void JNICALL

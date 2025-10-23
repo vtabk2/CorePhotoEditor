@@ -15,31 +15,35 @@ enum AdjustMask : uint64_t {
 };
 
 struct AdjustParams {
-    float exposure;
-    float brightness;
-    float contrast;
-    float highlights;
-    float shadows;
-    float whites;
-    float blacks;
-    float temperature;
-    float tint;
-    float saturation;
-    float vibrance;
-    float texture;
-    float clarity;
-    float dehaze;
-    float vignette;
-    float grain;
-    uint64_t activeMask;
+    float exposure     = 0.f;
+    float brightness   = 0.f;
+    float contrast     = 0.f;
+    float highlights   = 0.f;
+    float shadows      = 0.f;
+    float whites       = 0.f;
+    float blacks       = 0.f;
 
-    // --- HSL (Hue / Saturation / Luminance) ---
-    float hslHue[8];
-    float hslSaturation[8];
-    float hslLuminance[8];
+    float temperature  = 0.f;
+    float tint         = 0.f;
+    float saturation   = 0.f;
+    float vibrance     = 0.f;
 
-    // --- LUT FILTER SUPPORT ---
-    std::string lutPath; // đường dẫn đến file LUT .table
+    float texture      = 0.f;
+    float clarity      = 0.f;
+    float dehaze       = 0.f;
+
+    float vignette     = 0.f;
+    float grain        = 0.f;
+
+    uint64_t activeMask = 0ull;
+
+    // --- HSL ---
+    float hslHue[8]        = {0.f};
+    float hslSaturation[8] = {0.f};
+    float hslLuminance[8]  = {0.f};
+
+    // --- LUT ---
+    std::string lutPath;
 };
 
 static inline float clampf(float v, float lo = 0.f, float hi = 1.f) {

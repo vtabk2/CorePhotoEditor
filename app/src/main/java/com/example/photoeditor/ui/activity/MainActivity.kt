@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
 
             binding.imgOriginal.setImageBitmap(src)
 
-            vm.params.lutPath = copyLutFromAssets("filter/table_VIN1_Classic_Film.table")
+            vm.params.lutPath = copyLutFromAssets("filter/table_VIN4_Antique_Grain.table")
 
             Log.d("TAG5", "MainActivity_onImagePicked: " + vm.params)
             vm.setOriginal(src)
