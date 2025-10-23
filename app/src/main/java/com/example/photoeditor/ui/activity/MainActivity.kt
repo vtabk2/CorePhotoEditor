@@ -17,7 +17,6 @@ import com.example.photoeditor.utils.LoadUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,8 +28,8 @@ class MainActivity : AppCompatActivity() {
 
     // Photo Picker launcher (Android 13+ compatible)
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
-            uri?.let { onImagePicked(it) }
-        }
+        uri?.let { onImagePicked(it) }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,27 +90,9 @@ class MainActivity : AppCompatActivity() {
 
             binding.imgOriginal.setImageBitmap(src)
 
-            vm.params.lutPath = copyLutFromAssets("filter/table_VIN4_Antique_Grain.table")
-
             Log.d("TAG5", "MainActivity_onImagePicked: " + vm.params)
             vm.setOriginal(src)
             vm.applyAdjust()
-        }
-    }
-
-    fun copyLutFromAssets(assetPath: String): String? {
-        return try {
-            val input = assets.open(assetPath)
-            val outFile = File(cacheDir, assetPath.substringAfterLast("/"))
-            input.use { ins ->
-                outFile.outputStream().use { outs ->
-                    ins.copyTo(outs)
-                }
-            }
-            outFile.absolutePath
-        } catch (e: Exception) {
-            e.printStackTrace()
-            null
         }
     }
 }

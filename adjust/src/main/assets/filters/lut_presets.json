@@ -1,0 +1,254 @@
+{
+  "groups": [
+    {
+      "name": "Misc",
+      "filters": [
+        {
+          "name": "TableAqua",
+          "file": "TableAqua.table"
+        },
+        {
+          "name": "TableBeige",
+          "file": "TableBeige.table"
+        },
+        {
+          "name": "TableBlush",
+          "file": "TableBlush.table"
+        },
+        {
+          "name": "TableBreeze",
+          "file": "TableBreeze.table"
+        },
+        {
+          "name": "TableBronze",
+          "file": "TableBronze.table"
+        },
+        {
+          "name": "TableCandy",
+          "file": "TableCandy.table"
+        },
+        {
+          "name": "TableCin90",
+          "file": "TableCin90.table"
+        },
+        {
+          "name": "TableCloud",
+          "file": "TableCloud.table"
+        },
+        {
+          "name": "TableCyber",
+          "file": "TableCyber.table"
+        },
+        {
+          "name": "TableDrama",
+          "file": "TableDrama.table"
+        },
+        {
+          "name": "TableFade",
+          "file": "TableFade.table"
+        },
+        {
+          "name": "TableFairy",
+          "file": "TableFairy.table"
+        },
+        {
+          "name": "TableFluffy",
+          "file": "TableFluffy.table"
+        },
+        {
+          "name": "TableFuji400H",
+          "file": "TableFuji400H.table"
+        },
+        {
+          "name": "TableGlitch",
+          "file": "TableGlitch.table"
+        },
+        {
+          "name": "TableHiCon",
+          "file": "TableHiCon.table"
+        },
+        {
+          "name": "TableHoney",
+          "file": "TableHoney.table"
+        },
+        {
+          "name": "TableIcy",
+          "file": "TableIcy.table"
+        },
+        {
+          "name": "TableLavender",
+          "file": "TableLavender.table"
+        },
+        {
+          "name": "TableMint",
+          "file": "TableMint.table"
+        },
+        {
+          "name": "TableNoir",
+          "file": "TableNoir.table"
+        },
+        {
+          "name": "TablePeachy",
+          "file": "TablePeachy.table"
+        },
+        {
+          "name": "TablePearl",
+          "file": "TablePearl.table"
+        },
+        {
+          "name": "TablePortra",
+          "file": "TablePortra.table"
+        },
+        {
+          "name": "TableSepia",
+          "file": "TableSepia.table"
+        },
+        {
+          "name": "TableSkyline",
+          "file": "TableSkyline.table"
+        },
+        {
+          "name": "TableSoul",
+          "file": "TableSoul.table"
+        },
+        {
+          "name": "TableSteel",
+          "file": "TableSteel.table"
+        },
+        {
+          "name": "TableSummer",
+          "file": "TableSummer.table"
+        },
+        {
+          "name": "TableSunny",
+          "file": "TableSunny.table"
+        }
+      ]
+    },
+    {
+      "name": "Portrait",
+      "filters": [
+        {
+          "name": "TableBrightskin",
+          "file": "TableBrightskin.table"
+        },
+        {
+          "name": "TableNatural",
+          "file": "TableNatural.table"
+        },
+        {
+          "name": "TableSoftglow",
+          "file": "TableSoftglow.table"
+        }
+      ]
+    },
+    {
+      "name": "Black & White",
+      "filters": [
+        {
+          "name": "TableClassicbw",
+          "file": "TableClassicbw.table"
+        },
+        {
+          "name": "TableMono",
+          "file": "TableMono.table"
+        }
+      ]
+    },
+    {
+      "name": "Lifestyle",
+      "filters": [
+        {
+          "name": "TableCream",
+          "file": "TableCream.table"
+        }
+      ]
+    },
+    {
+      "name": "Artistic",
+      "filters": [
+        {
+          "name": "TableDreamy",
+          "file": "TableDreamy.table"
+        }
+      ]
+    },
+    {
+      "name": "Creative",
+      "filters": [
+        {
+          "name": "TableGolden",
+          "file": "TableGolden.table"
+        },
+        {
+          "name": "TableTealorange",
+          "file": "TableTealorange.table"
+        }
+      ]
+    },
+    {
+      "name": "Travel",
+      "filters": [
+        {
+          "name": "TableGrainy",
+          "file": "TableGrainy.table"
+        }
+      ]
+    },
+    {
+      "name": "Mood & Atmosphere",
+      "filters": [
+        {
+          "name": "TableMist",
+          "file": "TableMist.table"
+        },
+        {
+          "name": "TableVin2FadedWarm",
+          "file": "TableVin2FadedWarm.table"
+        }
+      ]
+    },
+    {
+      "name": "Urban & Street",
+      "filters": [
+        {
+          "name": "TableMoody",
+          "file": "TableMoody.table"
+        },
+        {
+          "name": "TableNightcity",
+          "file": "TableNightcity.table"
+        },
+        {
+          "name": "TableUrban",
+          "file": "TableUrban.table"
+        }
+      ]
+    },
+    {
+      "name": "Vintage & Film",
+      "filters": [
+        {
+          "name": "TableRetropop",
+          "file": "TableRetropop.table"
+        },
+        {
+          "name": "TableVin1ClassicFilm",
+          "file": "TableVin1ClassicFilm.table"
+        },
+        {
+          "name": "TableVin3ColdRetro",
+          "file": "TableVin3ColdRetro.table"
+        },
+        {
+          "name": "TableVin4AntiqueGrain",
+          "file": "TableVin4AntiqueGrain.table"
+        },
+        {
+          "name": "TableVintagenoise",
+          "file": "TableVintagenoise.table"
+        }
+      ]
+    }
+  ]
+}
