@@ -1,0 +1,254 @@
+{
+  "groups": [
+    {
+      "name": "Portrait",
+      "filters": [
+        {
+          "name": "Natural",
+          "file": "table_Natural.table"
+        },
+        {
+          "name": "Soft Glow",
+          "file": "table_SoftGlow.table"
+        },
+        {
+          "name": "Bright Skin",
+          "file": "table_BrightSkin.table"
+        },
+        {
+          "name": "Golden Hour",
+          "file": "table_GoldenHour.table"
+        },
+        {
+          "name": "B&W Portrait",
+          "file": "table_BWPortrait.table"
+        }
+      ]
+    },
+    {
+      "name": "Vintage & Film",
+      "filters": [
+        {
+          "name": "Vintage",
+          "file": "table_Vintage.table"
+        },
+        {
+          "name": "Antique",
+          "file": "table_Antique.table"
+        },
+        {
+          "name": "Cinematic",
+          "file": "table_Cinematic.table"
+        },
+        {
+          "name": "Matte Film",
+          "file": "table_MatteFilm.table"
+        },
+        {
+          "name": "Retro Warm",
+          "file": "table_RetroWarm.table"
+        }
+      ]
+    },
+    {
+      "name": "Landscape",
+      "filters": [
+        {
+          "name": "Sunset Glow",
+          "file": "table_SunsetGlow.table"
+        },
+        {
+          "name": "Ocean Blue",
+          "file": "table_OceanBlue.table"
+        },
+        {
+          "name": "Forest Green",
+          "file": "table_ForestGreen.table"
+        },
+        {
+          "name": "Mountain Air",
+          "file": "table_MountainAir.table"
+        },
+        {
+          "name": "Golden Field",
+          "file": "table_GoldenField.table"
+        }
+      ]
+    },
+    {
+      "name": "Urban & Street",
+      "filters": [
+        {
+          "name": "Neon Night",
+          "file": "table_NeonNight.table"
+        },
+        {
+          "name": "Street Fade",
+          "file": "table_StreetFade.table"
+        },
+        {
+          "name": "Cyberpunk",
+          "file": "table_Cyberpunk.table"
+        },
+        {
+          "name": "Cool Gray",
+          "file": "table_CoolGray.table"
+        },
+        {
+          "name": "Moody City",
+          "file": "table_MoodyCity.table"
+        }
+      ]
+    },
+    {
+      "name": "Lifestyle",
+      "filters": [
+        {
+          "name": "Clean Minimal",
+          "file": "table_CleanMinimal.table"
+        },
+        {
+          "name": "Warm Interior",
+          "file": "table_WarmInterior.table"
+        },
+        {
+          "name": "Food Pop",
+          "file": "table_FoodPop.table"
+        },
+        {
+          "name": "Cozy Light",
+          "file": "table_CozyLight.table"
+        },
+        {
+          "name": "Aesthetic Cream",
+          "file": "table_AestheticCream.table"
+        }
+      ]
+    },
+    {
+      "name": "Travel",
+      "filters": [
+        {
+          "name": "Tropical",
+          "file": "table_Tropical.table"
+        },
+        {
+          "name": "Desert Gold",
+          "file": "table_DesertGold.table"
+        },
+        {
+          "name": "Rainy Mood",
+          "file": "table_RainyMood.table"
+        },
+        {
+          "name": "Cold Journey",
+          "file": "table_ColdJourney.table"
+        },
+        {
+          "name": "Wanderlust",
+          "file": "table_Wanderlust.table"
+        }
+      ]
+    },
+    {
+      "name": "Artistic",
+      "filters": [
+        {
+          "name": "Dreamy Pastel",
+          "file": "table_DreamyPastel.table"
+        },
+        {
+          "name": "Vibrant Pop",
+          "file": "table_VibrantPop.table"
+        },
+        {
+          "name": "Lomo",
+          "file": "table_Lomo.table"
+        },
+        {
+          "name": "Analog Soft",
+          "file": "table_AnalogSoft.table"
+        },
+        {
+          "name": "Retro Pink",
+          "file": "table_RetroPink.table"
+        }
+      ]
+    },
+    {
+      "name": "Black & White",
+      "filters": [
+        {
+          "name": "Monochrome",
+          "file": "table_Monochrome.table"
+        },
+        {
+          "name": "Classic BW",
+          "file": "table_ClassicBW.table"
+        },
+        {
+          "name": "High Contrast",
+          "file": "table_HighContrast.table"
+        },
+        {
+          "name": "Film Grain BW",
+          "file": "table_FilmGrainBW.table"
+        },
+        {
+          "name": "Soft Gray",
+          "file": "table_SoftGray.table"
+        }
+      ]
+    },
+    {
+      "name": "Creative",
+      "filters": [
+        {
+          "name": "Teal Orange",
+          "file": "table_TealOrange.table"
+        },
+        {
+          "name": "Fantasy Blue",
+          "file": "table_FantasyBlue.table"
+        },
+        {
+          "name": "Infrared Red",
+          "file": "table_InfraredRed.table"
+        },
+        {
+          "name": "Gold Teal",
+          "file": "table_GoldTeal.table"
+        },
+        {
+          "name": "Cyber Chrome",
+          "file": "table_CyberChrome.table"
+        }
+      ]
+    },
+    {
+      "name": "Mood & Atmosphere",
+      "filters": [
+        {
+          "name": "Moody Dark",
+          "file": "table_MoodyDark.table"
+        },
+        {
+          "name": "Soft Warm",
+          "file": "table_SoftWarm.table"
+        },
+        {
+          "name": "Cool Mist",
+          "file": "table_CoolMist.table"
+        },
+        {
+          "name": "Dream Film",
+          "file": "table_DreamFilm.table"
+        },
+        {
+          "name": "Night Fade",
+          "file": "table_NightFade.table"
+        }
+      ]
+    }
+  ]
+}

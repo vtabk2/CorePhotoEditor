@@ -68,6 +68,8 @@ class ColorMixerFragment : Fragment(R.layout.fragment_color_mixer) {
                 }
             }
         }
+
+        vm.loadData(context)
     }
 
     private fun setupSlider(row: RowSliderHslBinding, onChange: (Int) -> Unit) {
