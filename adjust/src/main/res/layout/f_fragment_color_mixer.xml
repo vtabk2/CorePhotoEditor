@@ -30,17 +30,17 @@
         <!-- Slider Hue -->
         <include
             android:id="@+id/rowHue"
-            layout="@layout/row_slider_hsl"/>
+            layout="@layout/f_row_slider_hsl"/>
 
         <!-- Slider Saturation -->
         <include
             android:id="@+id/rowSat"
-            layout="@layout/row_slider_hsl"/>
+            layout="@layout/f_row_slider_hsl"/>
 
         <!-- Slider Luminance -->
         <include
             android:id="@+id/rowLum"
-            layout="@layout/row_slider_hsl"/>
+            layout="@layout/f_row_slider_hsl"/>
 
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>

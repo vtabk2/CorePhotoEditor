@@ -19,16 +19,16 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.core.adjust.R
-import com.core.adjust.databinding.FragmentColorMixerBinding
-import com.core.adjust.databinding.RowSliderHslBinding
+import com.core.adjust.databinding.FFragmentColorMixerBinding
+import com.core.adjust.databinding.FRowSliderHslBinding
 import com.core.adjust.model.ColorChannel
 import com.core.adjust.model.HslAdjustState
 import com.core.adjust.model.HslTriple
 import kotlinx.coroutines.launch
 import java.util.EnumMap
 
-class ColorMixerFragment : Fragment(R.layout.fragment_color_mixer) {
-    private var _b: FragmentColorMixerBinding? = null
+class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
+    private var _b: FFragmentColorMixerBinding? = null
     private val b get() = _b!!
     private val vm: ColorMixerViewModel by viewModels()
     private val sharedVm: AdjustViewModel by activityViewModels()
@@ -37,7 +37,7 @@ class ColorMixerFragment : Fragment(R.layout.fragment_color_mixer) {
     private val colorHolders = EnumMap<ColorChannel, FrameLayout>(ColorChannel::class.java) // frame
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        _b = FragmentColorMixerBinding.bind(view)
+        _b = FFragmentColorMixerBinding.bind(view)
         setupColorButtons(b)
 
         // Label 3 slider
@@ -72,7 +72,7 @@ class ColorMixerFragment : Fragment(R.layout.fragment_color_mixer) {
         vm.loadData(context)
     }
 
-    private fun setupSlider(row: RowSliderHslBinding, onChange: (Int) -> Unit) {
+    private fun setupSlider(row: FRowSliderHslBinding, onChange: (Int) -> Unit) {
         row.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
@@ -99,7 +99,7 @@ class ColorMixerFragment : Fragment(R.layout.fragment_color_mixer) {
         })
     }
 
-    private fun setSlider(row: RowSliderHslBinding, value: Int) {
+    private fun setSlider(row: FRowSliderHslBinding, value: Int) {
         val progress = value + 100 // convert -100–100 → 0–200
         row.seekBar.progress = progress
         row.tvValue.text = value.toString()
@@ -120,7 +120,7 @@ class ColorMixerFragment : Fragment(R.layout.fragment_color_mixer) {
         ColorChannel.MAGENTA to 0xFFD81B60.toInt()
     )
 
-    private fun setupColorButtons(b: FragmentColorMixerBinding) {
+    private fun setupColorButtons(b: FFragmentColorMixerBinding) {
         val frameSize = 48.dp(b.root.context)   // khung
         val circleSize = 30.dp(b.root.context)  // nút tròn thật
 

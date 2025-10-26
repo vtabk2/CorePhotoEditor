@@ -48,7 +48,7 @@ object AdjustRepository {
             ),
             AdjustTab(
                 key = "hsl",
-                iconRes = com.core.adjust.R.drawable.ic_targeted, // tạo vector tròn 8 màu hoặc icon “color wheel”
+                iconRes = com.core.adjust.R.drawable.f_ic_targeted, // tạo vector tròn 8 màu hoặc icon “color wheel”
                 label = "HSL",
                 sliders = emptyList() // <- rất quan trọng: để controller biết hiển thị UI custom
             )
