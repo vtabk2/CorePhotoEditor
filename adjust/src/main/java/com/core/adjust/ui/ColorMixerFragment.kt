@@ -31,10 +31,10 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
     private var _b: FFragmentColorMixerBinding? = null
     private val b get() = _b!!
     private val vm: ColorMixerViewModel by viewModels()
-    private val sharedVm: AdjustViewModel by activityViewModels()
+    private val adjustViewModel: AdjustViewModel by activityViewModels()
 
-    private val colorViews = EnumMap<ColorChannel, View>(ColorChannel::class.java)      // circle
-    private val colorHolders = EnumMap<ColorChannel, FrameLayout>(ColorChannel::class.java) // frame
+    private val colorViews = EnumMap<ColorChannel, View>(ColorChannel::class.java)
+    private val colorHolders = EnumMap<ColorChannel, FrameLayout>(ColorChannel::class.java)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _b = FFragmentColorMixerBinding.bind(view)
@@ -56,13 +56,12 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
                 setSlider(b.rowSat, triple.saturation)
                 setSlider(b.rowLum, triple.luminance)
 
-                // cập nhật ColorButtons (selected + dot)
                 renderColorSelection(state)
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            sharedVm.resetFlow.collect { reset ->
+            adjustViewModel.resetFlow.collect { reset ->
                 if (reset) {
                     vm.resetAll()
                 }
@@ -76,7 +75,7 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
         row.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (fromUser) {
-                    val value = progress - 100 // convert 0–200 → -100–100
+                    val value = progress - 100
                     row.tvValue.text = value.toString()
                     onChange(value)
                 }
@@ -88,25 +87,26 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
                 val selectedChannel = current.selected.ordinal
                 val triple = current.map[current.selected] ?: HslTriple()
 
-                sharedVm.updateHsl(
+                adjustViewModel.updateHsl(
                     selectedChannel,
                     triple.hue,
                     triple.saturation,
                     triple.luminance
                 )
-                sharedVm.applyAdjust()
+                adjustViewModel.applyAdjust()
             }
         })
     }
 
     private fun setSlider(row: FRowSliderHslBinding, value: Int) {
-        val progress = value + 100 // convert -100–100 → 0–200
+        val progress = value + 100
         row.seekBar.progress = progress
         row.tvValue.text = value.toString()
     }
 
     override fun onDestroyView() {
-        _b = null; super.onDestroyView()
+        _b = null
+        super.onDestroyView()
     }
 
     private val colorMap = mapOf(
@@ -121,8 +121,8 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
     )
 
     private fun setupColorButtons(b: FFragmentColorMixerBinding) {
-        val frameSize = 48.dp(b.root.context)   // khung
-        val circleSize = 30.dp(b.root.context)  // nút tròn thật
+        val frameSize = 48.dp(b.root.context)
+        val circleSize = 30.dp(b.root.context)
 
         colorMap.forEach { (channel, colorInt) ->
             val frame = FrameLayout(b.root.context).apply {
@@ -130,7 +130,7 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
                     marginStart = 6.dp(context)
                     marginEnd = 6.dp(context)
                 }
-                // rất quan trọng: không clip child khi scale
+
                 clipChildren = false
                 clipToPadding = false
                 foreground = context.selectableRipple()
@@ -143,7 +143,7 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
                     setColor(colorInt)
                     setStroke(1.dp(context), 0x55FFFFFF)
                 }
-                isClickable = false  // click gán vào frame
+                isClickable = false
             }
 
             // dot báo đã chỉnh
@@ -152,13 +152,18 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
                 layoutParams = FrameLayout.LayoutParams(6.dp(context), 6.dp(context), Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL).apply {
                     bottomMargin = 2.dp(context)
                 }
-                background = GradientDrawable().apply { shape = GradientDrawable.OVAL; setColor(Color.WHITE) }
+                background = GradientDrawable().apply {
+                    shape = GradientDrawable.OVAL
+                    setColor(Color.WHITE)
+                }
                 visibility = View.GONE
             }
 
             frame.addView(circle)
             frame.addView(dot)
-            frame.setOnClickListener { vm.select(channel) }
+            frame.setOnClickListener {
+                vm.select(channel)
+            }
 
             b.colorSelectorLayout.addView(frame)
             colorViews[channel] = circle
@@ -177,25 +182,23 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
         colorHolders.forEach { (channel, frame) ->
             val selected = channel == state.selected
 
-            // scale container -> tránh cắt trên/dưới
             frame.animate()
                 .scaleX(if (selected) 1.12f else 1f)
                 .scaleY(if (selected) 1.12f else 1f)
                 .setDuration(120)
                 .start()
 
-            // nhấn mạnh lớp nổi
             ViewCompat.setElevation(frame, if (selected) 6f else 0f)
 
-            // stroke của vòng tròn
             (colorViews[channel]?.background as? GradientDrawable)?.apply {
                 val strokeW = if (selected) 2.dp(frame.context) else 1.dp(frame.context)
                 val strokeColor = if (selected) Color.WHITE else 0x55FFFFFF
                 setStroke(strokeW, strokeColor)
             }
 
-            // dot “đã chỉnh”
-            val changed = state.map[channel]?.let { it.hue != 0 || it.saturation != 0 || it.luminance != 0 } == true
+            val changed = state.map[channel]?.let {
+                it.hue != 0 || it.saturation != 0 || it.luminance != 0
+            } == true
             frame.findViewById<View>(R.id.dot_changed)?.isVisible = changed
         }
     }

@@ -21,6 +21,9 @@ class AdjustViewModel(val manager: AdjustManager) : ViewModel() {
     private val _resetFlow = MutableSharedFlow<Boolean>()
     val resetFlow: SharedFlow<Boolean> = _resetFlow
 
+    private val _closeFlow = MutableSharedFlow<Boolean>()
+    val closeFlow: SharedFlow<Boolean> = _closeFlow
+
     val params get() = manager.params
 
     fun setOriginal(bitmap: Bitmap) {
@@ -52,6 +55,10 @@ class AdjustViewModel(val manager: AdjustManager) : ViewModel() {
     override fun onCleared() {
         super.onCleared()
         manager.release()
+    }
+
+    fun close() {
+        _closeFlow.tryEmit(true)
     }
 
     class Factory(private val scope: LifecycleCoroutineScope) : ViewModelProvider.Factory {
