@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.core.adjust.ui.AdjustViewModel
 import com.core.adjust.ui.ColorMixerFragment
+import com.core.adjust.ui.filter.FilterFragment
 import com.example.photoeditor.R
 import com.example.photoeditor.databinding.ActivityMainBinding
 import com.example.photoeditor.utils.LoadUtils
@@ -71,6 +72,8 @@ class MainActivity : AppCompatActivity() {
         vm.previewBitmap.observe(this) { bmp ->
             binding.imgAdjusted.setImageBitmap(bmp)
         }
+
+        FilterFragment.showFilterFragment(this, R.id.flBottom)
     }
 
     private fun showHslUiIfNeeded() {

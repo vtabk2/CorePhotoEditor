@@ -2,6 +2,7 @@ package com.core.adjust.ui
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -30,6 +31,7 @@ import java.util.EnumMap
 class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
     private var _b: FFragmentColorMixerBinding? = null
     private val b get() = _b!!
+
     private val vm: ColorMixerViewModel by viewModels()
     private val adjustViewModel: AdjustViewModel by activityViewModels()
 
@@ -45,26 +47,44 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
         b.rowSat.tvLabel.text = "Saturation"
         b.rowLum.tvLabel.text = "Luminance"
 
+        // Căn đều chiều rộng label theo nhãn dài nhất
+        b.root.post {
+            val labels = listOf(b.rowHue.tvLabel, b.rowSat.tvLabel, b.rowLum.tvLabel)
+
+            // Lấy kích thước text dài nhất
+            val maxWidth = labels.maxOf { label ->
+                label.paint.measureText(label.text.toString())
+            }.toInt() + 8.dp(labels.first().context)
+
+            // Áp dụng cùng width + buộc layout lại
+            labels.forEach { label ->
+                val lp = label.layoutParams
+                lp.width = maxWidth
+                label.layoutParams = lp
+                label.requestLayout()
+            }
+        }
+
+        // Thiết lập slider
         setupSlider(b.rowHue) { vm.updateHue(it) }
         setupSlider(b.rowSat) { vm.updateSat(it) }
         setupSlider(b.rowLum) { vm.updateLum(it) }
 
+        // Lắng nghe thay đổi từ ViewModel
         viewLifecycleOwner.lifecycleScope.launch {
             vm.state.collect { state ->
                 val triple = state.map[state.selected] ?: HslTriple()
                 setSlider(b.rowHue, triple.hue)
                 setSlider(b.rowSat, triple.saturation)
                 setSlider(b.rowLum, triple.luminance)
-
                 renderColorSelection(state)
             }
         }
 
+        // Reset
         viewLifecycleOwner.lifecycleScope.launch {
             adjustViewModel.resetFlow.collect { reset ->
-                if (reset) {
-                    vm.resetAll()
-                }
+                if (reset) vm.resetAll()
             }
         }
 
@@ -109,6 +129,8 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
         super.onDestroyView()
     }
 
+    // --- Color Buttons ---
+
     private val colorMap = mapOf(
         ColorChannel.RED to 0xFFE53935.toInt(),
         ColorChannel.ORANGE to 0xFFFF8A65.toInt(),
@@ -121,22 +143,22 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
     )
 
     private fun setupColorButtons(b: FFragmentColorMixerBinding) {
-        val frameSize = 48.dp(b.root.context)
-        val circleSize = 30.dp(b.root.context)
+        val context = b.root.context
+        val frameSize = 32.dp(context)
+        val circleSize = 22.dp(context)
 
         colorMap.forEach { (channel, colorInt) ->
-            val frame = FrameLayout(b.root.context).apply {
+            val frame = FrameLayout(context).apply {
                 layoutParams = LinearLayout.LayoutParams(frameSize, frameSize).apply {
-                    marginStart = 6.dp(context)
-                    marginEnd = 6.dp(context)
+                    marginStart = 4.dp(context)
+                    marginEnd = 4.dp(context)
                 }
-
                 clipChildren = false
                 clipToPadding = false
                 foreground = context.selectableRipple()
             }
 
-            val circle = View(b.root.context).apply {
+            val circle = View(context).apply {
                 layoutParams = FrameLayout.LayoutParams(circleSize, circleSize, Gravity.CENTER)
                 background = GradientDrawable().apply {
                     shape = GradientDrawable.OVAL
@@ -146,24 +168,27 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
                 isClickable = false
             }
 
-            // dot báo đã chỉnh
-            val dot = View(b.root.context).apply {
-                id = R.id.dot_changed
-                layoutParams = FrameLayout.LayoutParams(6.dp(context), 6.dp(context), Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL).apply {
-                    bottomMargin = 2.dp(context)
+            val dot = View(context).apply {
+                layoutParams = FrameLayout.LayoutParams(
+                    (circleSize * 0.18f).toInt(),
+                    (circleSize * 0.18f).toInt(),
+                    Gravity.BOTTOM or Gravity.CENTER_HORIZONTAL
+                ).apply {
+                    bottomMargin = (circleSize * 0.08f).toInt()
                 }
                 background = GradientDrawable().apply {
                     shape = GradientDrawable.OVAL
                     setColor(Color.WHITE)
                 }
-                visibility = View.GONE
+                isVisible = false
             }
 
             frame.addView(circle)
             frame.addView(dot)
-            frame.setOnClickListener {
-                vm.select(channel)
-            }
+            frame.setOnClickListener { vm.select(channel) }
+
+            // Lưu dot vào tag để không dùng findViewById
+            frame.setTag(R.id.dot_changed, dot)
 
             b.colorSelectorLayout.addView(frame)
             colorViews[channel] = circle
@@ -171,35 +196,49 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
         }
     }
 
+    // --- Hiệu ứng chọn màu ---
+
+    private fun renderColorSelection(state: HslAdjustState) {
+        colorHolders.forEach { (channel, frame) ->
+            val selected = channel == state.selected
+            val circle = colorViews[channel]
+            val bg = circle?.background as? GradientDrawable
+
+            // Animation scale nhẹ
+            frame.animate()
+                .scaleX(if (selected) 1.08f else 1f)
+                .scaleY(if (selected) 1.08f else 1f)
+                .setDuration(140)
+                .start()
+
+            ViewCompat.setElevation(frame, if (selected) 6f else 0f)
+
+            // Glow viền sáng
+            if (selected) {
+                bg?.setStroke(3.dp(frame.context), Color.WHITE)
+                bg?.setColorFilter(
+                    Color.argb(60, 255, 255, 255),
+                    PorterDuff.Mode.SRC_ATOP
+                )
+            } else {
+                bg?.setStroke(1.dp(frame.context), 0x55FFFFFF)
+                bg?.clearColorFilter()
+            }
+
+            // Hiện dot nếu đã chỉnh
+            val changed = state.map[channel]?.let {
+                it.hue != 0 || it.saturation != 0 || it.luminance != 0
+            } == true
+            val dotView = frame.getTag(R.id.dot_changed) as? View
+            dotView?.isVisible = changed
+        }
+    }
+
+    // --- Extension tiện ích ---
     private fun Int.dp(ctx: Context) = (this * ctx.resources.displayMetrics.density).toInt()
 
     private fun Context.selectableRipple(): Drawable? = TypedValue().let { tv ->
         theme.resolveAttribute(android.R.attr.selectableItemBackgroundBorderless, tv, true)
         ResourcesCompat.getDrawable(resources, tv.resourceId, theme)
-    }
-
-    private fun renderColorSelection(state: HslAdjustState) {
-        colorHolders.forEach { (channel, frame) ->
-            val selected = channel == state.selected
-
-            frame.animate()
-                .scaleX(if (selected) 1.12f else 1f)
-                .scaleY(if (selected) 1.12f else 1f)
-                .setDuration(120)
-                .start()
-
-            ViewCompat.setElevation(frame, if (selected) 6f else 0f)
-
-            (colorViews[channel]?.background as? GradientDrawable)?.apply {
-                val strokeW = if (selected) 2.dp(frame.context) else 1.dp(frame.context)
-                val strokeColor = if (selected) Color.WHITE else 0x55FFFFFF
-                setStroke(strokeW, strokeColor)
-            }
-
-            val changed = state.map[channel]?.let {
-                it.hue != 0 || it.saturation != 0 || it.luminance != 0
-            } == true
-            frame.findViewById<View>(R.id.dot_changed)?.isVisible = changed
-        }
     }
 }
