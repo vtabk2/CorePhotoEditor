@@ -1,4 +1,4 @@
-package com.core.adjust.ui
+package com.core.adjust.ui.hsl
 
 import android.content.Context
 import android.graphics.Color
@@ -25,31 +25,32 @@ import com.core.adjust.databinding.FRowSliderHslBinding
 import com.core.adjust.model.ColorChannel
 import com.core.adjust.model.HslAdjustState
 import com.core.adjust.model.HslTriple
+import com.core.adjust.ui.ShareAdjustViewModel
 import kotlinx.coroutines.launch
 import java.util.EnumMap
 
 class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
-    private var _b: FFragmentColorMixerBinding? = null
-    private val b get() = _b!!
+    private var _bindingView: FFragmentColorMixerBinding? = null
+    private val bindingView get() = _bindingView!!
 
-    private val vm: ColorMixerViewModel by viewModels()
-    private val adjustViewModel: AdjustViewModel by activityViewModels()
+    private val colorMixerViewModel: ColorMixerViewModel by viewModels()
+    private val shareAdjustViewModel: ShareAdjustViewModel by activityViewModels()
 
     private val colorViews = EnumMap<ColorChannel, View>(ColorChannel::class.java)
     private val colorHolders = EnumMap<ColorChannel, FrameLayout>(ColorChannel::class.java)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        _b = FFragmentColorMixerBinding.bind(view)
-        setupColorButtons(b)
+        _bindingView = FFragmentColorMixerBinding.bind(view)
+        setupColorButtons(bindingView)
 
         // Label 3 slider
-        b.rowHue.tvLabel.text = "Hue"
-        b.rowSat.tvLabel.text = "Saturation"
-        b.rowLum.tvLabel.text = "Luminance"
+        bindingView.rowHue.tvLabel.text = "Hue"
+        bindingView.rowSat.tvLabel.text = "Saturation"
+        bindingView.rowLum.tvLabel.text = "Luminance"
 
         // Căn đều chiều rộng label theo nhãn dài nhất
-        b.root.post {
-            val labels = listOf(b.rowHue.tvLabel, b.rowSat.tvLabel, b.rowLum.tvLabel)
+        bindingView.root.post {
+            val labels = listOf(bindingView.rowHue.tvLabel, bindingView.rowSat.tvLabel, bindingView.rowLum.tvLabel)
 
             // Lấy kích thước text dài nhất
             val maxWidth = labels.maxOf { label ->
@@ -66,29 +67,29 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
         }
 
         // Thiết lập slider
-        setupSlider(b.rowHue) { vm.updateHue(it) }
-        setupSlider(b.rowSat) { vm.updateSat(it) }
-        setupSlider(b.rowLum) { vm.updateLum(it) }
+        setupSlider(bindingView.rowHue) { colorMixerViewModel.updateHue(it) }
+        setupSlider(bindingView.rowSat) { colorMixerViewModel.updateSat(it) }
+        setupSlider(bindingView.rowLum) { colorMixerViewModel.updateLum(it) }
 
         // Lắng nghe thay đổi từ ViewModel
         viewLifecycleOwner.lifecycleScope.launch {
-            vm.state.collect { state ->
+            colorMixerViewModel.state.collect { state ->
                 val triple = state.map[state.selected] ?: HslTriple()
-                setSlider(b.rowHue, triple.hue)
-                setSlider(b.rowSat, triple.saturation)
-                setSlider(b.rowLum, triple.luminance)
+                setSlider(bindingView.rowHue, triple.hue)
+                setSlider(bindingView.rowSat, triple.saturation)
+                setSlider(bindingView.rowLum, triple.luminance)
                 renderColorSelection(state)
             }
         }
 
         // Reset
         viewLifecycleOwner.lifecycleScope.launch {
-            adjustViewModel.resetFlow.collect { reset ->
-                if (reset) vm.resetAll()
+            shareAdjustViewModel.resetFlow.collect { reset ->
+                if (reset) colorMixerViewModel.resetAll()
             }
         }
 
-        vm.loadData(context)
+        colorMixerViewModel.loadData(context)
     }
 
     private fun setupSlider(row: FRowSliderHslBinding, onChange: (Int) -> Unit) {
@@ -103,17 +104,17 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
             override fun onStopTrackingTouch(seekBar: SeekBar?) {
-                val current = vm.state.value
+                val current = colorMixerViewModel.state.value
                 val selectedChannel = current.selected.ordinal
                 val triple = current.map[current.selected] ?: HslTriple()
 
-                adjustViewModel.updateHsl(
+                shareAdjustViewModel.updateHsl(
                     selectedChannel,
                     triple.hue,
                     triple.saturation,
                     triple.luminance
                 )
-                adjustViewModel.applyAdjust()
+                shareAdjustViewModel.applyAdjust()
             }
         })
     }
@@ -125,7 +126,7 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
     }
 
     override fun onDestroyView() {
-        _b = null
+        _bindingView = null
         super.onDestroyView()
     }
 
@@ -185,7 +186,7 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
 
             frame.addView(circle)
             frame.addView(dot)
-            frame.setOnClickListener { vm.select(channel) }
+            frame.setOnClickListener { colorMixerViewModel.select(channel) }
 
             // Lưu dot vào tag để không dùng findViewById
             frame.setTag(R.id.dot_changed, dot)

@@ -1,4 +1,4 @@
-package com.core.adjust.ui
+package com.core.adjust.ui.hsl
 
 import android.content.Context
 import android.util.Log

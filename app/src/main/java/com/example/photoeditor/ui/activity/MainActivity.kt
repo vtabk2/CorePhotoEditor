@@ -9,8 +9,8 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
-import com.core.adjust.ui.AdjustViewModel
-import com.core.adjust.ui.ColorMixerFragment
+import com.core.adjust.ui.ShareAdjustViewModel
+import com.core.adjust.ui.hsl.ColorMixerFragment
 import com.core.adjust.ui.filter.FilterFragment
 import com.example.photoeditor.R
 import com.example.photoeditor.databinding.ActivityMainBinding
@@ -23,8 +23,8 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val adjustViewModel: AdjustViewModel by viewModels {
-        AdjustViewModel.Factory(lifecycleScope)
+    private val shareAdjustViewModel: ShareAdjustViewModel by viewModels {
+        ShareAdjustViewModel.Factory(lifecycleScope)
     }
 
     // Photo Picker launcher (Android 13+ compatible)
@@ -49,16 +49,16 @@ class MainActivity : AppCompatActivity() {
             rcvTabs = binding.bottomPanel.rcvAdjustTabs,
             rcvSliders = binding.bottomPanel.rcvSliders,
             btnReset = binding.bottomPanel.btnReset,
-            adjustManager = adjustViewModel.manager,
+            adjustManager = shareAdjustViewModel.manager,
             onSliderChanged = { slider ->
-                AdjustRepository.map(adjustSlider = slider, adjustParams = adjustViewModel.params)
-                adjustViewModel.applyAdjust()
+                AdjustRepository.map(adjustSlider = slider, adjustParams = shareAdjustViewModel.params)
+                shareAdjustViewModel.applyAdjust()
             },
             onResetTab = { tabKey ->
                 if (tabKey == "hsl") {
-                    adjustViewModel.resetHsl()
+                    shareAdjustViewModel.resetHsl()
                 }
-                adjustViewModel.applyAdjust()
+                shareAdjustViewModel.applyAdjust()
             },
             onShowHsl = {
                 binding.bottomPanel.hslContainer.isVisible = true
@@ -69,12 +69,12 @@ class MainActivity : AppCompatActivity() {
             })
         controller.bind()
 
-        adjustViewModel.previewBitmap.observe(this) { bmp ->
+        shareAdjustViewModel.previewBitmap.observe(this) { bmp ->
             binding.imgAdjusted.setImageBitmap(bmp)
         }
 
         lifecycleScope.launch {
-            adjustViewModel.closeFlow.collect { close ->
+            shareAdjustViewModel.closeFlow.collect { close ->
                 Log.d("TAG5", "MainActivity_onCreate: close = $close")
             }
         }
@@ -99,9 +99,9 @@ class MainActivity : AppCompatActivity() {
 
             binding.imgOriginal.setImageBitmap(src)
 
-            Log.d("TAG5", "MainActivity_onImagePicked: " + adjustViewModel.params)
-            adjustViewModel.setOriginal(src)
-            adjustViewModel.applyAdjust()
+            Log.d("TAG5", "MainActivity_onImagePicked: " + shareAdjustViewModel.params)
+            shareAdjustViewModel.setOriginal(src)
+            shareAdjustViewModel.applyAdjust()
         }
     }
 

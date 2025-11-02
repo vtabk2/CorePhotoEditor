@@ -11,10 +11,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
 import com.core.adjust.R
 import com.core.adjust.databinding.FFragmentFilterBinding
-import com.core.adjust.ui.AdjustViewModel
-import com.core.adjust.ui.ColorMixerFragment
+import com.core.adjust.ui.ShareAdjustViewModel
 import com.core.adjust.ui.adapter.CategoryPagerAdapter
 import com.core.adjust.ui.adjust.AdjustFragment
+import com.core.adjust.ui.hsl.ColorMixerFragment
 import com.core.gscore.utils.extensions.setOnSingleClick
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -22,7 +22,7 @@ class FilterFragment : Fragment(R.layout.f_fragment_filter) {
     private var _bindingView: FFragmentFilterBinding? = null
     private val bindingView get() = _bindingView
 
-    private val adjustViewModel: AdjustViewModel by activityViewModels()
+    private val shareAdjustViewModel: ShareAdjustViewModel by activityViewModels()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,10 +35,11 @@ class FilterFragment : Fragment(R.layout.f_fragment_filter) {
                 ColorMixerFragment()
             )
             val titles = listOf("Adjust", "HSL")
-            val modes = listOf(AdjustViewModel.ADJUST, AdjustViewModel.HSL)
+            val modes = listOf(ShareAdjustViewModel.ADJUST, ShareAdjustViewModel.HSL)
 
             val adapter = CategoryPagerAdapter(requireActivity(), titles, fragments)
             viewPager2.adapter = adapter
+            viewPager2.isUserInputEnabled = false
 
             TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
                 tab.text = adapter.getPageTitle(position)
@@ -46,13 +47,18 @@ class FilterFragment : Fragment(R.layout.f_fragment_filter) {
 
             rivReset.setOnSingleClick {
                 Log.d("TAG5", "FilterFragment_onViewCreated: currentItem = " + viewPager2.currentItem)
-                adjustViewModel.reset(modes[viewPager2.currentItem])
+                shareAdjustViewModel.reset(modes[viewPager2.currentItem])
             }
 
             rivDone.setOnSingleClick {
-                adjustViewModel.close()
+                shareAdjustViewModel.close()
             }
         }
+    }
+
+    override fun onDestroyView() {
+        _bindingView = null
+        super.onDestroyView()
     }
 
     companion object {

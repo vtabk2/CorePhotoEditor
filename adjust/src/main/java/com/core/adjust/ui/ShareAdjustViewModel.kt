@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.launch
 
-class AdjustViewModel(val manager: AdjustManager) : ViewModel() {
+class ShareAdjustViewModel(val manager: AdjustManager) : ViewModel() {
 
     private val _previewBitmap = MutableLiveData<Bitmap>()
     val previewBitmap: LiveData<Bitmap> = _previewBitmap
@@ -90,7 +90,7 @@ class AdjustViewModel(val manager: AdjustManager) : ViewModel() {
     class Factory(private val scope: LifecycleCoroutineScope) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             val manager = AdjustManager(scope)
-            return AdjustViewModel(manager) as T
+            return ShareAdjustViewModel(manager) as T
         }
     }
 
