@@ -13,6 +13,7 @@ import com.core.adjust.databinding.FFragmentFilterBinding
 import com.core.adjust.ui.AdjustViewModel
 import com.core.adjust.ui.ColorMixerFragment
 import com.core.adjust.ui.adapter.CategoryPagerAdapter
+import com.core.adjust.ui.adjust.AdjustFragment
 import com.core.gscore.utils.extensions.setOnSingleClick
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -29,9 +30,10 @@ class FilterFragment : Fragment(R.layout.f_fragment_filter) {
 
         bindingView?.apply {
             val fragments = listOf(
+                AdjustFragment(),
                 ColorMixerFragment()
             )
-            val titles = listOf("HSL")
+            val titles = listOf("Adjust", "HSL")
 
             val adapter = CategoryPagerAdapter(requireActivity(), titles, fragments)
             viewPager2.adapter = adapter

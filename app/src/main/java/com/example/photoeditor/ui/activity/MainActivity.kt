@@ -23,7 +23,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private val vm: AdjustViewModel by viewModels {
+    private val adjustViewModel: AdjustViewModel by viewModels {
         AdjustViewModel.Factory(lifecycleScope)
     }
 
@@ -49,16 +49,16 @@ class MainActivity : AppCompatActivity() {
             rcvTabs = binding.bottomPanel.rcvAdjustTabs,
             rcvSliders = binding.bottomPanel.rcvSliders,
             btnReset = binding.bottomPanel.btnReset,
-            adjustManager = vm.manager,
+            adjustManager = adjustViewModel.manager,
             onSliderChanged = { slider ->
-                AdjustRepository.map(adjustSlider = slider, adjustParams = vm.params)
-                vm.applyAdjust()
+                AdjustRepository.map(adjustSlider = slider, adjustParams = adjustViewModel.params)
+                adjustViewModel.applyAdjust()
             },
             onResetTab = { tabKey ->
                 if (tabKey == "hsl") {
-                    vm.resetHsl()
+                    adjustViewModel.resetHsl()
                 }
-                vm.applyAdjust()
+                adjustViewModel.applyAdjust()
             },
             onShowHsl = {
                 binding.bottomPanel.hslContainer.isVisible = true
@@ -69,8 +69,14 @@ class MainActivity : AppCompatActivity() {
             })
         controller.bind()
 
-        vm.previewBitmap.observe(this) { bmp ->
+        adjustViewModel.previewBitmap.observe(this) { bmp ->
             binding.imgAdjusted.setImageBitmap(bmp)
+        }
+
+        lifecycleScope.launch {
+            adjustViewModel.closeFlow.collect { close ->
+                Log.d("TAG5", "MainActivity_onCreate: close = $close")
+            }
         }
 
         FilterFragment.showFilterFragment(this, R.id.flBottom)
@@ -93,9 +99,9 @@ class MainActivity : AppCompatActivity() {
 
             binding.imgOriginal.setImageBitmap(src)
 
-            Log.d("TAG5", "MainActivity_onImagePicked: " + vm.params)
-            vm.setOriginal(src)
-            vm.applyAdjust()
+            Log.d("TAG5", "MainActivity_onImagePicked: " + adjustViewModel.params)
+            adjustViewModel.setOriginal(src)
+            adjustViewModel.applyAdjust()
         }
     }
 

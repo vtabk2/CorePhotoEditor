@@ -58,7 +58,9 @@ class AdjustViewModel(val manager: AdjustManager) : ViewModel() {
     }
 
     fun close() {
-        _closeFlow.tryEmit(true)
+        viewModelScope.launch(Dispatchers.IO) {
+            _closeFlow.emit(true)
+        }
     }
 
     class Factory(private val scope: LifecycleCoroutineScope) : ViewModelProvider.Factory {
