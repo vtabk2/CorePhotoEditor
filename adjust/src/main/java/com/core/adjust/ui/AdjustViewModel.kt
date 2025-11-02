@@ -1,6 +1,7 @@
 package com.core.adjust.ui
 
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -52,6 +53,29 @@ class AdjustViewModel(val manager: AdjustManager) : ViewModel() {
         applyAdjust()
     }
 
+    fun reset(mode: Int) {
+        Log.d("TAG5", "AdjustViewModel_reset: mode = $mode")
+        when (mode) {
+            FILTER -> {
+
+            }
+
+            ADJUST -> {
+                manager.resetLight()
+                manager.resetColor()
+                manager.resetEffects()
+            }
+
+            HSL -> {
+                manager.resetHsl()
+            }
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            _resetFlow.emit(true)
+        }
+        applyAdjust()
+    }
+
     override fun onCleared() {
         super.onCleared()
         manager.release()
@@ -68,5 +92,11 @@ class AdjustViewModel(val manager: AdjustManager) : ViewModel() {
             val manager = AdjustManager(scope)
             return AdjustViewModel(manager) as T
         }
+    }
+
+    companion object {
+        const val FILTER = 1
+        const val ADJUST = 2
+        const val HSL = 3
     }
 }

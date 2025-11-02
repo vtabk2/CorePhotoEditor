@@ -3,6 +3,7 @@ package com.core.adjust.ui.filter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -34,6 +35,7 @@ class FilterFragment : Fragment(R.layout.f_fragment_filter) {
                 ColorMixerFragment()
             )
             val titles = listOf("Adjust", "HSL")
+            val modes = listOf(AdjustViewModel.ADJUST, AdjustViewModel.HSL)
 
             val adapter = CategoryPagerAdapter(requireActivity(), titles, fragments)
             viewPager2.adapter = adapter
@@ -41,6 +43,11 @@ class FilterFragment : Fragment(R.layout.f_fragment_filter) {
             TabLayoutMediator(tabLayout, viewPager2) { tab, position ->
                 tab.text = adapter.getPageTitle(position)
             }.attach()
+
+            rivReset.setOnSingleClick {
+                Log.d("TAG5", "FilterFragment_onViewCreated: currentItem = " + viewPager2.currentItem)
+                adjustViewModel.reset(modes[viewPager2.currentItem])
+            }
 
             rivDone.setOnSingleClick {
                 adjustViewModel.close()
