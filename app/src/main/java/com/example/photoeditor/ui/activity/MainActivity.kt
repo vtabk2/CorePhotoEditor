@@ -98,4 +98,9 @@ class MainActivity : AppCompatActivity() {
             vm.applyAdjust()
         }
     }
+
+    override fun onDestroy() {
+        FilterFragment.destroyFilterFragment(activity = this)
+        super.onDestroy()
+    }
 }
