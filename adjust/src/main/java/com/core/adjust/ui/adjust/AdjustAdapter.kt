@@ -27,7 +27,9 @@ class AdjustAdapter(
 
         fun bind(item: AdjustSlider, isSelected: Boolean) {
             binding.imgIcon.setImageResource(item.iconRes)
+            binding.imgIcon.isSelected = isSelected
             binding.tvName.text = item.label
+            binding.tvName.isSelected = isSelected
 
             // 🔹 Zoom animation
             val targetScale = if (isSelected) 1.2f else 1.0f
