@@ -31,14 +31,6 @@ class AdjustAdapter(
             binding.tvName.text = item.label
             binding.tvName.isSelected = isSelected
 
-            // 🔹 Zoom animation
-            val targetScale = if (isSelected) 1.2f else 1.0f
-            binding.imgIcon.animate()
-                .scaleX(targetScale)
-                .scaleY(targetScale)
-                .setDuration(150)
-                .start()
-
             binding.root.setOnClickListener {
                 val oldSelected = selectedKey
                 selectedKey = item.key

@@ -30,7 +30,7 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
             AdjustSlider("vibrance", "Vibrance", R.drawable.ic_vibrance),
             AdjustSlider("saturation", "Saturation", R.drawable.ic_saturation),
 
-            AdjustSlider("texture", "Texture", R.drawable.ic_texture),
+            AdjustSlider("texture", "Texture", R.drawable.selector_ic_texture),
             AdjustSlider("clarity", "Clarity", R.drawable.ic_clarity),
             AdjustSlider("dehaze", "Dehaze", R.drawable.ic_dehaze),
             AdjustSlider("vignette", "Vignette", R.drawable.selector_ic_vignette),
