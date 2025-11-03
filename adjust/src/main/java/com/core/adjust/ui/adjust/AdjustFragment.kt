@@ -26,15 +26,15 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
             AdjustSlider("blacks", "Blacks", R.drawable.selector_ic_blacks),
 
             AdjustSlider("temperature", "Temperature", R.drawable.ic_temperature),
-            AdjustSlider("tint", "Tint", R.drawable.ic_tint),
+            AdjustSlider("tint", "Tint", R.drawable.selector_ic_tint),
             AdjustSlider("vibrance", "Vibrance", R.drawable.ic_vibrance),
             AdjustSlider("saturation", "Saturation", R.drawable.ic_saturation),
 
             AdjustSlider("texture", "Texture", R.drawable.ic_texture),
             AdjustSlider("clarity", "Clarity", R.drawable.ic_clarity),
             AdjustSlider("dehaze", "Dehaze", R.drawable.ic_dehaze),
-            AdjustSlider("vignette", "Vignette", R.drawable.ic_vignette),
-            AdjustSlider("grain", "Grain", R.drawable.ic_grain),
+            AdjustSlider("vignette", "Vignette", R.drawable.selector_ic_vignette),
+            AdjustSlider("grain", "Grain", R.drawable.selector_ic_grain),
         )
 
         val adjustAdapter = AdjustAdapter { slider ->
