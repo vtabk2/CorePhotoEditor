@@ -3,21 +3,27 @@ package com.core.adjust.ui.adjust
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
 import com.core.adjust.R
 import com.core.adjust.databinding.FFragmentAdjustBinding
 import com.core.adjust.model.AdjustSlider
+import com.core.adjust.ui.ShareAdjustViewModel
+import kotlinx.coroutines.launch
 
 class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
     private var _bindingView: FFragmentAdjustBinding? = null
     private val bindingView get() = _bindingView!!
 
+    private val shareAdjustViewModel: ShareAdjustViewModel by activityViewModels()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bindingView = FFragmentAdjustBinding.bind(view)
 
         val adjustList = listOf(
-            AdjustSlider("exposure", "Exposure", R.drawable.ic_exposure),
+            AdjustSlider("exposure", "Exposure", R.drawable.selector_ic_exposure),
             AdjustSlider("brightness", "Brightness", R.drawable.ic_brightness),
             AdjustSlider("contrast", "Contrast", R.drawable.ic_contrast),
             AdjustSlider("highlights", "Highlights", R.drawable.ic_highlights),
@@ -55,7 +61,15 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
 
         // ✅ Đặt item đầu tiên làm mặc định + scroll vào giữa
         adjustAdapter.submitList(adjustList)
-        adjustAdapter.setSelectedKey(adjustList.first().key)
+
+        // Reset
+        viewLifecycleOwner.lifecycleScope.launch {
+            shareAdjustViewModel.resetFlow.collect { reset ->
+                if (reset) {
+
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
