@@ -33,10 +33,10 @@
             app:layout_constraintTop_toTopOf="@id/rivDone"
             app:tabGravity="center"
             app:tabIndicatorAnimationDuration="0"
-            app:tabIndicatorColor="#2196F3"
+            app:tabIndicatorColor="@color/color_selected"
             app:tabIndicatorFullWidth="false"
             app:tabMode="auto"
-            app:tabSelectedTextColor="#2196F3"
+            app:tabSelectedTextColor="@color/color_selected"
             app:tabTextColor="@android:color/white"/>
 
         <com.core.gscore.view.RippleImageView

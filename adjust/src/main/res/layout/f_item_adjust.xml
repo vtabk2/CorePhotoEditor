@@ -21,6 +21,6 @@
         android:ellipsize="end"
         android:maxLines="1"
         android:text="Brightness"
-        android:textColor="@android:color/white"
+        android:textColor="@color/color_text_selected"
         android:textSize="12sp"/>
 </LinearLayout>

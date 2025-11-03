@@ -22,7 +22,7 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
             AdjustSlider("contrast", "Contrast", R.drawable.ic_contrast),
             AdjustSlider("highlights", "Highlights", R.drawable.ic_highlights),
             AdjustSlider("shadows", "Shadows", R.drawable.ic_shadows),
-            AdjustSlider("whites", "Whites", R.drawable.ic_whites),
+            AdjustSlider("whites", "Whites", R.drawable.selector_ic_whites),
             AdjustSlider("blacks", "Blacks", R.drawable.selector_ic_blacks),
 
             AdjustSlider("temperature", "Temperature", R.drawable.ic_temperature),
