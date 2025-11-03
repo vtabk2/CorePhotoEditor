@@ -8,6 +8,7 @@
         android:id="@+id/clSeekBar"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_marginTop="6dp"
         android:paddingHorizontal="4dp"
         android:paddingVertical="2dp"
         app:layout_constraintTop_toTopOf="parent">

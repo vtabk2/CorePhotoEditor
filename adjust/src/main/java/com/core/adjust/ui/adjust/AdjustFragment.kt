@@ -17,10 +17,24 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
         _bindingView = FFragmentAdjustBinding.bind(view)
 
         val adjustList = listOf(
-            AdjustSlider("brightness", "Brightness", R.drawable.f_ic_filter_done),
-            AdjustSlider("contrast", "Contrast", R.drawable.f_ic_filter_done),
-            AdjustSlider("saturation", "Saturation", R.drawable.f_ic_filter_done),
-            AdjustSlider("sharpness", "Sharpness", R.drawable.f_ic_filter_done)
+            AdjustSlider("exposure", "Exposure", R.drawable.ic_exposure),
+            AdjustSlider("brightness", "Brightness", R.drawable.ic_brightness),
+            AdjustSlider("contrast", "Contrast", R.drawable.ic_contrast),
+            AdjustSlider("highlights", "Highlights", R.drawable.ic_highlights),
+            AdjustSlider("shadows", "Shadows", R.drawable.ic_shadows),
+            AdjustSlider("whites", "Whites", R.drawable.ic_whites),
+            AdjustSlider("blacks", "Blacks", R.drawable.ic_blacks),
+
+            AdjustSlider("temperature", "Temperature", R.drawable.ic_temperature),
+            AdjustSlider("tint", "Tint", R.drawable.ic_tint),
+            AdjustSlider("vibrance", "Vibrance", R.drawable.ic_vibrance),
+            AdjustSlider("saturation", "Saturation", R.drawable.ic_saturation),
+
+            AdjustSlider("texture", "Texture", R.drawable.ic_texture),
+            AdjustSlider("clarity", "Clarity", R.drawable.ic_clarity),
+            AdjustSlider("dehaze", "Dehaze", R.drawable.ic_dehaze),
+            AdjustSlider("vignette", "Vignette", R.drawable.ic_vignette),
+            AdjustSlider("grain", "Grain", R.drawable.ic_grain),
         )
 
         val adjustAdapter = AdjustAdapter { slider ->

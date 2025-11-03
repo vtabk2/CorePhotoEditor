@@ -2,11 +2,9 @@ package com.core.adjust.ui.adjust
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.core.adjust.R
 import com.core.adjust.databinding.FItemAdjustBinding
 import com.core.adjust.model.AdjustSlider
 
@@ -25,17 +23,11 @@ class AdjustAdapter(
         }
     }
 
-    inner class AdjustViewHolder(private val binding: FItemAdjustBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class AdjustViewHolder(private val binding: FItemAdjustBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: AdjustSlider, isSelected: Boolean) {
             binding.imgIcon.setImageResource(item.iconRes)
             binding.tvName.text = item.label
-
-            val bgRes = if (isSelected) R.drawable.bg_adjust_item_selected
-            else R.drawable.bg_adjust_item_unselected
-
-            binding.frameIcon.background = ContextCompat.getDrawable(binding.root.context, bgRes)
 
             // 🔹 Zoom animation
             val targetScale = if (isSelected) 1.2f else 1.0f
@@ -53,15 +45,27 @@ class AdjustAdapter(
                 notifyItemChanged(currentList.indexOfFirst { it.key == oldSelected })
                 notifyItemChanged(bindingAdapterPosition)
 
-                // 🔹 Auto-scroll giữa màn hình
+                // 🔹 Auto-scroll giữa màn hình (chỉ khi thực sự cần)
                 recyclerView?.let { rv ->
-                    val layoutManager = rv.layoutManager
-                    val view = rv.layoutManager?.findViewByPosition(bindingAdapterPosition)
-                    if (view != null && layoutManager != null) {
-                        val parentWidth = rv.width
-                        val childCenter = view.left + view.width / 2
-                        val parentCenter = parentWidth / 2
-                        val scrollX = childCenter - parentCenter
+                    val lm = rv.layoutManager as? androidx.recyclerview.widget.LinearLayoutManager ?: return@let
+                    val view = lm.findViewByPosition(bindingAdapterPosition) ?: return@let
+
+                    val parentWidth = rv.width
+                    val childCenter = view.left + view.width / 2
+                    val parentCenter = parentWidth / 2
+                    val scrollX = childCenter - parentCenter
+
+                    // Xác định vị trí hiện tại trong danh sách
+                    val firstVisible = lm.findFirstVisibleItemPosition()
+                    val lastVisible = lm.findLastVisibleItemPosition()
+                    val lastIndex = currentList.lastIndex
+
+                    // ✅ Không scroll nếu ở đầu/cuối danh sách
+                    val isAtStart = firstVisible <= 0 && scrollX < 0
+                    val isAtEnd = lastVisible >= lastIndex && scrollX > 0
+
+                    if (!isAtStart && !isAtEnd && scrollX != 0) {
+                        rv.stopScroll() // ngắt animation cũ (nếu có)
                         rv.smoothScrollBy(scrollX, 0)
                     }
                 }
