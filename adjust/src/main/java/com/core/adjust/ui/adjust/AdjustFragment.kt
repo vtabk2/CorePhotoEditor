@@ -24,21 +24,21 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
 
         val adjustList = listOf(
             AdjustSlider("exposure", "Exposure", R.drawable.selector_ic_exposure),
-            AdjustSlider("brightness", "Brightness", R.drawable.ic_brightness),
-            AdjustSlider("contrast", "Contrast", R.drawable.ic_contrast),
-            AdjustSlider("highlights", "Highlights", R.drawable.ic_highlights),
-            AdjustSlider("shadows", "Shadows", R.drawable.ic_shadows),
+            AdjustSlider("brightness", "Brightness", R.drawable.selector_ic_brightness),
+            AdjustSlider("contrast", "Contrast", R.drawable.selector_ic_contrast),
+            AdjustSlider("highlights", "Highlights", R.drawable.selector_ic_highlights),
+            AdjustSlider("shadows", "Shadows", R.drawable.selector_ic_shadows),
             AdjustSlider("whites", "Whites", R.drawable.selector_ic_whites),
             AdjustSlider("blacks", "Blacks", R.drawable.selector_ic_blacks),
 
-            AdjustSlider("temperature", "Temperature", R.drawable.ic_temperature),
+            AdjustSlider("temperature", "Temperature", R.drawable.selector_ic_temperture),
             AdjustSlider("tint", "Tint", R.drawable.selector_ic_tint),
-            AdjustSlider("vibrance", "Vibrance", R.drawable.ic_vibrance),
-            AdjustSlider("saturation", "Saturation", R.drawable.ic_saturation),
+            AdjustSlider("vibrance", "Vibrance", R.drawable.selector_ic_vibrance),
+            AdjustSlider("saturation", "Saturation", R.drawable.selector_ic_saturation),
 
             AdjustSlider("texture", "Texture", R.drawable.selector_ic_texture),
-            AdjustSlider("clarity", "Clarity", R.drawable.ic_clarity),
-            AdjustSlider("dehaze", "Dehaze", R.drawable.ic_dehaze),
+            AdjustSlider("clarity", "Clarity", R.drawable.selector_ic_clarity),
+            AdjustSlider("dehaze", "Dehaze", R.drawable.selector_ic_dehaze),
             AdjustSlider("vignette", "Vignette", R.drawable.selector_ic_vignette),
             AdjustSlider("grain", "Grain", R.drawable.selector_ic_grain),
         )
