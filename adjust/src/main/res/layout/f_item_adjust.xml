@@ -4,23 +4,33 @@
     android:layout_height="wrap_content"
     android:layout_marginTop="6dp"
     android:gravity="center"
+    android:minWidth="80dp"
     android:orientation="vertical"
     android:padding="8dp">
 
-    <ImageView
+    <View
+        android:id="@+id/dotChanged"
+        android:layout_width="6dp"
+        android:layout_height="6dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/selector_dot"
+        android:visibility="invisible"/>
+
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/imgIcon"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_gravity="center"/>
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tvName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
         android:ellipsize="end"
+        android:gravity="center"
         android:maxLines="1"
-        android:text="Brightness"
         android:textColor="@color/color_text_selected"
         android:textSize="12sp"/>
 </LinearLayout>

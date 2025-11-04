@@ -2,6 +2,7 @@ package com.core.adjust.ui.adjust
 
 import android.os.Bundle
 import android.view.View
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
@@ -51,9 +52,24 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
             adapter = adjustAdapter
             setHasFixedSize(true)
+            itemAnimator = null
             clipToPadding = false
             setPadding(64, 0, 64, 0)
         }
+
+        bindingView.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                adjustAdapter.updateValue(progress, callback = { value ->
+                    bindingView.tvValue.text = value.toString()
+                })
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                adjustAdapter.applyAdjust()
+            }
+        })
 
         // ✅ Snap helper để auto "bắt giữa"
         val snapHelper = LinearSnapHelper()
@@ -61,6 +77,10 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
 
         // ✅ Đặt item đầu tiên làm mặc định + scroll vào giữa
         adjustAdapter.submitList(adjustList)
+
+        adjustAdapter.setSelectedKey(adjustList.getOrNull(0)?.key, callback = { value ->
+            bindingView.tvValue.text = value.toString()
+        })
 
         // Reset
         viewLifecycleOwner.lifecycleScope.launch {

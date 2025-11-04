@@ -1,6 +1,7 @@
 package com.core.adjust.ui.adjust
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
@@ -30,6 +31,9 @@ class AdjustAdapter(
             binding.imgIcon.isSelected = isSelected
             binding.tvName.text = item.label
             binding.tvName.isSelected = isSelected
+            binding.dotChanged.isSelected = isSelected
+
+            binding.dotChanged.visibility = if (item.value != 0) View.VISIBLE else View.INVISIBLE
 
             binding.root.setOnClickListener {
                 val oldSelected = selectedKey
@@ -90,15 +94,31 @@ class AdjustAdapter(
     }
 
     /** 🔹 Cho phép chọn mặc định từ ngoài (ví dụ item đầu tiên) */
-    fun setSelectedKey(key: String?, autoScroll: Boolean = true) {
+    fun setSelectedKey(key: String? = null, autoScroll: Boolean = true, callback: (Int) -> Unit) {
         val old = selectedKey
         selectedKey = key
         val newPos = currentList.indexOfFirst { it.key == key }
+
+        currentList.getOrNull(newPos)?.let {
+            callback.invoke(it.value)
+        }
 
         notifyItemChanged(currentList.indexOfFirst { it.key == old })
         if (newPos != -1) {
             notifyItemChanged(newPos)
             if (autoScroll) recyclerView?.smoothScrollToPosition(newPos)
         }
+    }
+
+    fun updateValue(progress: Int, callback: (value: Int) -> Unit) {
+        currentList.find { it.key == selectedKey }?.let {
+            it.value = it.min + progress
+            callback.invoke(it.value)
+        }
+    }
+
+    fun applyAdjust() {
+        val newPos = currentList.indexOfFirst { it.key == selectedKey }
+        notifyItemChanged(newPos)
     }
 }
