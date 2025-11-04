@@ -10,7 +10,7 @@ import com.core.adjust.databinding.FItemAdjustBinding
 import com.core.adjust.model.AdjustSlider
 
 class AdjustAdapter(
-    private val onClick: (AdjustSlider) -> Unit
+    private val onClick: (AdjustSlider, required: Boolean) -> Unit
 ) : ListAdapter<AdjustSlider, AdjustAdapter.AdjustViewHolder>(DiffCallback) {
 
     private var selectedKey: String? = null
@@ -68,7 +68,7 @@ class AdjustAdapter(
                     }
                 }
 
-                onClick(item)
+                onClick(item, true)
             }
         }
     }
@@ -94,13 +94,13 @@ class AdjustAdapter(
     }
 
     /** 🔹 Cho phép chọn mặc định từ ngoài (ví dụ item đầu tiên) */
-    fun setSelectedKey(key: String? = null, autoScroll: Boolean = true, callback: (Int) -> Unit) {
+    fun setSelectedKey(key: String? = null, autoScroll: Boolean = true) {
         val old = selectedKey
         selectedKey = key
         val newPos = currentList.indexOfFirst { it.key == key }
 
         currentList.getOrNull(newPos)?.let {
-            callback.invoke(it.value)
+            onClick.invoke(it, true)
         }
 
         notifyItemChanged(currentList.indexOfFirst { it.key == old })
@@ -120,5 +120,8 @@ class AdjustAdapter(
     fun applyAdjust() {
         val newPos = currentList.indexOfFirst { it.key == selectedKey }
         notifyItemChanged(newPos)
+        currentList.getOrNull(newPos)?.let {
+            onClick.invoke(it, false)
+        }
     }
 }

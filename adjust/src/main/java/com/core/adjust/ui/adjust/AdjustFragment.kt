@@ -8,6 +8,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.LinearSnapHelper
+import com.core.adjust.AdjustParams
 import com.core.adjust.R
 import com.core.adjust.databinding.FFragmentAdjustBinding
 import com.core.adjust.model.AdjustSlider
@@ -24,7 +25,7 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
         _bindingView = FFragmentAdjustBinding.bind(view)
 
         val adjustList = listOf(
-            AdjustSlider("exposure", "Exposure", R.drawable.selector_ic_exposure),
+            AdjustSlider("exposure", "Exposure", R.drawable.selector_ic_exposure, -500, 500),
             AdjustSlider("brightness", "Brightness", R.drawable.selector_ic_brightness),
             AdjustSlider("contrast", "Contrast", R.drawable.selector_ic_contrast),
             AdjustSlider("highlights", "Highlights", R.drawable.selector_ic_highlights),
@@ -41,11 +42,19 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
             AdjustSlider("clarity", "Clarity", R.drawable.selector_ic_clarity),
             AdjustSlider("dehaze", "Dehaze", R.drawable.selector_ic_dehaze),
             AdjustSlider("vignette", "Vignette", R.drawable.selector_ic_vignette),
-            AdjustSlider("grain", "Grain", R.drawable.selector_ic_grain),
+            AdjustSlider("grain", "Grain", R.drawable.selector_ic_grain, 0),
         )
 
-        val adjustAdapter = AdjustAdapter { slider ->
-//            viewModel.selectAdjust(slider.key)
+        val adjustAdapter = AdjustAdapter { slider, required ->
+            if (required) {
+                val span = (slider.max - slider.min)
+                bindingView.seekBar.max = span
+                bindingView.seekBar.progress = slider.value - slider.min
+                bindingView.tvValue.text = slider.value.toString()
+            }
+
+            map(slider, shareAdjustViewModel.params)
+            shareAdjustViewModel.applyAdjust()
         }
 
         bindingView.rvAdjust.apply {
@@ -61,6 +70,7 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                if (!fromUser) return
                 adjustAdapter.updateValue(progress, callback = { value ->
                     bindingView.tvValue.text = value.toString()
                 })
@@ -78,9 +88,7 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
         // ✅ Đặt item đầu tiên làm mặc định + scroll vào giữa
         adjustAdapter.submitList(adjustList)
 
-        adjustAdapter.setSelectedKey(adjustList.getOrNull(0)?.key, callback = { value ->
-            bindingView.tvValue.text = value.toString()
-        })
+        adjustAdapter.setSelectedKey(adjustList.getOrNull(0)?.key)
 
         // Reset
         viewLifecycleOwner.lifecycleScope.launch {
@@ -95,5 +103,28 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
     override fun onDestroyView() {
         _bindingView = null
         super.onDestroyView()
+    }
+
+    fun map(adjustSlider: AdjustSlider, adjustParams: AdjustParams) {
+        when (adjustSlider.key) {
+            "exposure" -> adjustParams.exposure = adjustSlider.value / 100f
+            "brightness" -> adjustParams.brightness = adjustSlider.value / 100f
+            "contrast" -> adjustParams.contrast = adjustSlider.value / 100f
+            "highlights" -> adjustParams.highlights = adjustSlider.value / 100f
+            "shadows" -> adjustParams.shadows = adjustSlider.value / 100f
+            "whites" -> adjustParams.whites = adjustSlider.value / 100f
+            "blacks" -> adjustParams.blacks = adjustSlider.value / 100f
+            //
+            "temperature" -> adjustParams.temperature = adjustSlider.value / 100f
+            "tint" -> adjustParams.tint = adjustSlider.value / 100f
+            "vibrance" -> adjustParams.vibrance = adjustSlider.value / 100f
+            "saturation" -> adjustParams.saturation = adjustSlider.value / 100f
+            //
+            "texture" -> adjustParams.texture = adjustSlider.value / 100f
+            "clarity" -> adjustParams.clarity = adjustSlider.value / 100f
+            "dehaze" -> adjustParams.dehaze = adjustSlider.value / 100f
+            "vignette" -> adjustParams.vignette = adjustSlider.value / 100f
+            "grain" -> adjustParams.grain = adjustSlider.value / 100f
+        }
     }
 }
