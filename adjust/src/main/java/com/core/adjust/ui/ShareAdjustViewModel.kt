@@ -73,7 +73,6 @@ class ShareAdjustViewModel(val manager: AdjustManager) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             _resetFlow.emit(true)
         }
-        applyAdjust()
     }
 
     override fun onCleared() {

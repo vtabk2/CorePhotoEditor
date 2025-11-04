@@ -1,5 +1,6 @@
 package com.core.adjust.ui.adjust
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -123,5 +124,17 @@ class AdjustAdapter(
         currentList.getOrNull(newPos)?.let {
             onClick.invoke(it, false)
         }
+    }
+
+    fun resetAdjust() {
+        currentList.forEach {
+            it.value = 0
+        }
+        val newPos = currentList.indexOfFirst { it.key == selectedKey }
+        currentList.getOrNull(newPos)?.let {
+            Log.d("TAG5", "AdjustAdapter_resetAdjust: ")
+            onClick.invoke(it, true)
+        }
+        notifyDataSetChanged()
     }
 }

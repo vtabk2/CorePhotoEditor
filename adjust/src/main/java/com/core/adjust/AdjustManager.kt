@@ -49,6 +49,7 @@ class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
             val work = base.copy(Bitmap.Config.ARGB_8888, true)
 
             try {
+                Log.d("TAG5", "AdjustManager_applyAdjust: ")
                 val changed = AdjustProcessor.applyAdjust(work, params, progress = object : AdjustProgress {
                     override fun onProgress(percent: Int) {
                         Log.d("TAG5", "AdjustManager_onProgress: percent = $percent")

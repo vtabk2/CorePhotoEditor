@@ -17,7 +17,7 @@ object AdjustProcessor {
     fun applyAdjust(bitmap: Bitmap?, params: AdjustParams, progress: AdjustProgress?): Boolean {
         if (bitmap == null) return false
         val mask = AdjustParams.buildMask(params)
-        if (mask == 0L) return false
+        if (mask == 0L) return true // cần return true để áp dụng lại ảnh gốc
 
         // 🔹 Nếu chỉ có LUT nhưng LUT không thay đổi so với lần trước => skip
         if (mask == AdjustMask.MASK_LUT && params.lutPath.isNullOrBlank()) return false
