@@ -49,15 +49,20 @@ class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
             val work = base.copy(Bitmap.Config.ARGB_8888, true)
 
             try {
-                AdjustProcessor.applyAdjust(work, params, progress = object : AdjustProgress {
+                val changed = AdjustProcessor.applyAdjust(work, params, progress = object : AdjustProgress {
                     override fun onProgress(percent: Int) {
                         Log.d("TAG5", "AdjustManager_onProgress: percent = $percent")
                     }
                 })
 
-                withContext(Dispatchers.Main) {
-                    previewBitmap = work
-                    onUpdated(work)
+                if (changed) {
+                    withContext(Dispatchers.Main) {
+                        previewBitmap?.recycle()
+                        previewBitmap = work
+                        onUpdated(work)
+                    }
+                } else {
+                    work.recycle() // bỏ nếu không thay đổi
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

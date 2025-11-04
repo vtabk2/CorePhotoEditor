@@ -462,11 +462,11 @@ static void processRange(void *basePixels,
 // 🔗 JNI: applyAdjustNative
 // =============================================================
 extern "C"
-JNIEXPORT void JNICALL
+JNIEXPORT jboolean JNICALL
 Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*thiz*/,
                                                        jobject bitmap,
                                                        jobject paramsObj, jobject progressCb) {
-    if (!bitmap || !paramsObj) return;
+    if (!bitmap || !paramsObj) return JNI_FALSE;
 
     // Initialize thread pool on demand
     if (!gPool) {
@@ -501,7 +501,7 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
     const uint64_t last = s_lastHash.load(std::memory_order_relaxed);
     if (hash == last) {
         LOGI("🔁 Same hash detected — skip all processing");
-        return; // do not call progress on skip
+        return JNI_FALSE; // do not call progress on skip
     }
     s_lastHash.store(hash, std::memory_order_relaxed);
 
@@ -509,7 +509,7 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
     const bool hasLut = ((p.activeMask & MASK_LUT) && !lutPath.empty());
     if (isNoOp(p, hasLut)) {
         LOGI("No-op: all params 0 and no LUT -> skip");
-        return;
+        return JNI_FALSE;
     }
 
     // 🔴 FIX: Nếu chỉ có LUT và LUT không đổi, bỏ qua toàn bộ (không lockPixels, không progress)
@@ -517,7 +517,7 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
     const bool sameLutPath = (hasLut && lutPath == s_lastLutPath);
     if (onlyLut && sameLutPath) {
         LOGI("Only LUT active and unchanged -> skip everything");
-        return;
+        return JNI_FALSE;
     }
 
 
@@ -531,11 +531,11 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
 
     // 6) Bitmap info
     AndroidBitmapInfo info{};
-    if (AndroidBitmap_getInfo(env, bitmap, &info) != ANDROID_BITMAP_RESULT_SUCCESS) return;
-    if (info.format != ANDROID_BITMAP_FORMAT_RGBA_8888) return;
+    if (AndroidBitmap_getInfo(env, bitmap, &info) != ANDROID_BITMAP_RESULT_SUCCESS) return JNI_FALSE;
+    if (info.format != ANDROID_BITMAP_FORMAT_RGBA_8888) return JNI_FALSE;
 
     void *pixels = nullptr;
-    if (AndroidBitmap_lockPixels(env, bitmap, &pixels) != ANDROID_BITMAP_RESULT_SUCCESS) return;
+    if (AndroidBitmap_lockPixels(env, bitmap, &pixels) != ANDROID_BITMAP_RESULT_SUCCESS) return JNI_FALSE;
     const bool premultiplied = (info.flags & ANDROID_BITMAP_FLAGS_ALPHA_PREMUL) != 0;
 
     // ---------------------------------------------------------
@@ -605,7 +605,7 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
         // Không còn hiệu ứng nào để chạy -> không enqueue thread, không progress
         AndroidBitmap_unlockPixels(env, bitmap);
         LOGI("Nothing else to do after skipping LUT -> early return");
-        return;
+        return JNI_FALSE;
     }
 
     // ---------------------------------------------------------
@@ -650,6 +650,7 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
     }
 
     AndroidBitmap_unlockPixels(env, bitmap);
+    return JNI_TRUE; // ✅ Thông báo có thay đổi thật sự
 }
 
 // =============================================================

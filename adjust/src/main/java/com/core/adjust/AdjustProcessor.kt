@@ -8,21 +8,21 @@ object AdjustProcessor {
         System.loadLibrary("adjust")
     }
 
-    external fun applyAdjustNative(bitmap: Bitmap, params: AdjustParams, progress: AdjustProgress?)
+    external fun applyAdjustNative(bitmap: Bitmap, params: AdjustParams, progress: AdjustProgress?): Boolean
 
     external fun clearCache()
 
     external fun releasePool()
 
-    fun applyAdjust(bitmap: Bitmap?, params: AdjustParams, progress: AdjustProgress?) {
-        if (bitmap == null) return
+    fun applyAdjust(bitmap: Bitmap?, params: AdjustParams, progress: AdjustProgress?): Boolean {
+        if (bitmap == null) return false
         val mask = AdjustParams.buildMask(params)
-        if (mask == 0L) return
+        if (mask == 0L) return false
 
         // 🔹 Nếu chỉ có LUT nhưng LUT không thay đổi so với lần trước => skip
-        if (mask == AdjustMask.MASK_LUT && params.lutPath.isNullOrBlank()) return
+        if (mask == AdjustMask.MASK_LUT && params.lutPath.isNullOrBlank()) return false
 
         Log.d("TAG5", "AdjustProcessor_applyAdjust: params = $params")
-        applyAdjustNative(bitmap, params.copy(activeMask = mask), progress)
+        return applyAdjustNative(bitmap, params.copy(activeMask = mask), progress)
     }
 }
