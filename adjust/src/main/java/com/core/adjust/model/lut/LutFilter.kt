@@ -1,6 +1,6 @@
 package com.core.adjust.model.lut
 
 data class LutFilter(
-    val name: String,
+    var name: String,
     val file: String
 )

@@ -2,6 +2,7 @@ package com.core.adjust.ui.filter.child.filter
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -25,8 +26,11 @@ class ChildFilterViewModel(application: Application) : AndroidViewModel(applicat
             val filterList = mutableListOf<LutFilter>()
 
             list.forEach {
+                Log.d("TAG5", "ChildFilterViewModel_loadData: name = " + it.name)
+                Log.d("TAG5", "ChildFilterViewModel_loadData: size = " + it.filters.size)
                 filterCategoryList.add(it.apply { index = filterList.size })
                 it.filters.forEach { item ->
+                    item.name = item.name.replace("Table", "")
                     filterList.add(item)
                 }
             }

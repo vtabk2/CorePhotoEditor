@@ -1,6 +1,131 @@
 {
   "groups": [
     {
+      "name": "Portrait",
+      "filters": [
+        {
+          "name": "TableBrightskin",
+          "file": "TableBrightskin.table"
+        },
+        {
+          "name": "TableNatural",
+          "file": "TableNatural.table"
+        },
+        {
+          "name": "TableSoftglow",
+          "file": "TableSoftglow.table"
+        }
+      ]
+    },
+    {
+      "name": "Creative",
+      "filters": [
+        {
+          "name": "TableGolden",
+          "file": "TableGolden.table"
+        },
+        {
+          "name": "TableTealorange",
+          "file": "TableTealorange.table"
+        }
+      ]
+    },
+    {
+      "name": "Vintage & Film",
+      "filters": [
+        {
+          "name": "TableRetropop",
+          "file": "TableRetropop.table"
+        },
+        {
+          "name": "TableVin1ClassicFilm",
+          "file": "TableVin1ClassicFilm.table"
+        },
+        {
+          "name": "TableVin3ColdRetro",
+          "file": "TableVin3ColdRetro.table"
+        },
+        {
+          "name": "TableVin4AntiqueGrain",
+          "file": "TableVin4AntiqueGrain.table"
+        },
+        {
+          "name": "TableVintagenoise",
+          "file": "TableVintagenoise.table"
+        }
+      ]
+    },
+    {
+      "name": "Black & White",
+      "filters": [
+        {
+          "name": "TableClassicbw",
+          "file": "TableClassicbw.table"
+        },
+        {
+          "name": "TableMono",
+          "file": "TableMono.table"
+        }
+      ]
+    },
+    {
+      "name": "Lifestyle",
+      "filters": [
+        {
+          "name": "TableCream",
+          "file": "TableCream.table"
+        }
+      ]
+    },
+    {
+      "name": "Artistic",
+      "filters": [
+        {
+          "name": "TableDreamy",
+          "file": "TableDreamy.table"
+        }
+      ]
+    },
+    {
+      "name": "Travel",
+      "filters": [
+        {
+          "name": "TableGrainy",
+          "file": "TableGrainy.table"
+        }
+      ]
+    },
+    {
+      "name": "Mood & Atmosphere",
+      "filters": [
+        {
+          "name": "TableMist",
+          "file": "TableMist.table"
+        },
+        {
+          "name": "TableVin2FadedWarm",
+          "file": "TableVin2FadedWarm.table"
+        }
+      ]
+    },
+    {
+      "name": "Urban & Street",
+      "filters": [
+        {
+          "name": "TableMoody",
+          "file": "TableMoody.table"
+        },
+        {
+          "name": "TableNightcity",
+          "file": "TableNightcity.table"
+        },
+        {
+          "name": "TableUrban",
+          "file": "TableUrban.table"
+        }
+      ]
+    },
+    {
       "name": "Misc",
       "filters": [
         {
@@ -122,131 +247,6 @@
         {
           "name": "TableSunny",
           "file": "TableSunny.table"
-        }
-      ]
-    },
-    {
-      "name": "Portrait",
-      "filters": [
-        {
-          "name": "TableBrightskin",
-          "file": "TableBrightskin.table"
-        },
-        {
-          "name": "TableNatural",
-          "file": "TableNatural.table"
-        },
-        {
-          "name": "TableSoftglow",
-          "file": "TableSoftglow.table"
-        }
-      ]
-    },
-    {
-      "name": "Black & White",
-      "filters": [
-        {
-          "name": "TableClassicbw",
-          "file": "TableClassicbw.table"
-        },
-        {
-          "name": "TableMono",
-          "file": "TableMono.table"
-        }
-      ]
-    },
-    {
-      "name": "Lifestyle",
-      "filters": [
-        {
-          "name": "TableCream",
-          "file": "TableCream.table"
-        }
-      ]
-    },
-    {
-      "name": "Artistic",
-      "filters": [
-        {
-          "name": "TableDreamy",
-          "file": "TableDreamy.table"
-        }
-      ]
-    },
-    {
-      "name": "Creative",
-      "filters": [
-        {
-          "name": "TableGolden",
-          "file": "TableGolden.table"
-        },
-        {
-          "name": "TableTealorange",
-          "file": "TableTealorange.table"
-        }
-      ]
-    },
-    {
-      "name": "Travel",
-      "filters": [
-        {
-          "name": "TableGrainy",
-          "file": "TableGrainy.table"
-        }
-      ]
-    },
-    {
-      "name": "Mood & Atmosphere",
-      "filters": [
-        {
-          "name": "TableMist",
-          "file": "TableMist.table"
-        },
-        {
-          "name": "TableVin2FadedWarm",
-          "file": "TableVin2FadedWarm.table"
-        }
-      ]
-    },
-    {
-      "name": "Urban & Street",
-      "filters": [
-        {
-          "name": "TableMoody",
-          "file": "TableMoody.table"
-        },
-        {
-          "name": "TableNightcity",
-          "file": "TableNightcity.table"
-        },
-        {
-          "name": "TableUrban",
-          "file": "TableUrban.table"
-        }
-      ]
-    },
-    {
-      "name": "Vintage & Film",
-      "filters": [
-        {
-          "name": "TableRetropop",
-          "file": "TableRetropop.table"
-        },
-        {
-          "name": "TableVin1ClassicFilm",
-          "file": "TableVin1ClassicFilm.table"
-        },
-        {
-          "name": "TableVin3ColdRetro",
-          "file": "TableVin3ColdRetro.table"
-        },
-        {
-          "name": "TableVin4AntiqueGrain",
-          "file": "TableVin4AntiqueGrain.table"
-        },
-        {
-          "name": "TableVintagenoise",
-          "file": "TableVintagenoise.table"
         }
       ]
     }

@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.core.adjust.ui.ShareAdjustViewModel
 import com.core.adjust.ui.filter.FilterFragment
+import com.core.adjust.utils.FilterSuggestionUtils
 import com.example.photoeditor.R
 import com.example.photoeditor.databinding.ActivityMainBinding
 import com.example.photoeditor.utils.LoadUtils
@@ -62,6 +63,15 @@ class MainActivity : AppCompatActivity() {
             } ?: return@launch
 
             binding.imgOriginal.setImageBitmap(src)
+
+            val suggested = withContext(Dispatchers.Default) {
+                FilterSuggestionUtils.suggestGroups(src, uri.path)
+            }
+
+            Log.d("TAG5", "Gợi ý filter: $suggested")
+
+            // 🎨 hiển thị gợi ý trên UI (vd TextView)
+            binding.tvSuggestion.text = "Đề xuất: ${suggested.joinToString(", ")}"
 
             Log.d("TAG5", "MainActivity_onImagePicked: " + shareAdjustViewModel.params)
             shareAdjustViewModel.setOriginal(src)
