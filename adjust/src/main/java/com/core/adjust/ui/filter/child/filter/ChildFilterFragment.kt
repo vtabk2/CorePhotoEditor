@@ -5,11 +5,13 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.core.adjust.R
 import com.core.adjust.databinding.FFragmentChildFilterBinding
 import com.core.adjust.ui.ShareAdjustViewModel
+import kotlinx.coroutines.launch
 
 class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
     private var _bindingView: FFragmentChildFilterBinding? = null
@@ -76,6 +78,21 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
             }
             childFilterViewModel.filterListLiveData.observe(this) { filterList ->
                 filterAdapter?.submitList(filterList)
+            }
+
+            // Reset
+            viewLifecycleOwner.lifecycleScope.launch {
+                shareAdjustViewModel.resetFlow.collect { mode ->
+                    when (mode) {
+                        ShareAdjustViewModel.FILTER -> {
+                            filterCategoryAdapter?.unSelectedAll()
+                            filterAdapter?.unSelectedAll()
+
+                            shareAdjustViewModel.params.lutPath = null
+                            shareAdjustViewModel.applyAdjust()
+                        }
+                    }
+                }
             }
         }
     }

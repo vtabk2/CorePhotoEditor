@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
+import com.core.adjust.AdjustProcessor
 import com.core.adjust.R
 import com.core.adjust.databinding.FFragmentFilterBinding
 import com.core.adjust.ui.ShareAdjustViewModel
@@ -46,6 +47,7 @@ class FilterFragment : Fragment(R.layout.f_fragment_filter) {
             }.attach()
 
             rivReset.setOnSingleClick {
+                AdjustProcessor.clearCache()
                 shareAdjustViewModel.reset(modes[viewPager2.currentItem])
             }
 

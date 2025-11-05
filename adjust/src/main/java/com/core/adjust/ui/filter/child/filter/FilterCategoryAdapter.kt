@@ -68,4 +68,9 @@ class FilterCategoryAdapter(
         setSelected(lastIndex)
         callbackScroll.invoke(lastIndex)
     }
+
+    fun unSelectedAll() {
+        selectedPos = 0
+        notifyDataSetChanged()
+    }
 }

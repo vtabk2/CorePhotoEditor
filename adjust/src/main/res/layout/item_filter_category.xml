@@ -12,4 +12,4 @@
     android:paddingHorizontal="14dp"
     android:paddingVertical="4dp"
     android:textColor="@color/color_text_filter_category"
-    android:textSize="14sp"/>
+    android:textSize="12sp"/>
