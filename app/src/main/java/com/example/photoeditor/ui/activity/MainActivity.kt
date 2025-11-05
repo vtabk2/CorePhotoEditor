@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
         lifecycleScope.launch {
             shareAdjustViewModel.closeFlow.collect { close ->
                 Log.d("TAG5", "MainActivity_onCreate: close = $close")
+                FilterFragment.hideFilterFragment(this@MainActivity)
             }
         }
 

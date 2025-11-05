@@ -1,10 +1,10 @@
-package com.core.adjust.ui.adjust
+package com.core.adjust.ui.filter.child.adjust
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.core.adjust.databinding.FItemAdjustBinding
@@ -46,7 +46,7 @@ class AdjustAdapter(
 
                 // 🔹 Auto-scroll giữa màn hình (chỉ khi thực sự cần)
                 recyclerView?.let { rv ->
-                    val lm = rv.layoutManager as? androidx.recyclerview.widget.LinearLayoutManager ?: return@let
+                    val lm = rv.layoutManager as? LinearLayoutManager ?: return@let
                     val view = lm.findViewByPosition(bindingAdapterPosition) ?: return@let
 
                     val parentWidth = rv.width
@@ -132,7 +132,6 @@ class AdjustAdapter(
         }
         val newPos = currentList.indexOfFirst { it.key == selectedKey }
         currentList.getOrNull(newPos)?.let {
-            Log.d("TAG5", "AdjustAdapter_resetAdjust: ")
             onClick.invoke(it, true)
         }
         notifyDataSetChanged()

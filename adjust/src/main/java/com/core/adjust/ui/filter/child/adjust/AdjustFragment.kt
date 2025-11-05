@@ -1,4 +1,4 @@
-package com.core.adjust.ui.adjust
+package com.core.adjust.ui.filter.child.adjust
 
 import android.os.Bundle
 import android.view.View

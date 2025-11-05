@@ -11,8 +11,7 @@ import androidx.fragment.app.activityViewModels
 import com.core.adjust.R
 import com.core.adjust.databinding.FFragmentFilterBinding
 import com.core.adjust.ui.ShareAdjustViewModel
-import com.core.adjust.ui.adapter.CategoryPagerAdapter
-import com.core.adjust.ui.adjust.AdjustFragment
+import com.core.adjust.ui.filter.child.adjust.AdjustFragment
 import com.core.adjust.ui.filter.child.filter.ChildFilterFragment
 import com.core.adjust.ui.hsl.ColorMixerFragment
 import com.core.gscore.utils.extensions.setOnSingleClick

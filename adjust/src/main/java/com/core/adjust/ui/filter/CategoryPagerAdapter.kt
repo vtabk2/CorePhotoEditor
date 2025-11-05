@@ -1,4 +1,4 @@
-package com.core.adjust.ui.adapter
+package com.core.adjust.ui.filter
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
