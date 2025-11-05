@@ -5,7 +5,8 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.core.adjust.R
 import com.core.adjust.databinding.FFragmentChildFilterBinding
 import com.core.adjust.ui.ShareAdjustViewModel
@@ -23,39 +24,59 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        context?.let {
 
-        _bindingView = FFragmentChildFilterBinding.bind(view)
+            _bindingView = FFragmentChildFilterBinding.bind(view)
 
-        childFilterViewModel.loadData()
+            val customScrollLinearLayoutManager = CustomScrollLinearLayoutManager(it)
 
-        childFilterViewModel.filterListLiveData.observe(this) { list ->
-            filterCategoryAdapter?.submitList(list.toMutableList())
-            filterAdapter?.submitList(list.toMutableList())
-        }
+            filterCategoryAdapter = FilterCategoryAdapter(
+                onCategorySelected = { group ->
+                    bindingView.rvFilter.stopScroll()
+                    customScrollLinearLayoutManager.scrollToPositionWithOffset(group.index, 0)
+                },
+                callbackScroll = { index ->
+                    val position = if (index < 2) 0 else index
+                    bindingView.rvFilterCategory.scrollToPosition(position)
+                })
 
-        filterCategoryAdapter = FilterCategoryAdapter { index ->
-            filterAdapter?.getPositionForGroup(index)?.let { pos ->
-                bindingView.rvFilter.smoothScrollToPosition(pos)
+            filterAdapter = FilterAdapter(
+                onFilterSelected = { filter ->
+                    shareAdjustViewModel.params.lutPath = "filters/${filter.file}"
+                    shareAdjustViewModel.applyAdjust()
+                },
+                callbackScroll = { index ->
+                    val position = if (index < 2) 0 else index
+                    bindingView.rvFilter.scrollToPosition(position)
+                })
+
+            bindingView.rvFilter.addOnScrollListener(object : OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    val findFirstCompletelyVisibleItemPosition: Int = customScrollLinearLayoutManager.findFirstCompletelyVisibleItemPosition()
+                    filterCategoryAdapter?.checkScroll(findFirstCompletelyVisibleItemPosition)
+                }
+            })
+
+            bindingView.rvFilterCategory.apply {
+                layoutManager = CustomScrollLinearLayoutManager(it)
+                adapter = filterCategoryAdapter
+                itemAnimator = null
             }
-        }
 
-        filterAdapter = FilterAdapter(onGroupVisible = { groupIndex ->
-            filterCategoryAdapter?.setSelected(groupIndex)
-            bindingView.rvFilterCategory.smoothScrollToPosition(groupIndex)
-        }, onFilterSelected = { filter ->
-            shareAdjustViewModel.params.lutPath = "filters/${filter.file}"
-            shareAdjustViewModel.applyAdjust()
-        })
+            bindingView.rvFilter.apply {
+                layoutManager = customScrollLinearLayoutManager
+                adapter = filterAdapter
+                itemAnimator = null
+            }
 
-        bindingView.rvFilterCategory.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = filterCategoryAdapter
-        }
-
-        bindingView.rvFilter.apply {
-            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-            adapter = filterAdapter
-            filterAdapter?.attachScrollSync(this)
+            childFilterViewModel.loadData()
+            childFilterViewModel.filterCategoryListLiveData.observe(this) { filterCategoryList ->
+                filterCategoryAdapter?.submitList(filterCategoryList)
+            }
+            childFilterViewModel.filterListLiveData.observe(this) { filterList ->
+                filterAdapter?.submitList(filterList)
+            }
         }
     }
 }

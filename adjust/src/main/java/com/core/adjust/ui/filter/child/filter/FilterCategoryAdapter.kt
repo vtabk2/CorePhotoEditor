@@ -7,14 +7,14 @@ import com.core.adjust.databinding.ItemFilterCategoryBinding
 import com.core.adjust.model.lut.LutGroup
 
 class FilterCategoryAdapter(
-    private val onCategorySelected: (Int) -> Unit
+    private val onCategorySelected: (group: LutGroup) -> Unit,
+    private val callbackScroll: (position: Int) -> Unit
 ) : RecyclerView.Adapter<FilterCategoryAdapter.CategoryVH>() {
-    private val categories = mutableListOf<LutGroup>()
+    private val filterCategoryList = mutableListOf<LutGroup>()
 
     private var selectedPos = 0
 
-    inner class CategoryVH(val binding: ItemFilterCategoryBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class CategoryVH(val binding: ItemFilterCategoryBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(group: LutGroup, isSelected: Boolean) {
             binding.tvCategory.text = group.name
@@ -25,7 +25,7 @@ class FilterCategoryAdapter(
                 selectedPos = bindingAdapterPosition
                 notifyItemChanged(old)
                 notifyItemChanged(selectedPos)
-                onCategorySelected(selectedPos)
+                onCategorySelected(group)
             }
         }
     }
@@ -36,10 +36,10 @@ class FilterCategoryAdapter(
     }
 
     override fun onBindViewHolder(holder: CategoryVH, position: Int) {
-        holder.bind(categories[position], position == selectedPos)
+        holder.bind(filterCategoryList[position], position == selectedPos)
     }
 
-    override fun getItemCount() = categories.size
+    override fun getItemCount() = filterCategoryList.size
 
     fun setSelected(index: Int) {
         if (index == selectedPos) return
@@ -50,8 +50,22 @@ class FilterCategoryAdapter(
     }
 
     fun submitList(list: MutableList<LutGroup>) {
-        categories.clear()
-        categories.addAll(list)
+        filterCategoryList.clear()
+        filterCategoryList.addAll(list)
         notifyDataSetChanged()
+    }
+
+    fun checkScroll(position: Int) {
+        var lastIndex = 0
+        filterCategoryList.map { it.index }.let { indexList ->
+            indexList.findLast {
+                position >= it
+            }?.let {
+                lastIndex = indexList.indexOf(it)
+            }
+        }
+
+        setSelected(lastIndex)
+        callbackScroll.invoke(lastIndex)
     }
 }

@@ -2,23 +2,19 @@ package com.core.adjust.ui.filter.child.filter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.core.adjust.databinding.ItemFilterBinding
 import com.core.adjust.model.lut.LutFilter
-import com.core.adjust.model.lut.LutGroup
 
 class FilterAdapter(
-    private val onGroupVisible: (Int) -> Unit,
-    private val onFilterSelected: (LutFilter) -> Unit
+    private val onFilterSelected: (LutFilter) -> Unit,
+    private val callbackScroll: (index: Int) -> Unit,
 ) : RecyclerView.Adapter<FilterAdapter.FilterVH>() {
 
-    private val groups = mutableListOf<LutGroup>()
-    private val items = mutableListOf<Pair<Int, LutFilter>>()
+    private val filterList = mutableListOf<LutFilter>()
     private var selectedPos = RecyclerView.NO_POSITION
 
-    inner class FilterVH(val binding: ItemFilterBinding) :
-        RecyclerView.ViewHolder(binding.root) {
+    inner class FilterVH(val binding: ItemFilterBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(filter: LutFilter, isSelected: Boolean) {
             binding.tvFilter.text = filter.name
@@ -40,48 +36,21 @@ class FilterAdapter(
     }
 
     override fun onBindViewHolder(holder: FilterVH, position: Int) {
-        val (_, filter) = items[position]
+        val filter = filterList[position]
         holder.bind(filter, position == selectedPos)
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = filterList.size
 
-    fun getPositionForGroup(groupIndex: Int): Int {
-        return items.indexOfFirst { it.first == groupIndex }.coerceAtLeast(0)
-    }
-
-    fun attachScrollSync(recyclerView: RecyclerView) {
-        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(rv: RecyclerView, dx: Int, dy: Int) {
-                val lm = rv.layoutManager as? LinearLayoutManager ?: return
-                val first = lm.findFirstVisibleItemPosition()
-                if (first != RecyclerView.NO_POSITION) {
-                    val gIndex = items[first].first
-                    onGroupVisible(gIndex)
-                }
-            }
-        })
-    }
-
-    fun submitList(list: MutableList<LutGroup>) {
-        groups.clear()
-        groups.addAll(list)
-
-        items.clear()
-        groups.forEachIndexed { i, g ->
-            g.filters.forEach { f -> items.add(i to f) }
-        }
+    fun submitList(list: MutableList<LutFilter>) {
+        filterList.clear()
+        filterList.addAll(list)
 
         notifyDataSetChanged()
     }
 
-    fun setSelectedByName(name: String) {
-        val index = items.indexOfFirst { it.second.name == name }
-        if (index != -1) {
-            val old = selectedPos
-            selectedPos = index
-            notifyItemChanged(old)
-            notifyItemChanged(selectedPos)
-        }
+    fun unSelectedAll() {
+        selectedPos = RecyclerView.NO_POSITION
+        notifyDataSetChanged()
     }
 }
