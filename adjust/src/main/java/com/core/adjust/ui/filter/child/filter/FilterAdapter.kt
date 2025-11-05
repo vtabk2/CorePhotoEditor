@@ -9,16 +9,28 @@ import com.core.adjust.model.lut.LutFilter
 import com.core.adjust.model.lut.LutGroup
 
 class FilterAdapter(
-    private val onGroupVisible: (Int) -> Unit
+    private val onGroupVisible: (Int) -> Unit,
+    private val onFilterSelected: (LutFilter) -> Unit
 ) : RecyclerView.Adapter<FilterAdapter.FilterVH>() {
 
     private val groups = mutableListOf<LutGroup>()
     private val items = mutableListOf<Pair<Int, LutFilter>>()
+    private var selectedPos = RecyclerView.NO_POSITION
 
-    class FilterVH(val binding: ItemFilterBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class FilterVH(val binding: ItemFilterBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(filter: LutFilter) {
+        fun bind(filter: LutFilter, isSelected: Boolean) {
             binding.tvFilter.text = filter.name
+            binding.tvFilter.isSelected = isSelected
+
+            binding.root.setOnClickListener {
+                val old = selectedPos
+                selectedPos = bindingAdapterPosition
+                notifyItemChanged(old)
+                notifyItemChanged(selectedPos)
+                onFilterSelected(filter)
+            }
         }
     }
 
@@ -28,7 +40,8 @@ class FilterAdapter(
     }
 
     override fun onBindViewHolder(holder: FilterVH, position: Int) {
-        holder.bind(items[position].second)
+        val (_, filter) = items[position]
+        holder.bind(filter, position == selectedPos)
     }
 
     override fun getItemCount() = items.size
@@ -54,10 +67,21 @@ class FilterAdapter(
         groups.clear()
         groups.addAll(list)
 
+        items.clear()
         groups.forEachIndexed { i, g ->
             g.filters.forEach { f -> items.add(i to f) }
         }
 
         notifyDataSetChanged()
+    }
+
+    fun setSelectedByName(name: String) {
+        val index = items.indexOfFirst { it.second.name == name }
+        if (index != -1) {
+            val old = selectedPos
+            selectedPos = index
+            notifyItemChanged(old)
+            notifyItemChanged(selectedPos)
+        }
     }
 }
