@@ -3,7 +3,6 @@ package com.core.adjust.ui.filter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
@@ -37,7 +36,7 @@ class FilterFragment : Fragment(R.layout.f_fragment_filter) {
                 ColorMixerFragment()
             )
             val titles = listOf("Filter", "Adjust", "HSL")
-            val modes = listOf(ShareAdjustViewModel.ADJUST, ShareAdjustViewModel.HSL)
+            val modes = listOf(ShareAdjustViewModel.FILTER, ShareAdjustViewModel.ADJUST, ShareAdjustViewModel.HSL)
 
             val adapter = CategoryPagerAdapter(requireActivity(), titles, fragments)
             viewPager2.adapter = adapter
@@ -48,7 +47,6 @@ class FilterFragment : Fragment(R.layout.f_fragment_filter) {
             }.attach()
 
             rivReset.setOnSingleClick {
-                Log.d("TAG5", "FilterFragment_onViewCreated: currentItem = " + viewPager2.currentItem)
                 shareAdjustViewModel.reset(modes[viewPager2.currentItem])
             }
 

@@ -1,7 +1,6 @@
 package com.core.adjust.ui
 
 import android.graphics.Bitmap
-import android.util.Log
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -19,8 +18,8 @@ class ShareAdjustViewModel(val manager: AdjustManager) : ViewModel() {
     private val _previewBitmap = MutableLiveData<Bitmap>()
     val previewBitmap: LiveData<Bitmap> = _previewBitmap
 
-    private val _resetFlow = MutableSharedFlow<Boolean>()
-    val resetFlow: SharedFlow<Boolean> = _resetFlow
+    private val _resetFlow = MutableSharedFlow<Int>()
+    val resetFlow: SharedFlow<Int> = _resetFlow
 
     private val _closeFlow = MutableSharedFlow<Boolean>()
     val closeFlow: SharedFlow<Boolean> = _closeFlow
@@ -45,33 +44,9 @@ class ShareAdjustViewModel(val manager: AdjustManager) : ViewModel() {
         applyAdjust()
     }
 
-    fun resetHsl() {
-        manager.resetHsl()
-        viewModelScope.launch(Dispatchers.IO) {
-            _resetFlow.emit(true)
-        }
-        applyAdjust()
-    }
-
     fun reset(mode: Int) {
-        Log.d("TAG5", "AdjustViewModel_reset: mode = $mode")
-        when (mode) {
-            FILTER -> {
-
-            }
-
-            ADJUST -> {
-                manager.resetLight()
-                manager.resetColor()
-                manager.resetEffects()
-            }
-
-            HSL -> {
-                manager.resetHsl()
-            }
-        }
         viewModelScope.launch(Dispatchers.IO) {
-            _resetFlow.emit(true)
+            _resetFlow.emit(mode)
         }
     }
 

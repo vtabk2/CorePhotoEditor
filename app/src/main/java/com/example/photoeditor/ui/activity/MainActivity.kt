@@ -7,10 +7,8 @@ import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import com.core.adjust.ui.ShareAdjustViewModel
-import com.core.adjust.ui.hsl.ColorMixerFragment
 import com.core.adjust.ui.filter.FilterFragment
 import com.example.photoeditor.R
 import com.example.photoeditor.databinding.ActivityMainBinding
@@ -27,7 +25,6 @@ class MainActivity : AppCompatActivity() {
         ShareAdjustViewModel.Factory(lifecycleScope)
     }
 
-    // Photo Picker launcher (Android 13+ compatible)
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->
         uri?.let { onImagePicked(it) }
     }
@@ -44,31 +41,6 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        // Giả sử bạn đã findViewById hoặc ViewBinding với include_bottom_panel
-        val controller = BottomPanelController(
-            rcvTabs = binding.bottomPanel.rcvAdjustTabs,
-            rcvSliders = binding.bottomPanel.rcvSliders,
-            btnReset = binding.bottomPanel.btnReset,
-            adjustManager = shareAdjustViewModel.manager,
-            onSliderChanged = { slider ->
-                AdjustRepository.map(adjustSlider = slider, adjustParams = shareAdjustViewModel.params)
-                shareAdjustViewModel.applyAdjust()
-            },
-            onResetTab = { tabKey ->
-                if (tabKey == "hsl") {
-                    shareAdjustViewModel.resetHsl()
-                }
-                shareAdjustViewModel.applyAdjust()
-            },
-            onShowHsl = {
-                binding.bottomPanel.hslContainer.isVisible = true
-                showHslUiIfNeeded()
-            },
-            onHideHsl = {
-                binding.bottomPanel.hslContainer.isVisible = false
-            })
-        controller.bind()
-
         shareAdjustViewModel.previewBitmap.observe(this) { bmp ->
             binding.imgAdjusted.setImageBitmap(bmp)
         }
@@ -82,16 +54,7 @@ class MainActivity : AppCompatActivity() {
         FilterFragment.showFilterFragment(this, R.id.flBottom)
     }
 
-    private fun showHslUiIfNeeded() {
-        if (supportFragmentManager.findFragmentByTag("HSL") == null) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.hslContainer, ColorMixerFragment(), "HSL")
-                .commitAllowingStateLoss()
-        }
-    }
-
     private fun onImagePicked(uri: Uri) {
-        // Dùng chung 1 hàm load bitmap theo memoryClass
         lifecycleScope.launch(Dispatchers.Main) {
             val src = withContext(Dispatchers.IO) {
                 LoadUtils.loadBitmapForEditingWithMemoryClass(this@MainActivity, uri, freeStyle = false)

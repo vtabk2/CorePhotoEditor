@@ -84,8 +84,12 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
 
         // Reset
         viewLifecycleOwner.lifecycleScope.launch {
-            shareAdjustViewModel.resetFlow.collect { reset ->
-                if (reset) colorMixerViewModel.resetAll()
+            shareAdjustViewModel.resetFlow.collect { mode ->
+                when (mode) {
+                    ShareAdjustViewModel.HSL -> {
+                        colorMixerViewModel.resetAll()
+                    }
+                }
             }
         }
     }

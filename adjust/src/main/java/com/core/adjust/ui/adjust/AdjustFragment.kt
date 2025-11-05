@@ -92,9 +92,11 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
 
         // Reset
         viewLifecycleOwner.lifecycleScope.launch {
-            shareAdjustViewModel.resetFlow.collect { reset ->
-                if (reset) {
-                    adjustAdapter.resetAdjust()
+            shareAdjustViewModel.resetFlow.collect { mode ->
+                when (mode) {
+                    ShareAdjustViewModel.ADJUST -> {
+                        adjustAdapter.resetAdjust()
+                    }
                 }
             }
         }
