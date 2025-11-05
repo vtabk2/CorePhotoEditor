@@ -5,7 +5,7 @@
     android:layout_height="135dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/clSeekBarAdjust"
+        android:id="@+id/clSeekBarFilter"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="6dp"
@@ -15,7 +15,7 @@
 
         <!-- SeekBar chiếm phần giữa -->
         <SeekBar
-            android:id="@+id/seekBarAdjust"
+            android:id="@+id/seekBarFilter"
             android:layout_width="0dp"
             android:layout_height="26dp"
             android:max="200"
@@ -25,13 +25,13 @@
             android:splitTrack="false"
             android:thumbTint="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/tvValueAdjust"
+            app:layout_constraintEnd_toStartOf="@id/tvValueFilter"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <!-- Giá trị hiện tại -->
         <TextView
-            android:id="@+id/tvValueAdjust"
+            android:id="@+id/tvValueFilter"
             android:layout_width="36dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="10dp"
@@ -44,9 +44,9 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvAdjust"
+        android:id="@+id/rvFilter"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/clSeekBarAdjust"/>
+        app:layout_constraintTop_toBottomOf="@id/clSeekBarFilter"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,20 +1,12 @@
 package com.core.adjust.ui.hsl
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.core.adjust.model.ColorChannel
 import com.core.adjust.model.HslAdjustState
 import com.core.adjust.model.HslTriple
-import com.core.adjust.model.lut.LutPresetRoot
-import com.core.adjust.utils.GsonUtils.convertToObject
-import com.core.gscore.utils.extensions.getTextFromAsset
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.launch
 
 class ColorMixerViewModel : ViewModel() {
     private val _state = MutableStateFlow(HslAdjustState())
@@ -38,22 +30,4 @@ class ColorMixerViewModel : ViewModel() {
     fun resetAll() = _state.update { HslAdjustState() }
     fun setPreviewHeld(b: Boolean) = _state.update { it.copy(isPreviewHeld = b) }
     fun toggleTargeted() = _state.update { it.copy(enableTargeted = !it.enableTargeted) }
-
-    fun loadData(context: Context?) {
-        if (context == null) return
-        viewModelScope.launch(Dispatchers.IO) {
-            val root = loadGroupedLutPresets(context)
-            root.groups.forEach { group ->
-                Log.d("LUT", "Group: ${group.name}")
-                group.filters.forEach { filter ->
-                    Log.d("LUT", "  → ${filter.name} (${filter.file})")
-                }
-            }
-        }
-    }
-
-    fun loadGroupedLutPresets(context: Context): LutPresetRoot {
-        val json = context.assets.getTextFromAsset("filters/lut_presets.json")
-        return json?.convertToObject<LutPresetRoot>() ?: LutPresetRoot()
-    }
 }

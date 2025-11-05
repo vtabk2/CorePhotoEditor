@@ -88,8 +88,6 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
                 if (reset) colorMixerViewModel.resetAll()
             }
         }
-
-        colorMixerViewModel.loadData(context)
     }
 
     private fun setupSlider(row: FRowSliderHslBinding, onChange: (Int) -> Unit) {

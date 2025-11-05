@@ -48,9 +48,9 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
         val adjustAdapter = AdjustAdapter { slider, required ->
             if (required) {
                 val span = (slider.max - slider.min)
-                bindingView.seekBar.max = span
-                bindingView.seekBar.progress = slider.value - slider.min
-                bindingView.tvValue.text = slider.value.toString()
+                bindingView.seekBarAdjust.max = span
+                bindingView.seekBarAdjust.progress = slider.value - slider.min
+                bindingView.tvValueAdjust.text = slider.value.toString()
             }
 
             map(slider, shareAdjustViewModel.params)
@@ -63,16 +63,16 @@ class AdjustFragment : Fragment(R.layout.f_fragment_adjust) {
             setHasFixedSize(true)
             itemAnimator = null
             clipToPadding = false
-            setPadding(64, 0, 64, 0)
+            setPadding(32, 0, 32, 0)
         }
 
-        bindingView.seekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+        bindingView.seekBarAdjust.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onStartTrackingTouch(seekBar: SeekBar?) {}
 
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 if (!fromUser) return
                 adjustAdapter.updateValue(progress, callback = { value ->
-                    bindingView.tvValue.text = value.toString()
+                    bindingView.tvValueAdjust.text = value.toString()
                 })
             }
 
