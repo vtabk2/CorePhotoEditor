@@ -15,12 +15,6 @@ class FilterAdapter(
     private val groups = mutableListOf<LutGroup>()
     private val items = mutableListOf<Pair<Int, LutFilter>>()
 
-    init {
-        groups.forEachIndexed { i, g ->
-            g.filters.forEach { f -> items.add(i to f) }
-        }
-    }
-
     class FilterVH(val binding: ItemFilterBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(filter: LutFilter) {
@@ -59,6 +53,11 @@ class FilterAdapter(
     fun submitList(list: MutableList<LutGroup>) {
         groups.clear()
         groups.addAll(list)
+
+        groups.forEachIndexed { i, g ->
+            g.filters.forEach { f -> items.add(i to f) }
+        }
+
         notifyDataSetChanged()
     }
 }

@@ -25,8 +25,8 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
         childFilterViewModel.loadData()
 
         childFilterViewModel.filterListLiveData.observe(this) { list ->
-            filterCategoryAdapter?.submitList(list)
-            filterAdapter?.submitList(list)
+            filterCategoryAdapter?.submitList(list.toMutableList())
+            filterAdapter?.submitList(list.toMutableList())
         }
 
         filterCategoryAdapter = FilterCategoryAdapter { index ->
