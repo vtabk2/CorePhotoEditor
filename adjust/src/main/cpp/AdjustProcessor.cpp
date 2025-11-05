@@ -16,10 +16,16 @@
 #include <cstdint>
 
 #include "adjust_common.h"
+#include <android/asset_manager.h>
+#include <android/asset_manager_jni.h>
 
 #define LOG_TAG "TAG5"
 #define LOGI(...) __android_log_print(ANDROID_LOG_INFO,  LOG_TAG, __VA_ARGS__)
 #define LOGE(...) __android_log_print(ANDROID_LOG_ERROR, LOG_TAG, __VA_ARGS__)
+
+static inline void DeleteLocalRefSafely(JNIEnv *env, jobject obj) {
+    if (obj) env->DeleteLocalRef(obj);
+}
 
 // =============================================================
 // 🎨 LUT 3D TABLE SUPPORT
@@ -33,35 +39,76 @@ struct Lut3D {
     }
 };
 
-static bool loadTableFile(const std::string &path, Lut3D &lut) {
+static bool loadTableFile(JNIEnv *env, jobject context, const std::string &path, Lut3D &lut) {
+    // 1️⃣ Try open from normal file
     std::ifstream f(path, std::ios::binary);
-    if (!f.is_open()) {
-        LOGE("Failed to open LUT file: %s", path.c_str());
+    if (f.is_open()) {
+        uint32_t header[2];
+        f.read(reinterpret_cast<char *>(header), sizeof(header));
+        if (!f) {
+            LOGE("Failed to read LUT header: %s", path.c_str());
+            return false;
+        }
+
+        lut.size = static_cast<int32_t>(header[0]);
+        const size_t count = static_cast<size_t>(lut.size) * lut.size * lut.size * 3u;
+        lut.data.resize(count);
+        f.read(reinterpret_cast<char *>(lut.data.data()), count * sizeof(float));
+        f.close();
+
+        if (lut.valid()) {
+            LOGI("✅ LUT loaded from file: %s (size=%d)", path.c_str(), lut.size);
+            return true;
+        }
+        LOGE("Invalid LUT content in file: %s", path.c_str());
         return false;
     }
-    uint32_t header[2] = {0u, 0u};
-    f.read(reinterpret_cast<char *>(header), sizeof(header));
-    if (!f) {
-        LOGE("Failed to read LUT header: %s", path.c_str());
+
+    // 2️⃣ Try open from assets
+    LOGI("File not found, try assets/%s", path.c_str());
+
+    jclass ctxCls = env->GetObjectClass(context);
+    jmethodID getAssets = env->GetMethodID(ctxCls, "getAssets",
+                                           "()Landroid/content/res/AssetManager;");
+    jobject assetMgrObj = env->CallObjectMethod(context, getAssets);
+    DeleteLocalRefSafely(env, ctxCls);
+
+    AAssetManager *mgr = AAssetManager_fromJava(env, assetMgrObj);
+    DeleteLocalRefSafely(env, assetMgrObj);
+    if (!mgr) {
+        LOGE("AAssetManager is null");
         return false;
     }
+
+    AAsset *asset = AAssetManager_open(mgr, path.c_str(), AASSET_MODE_STREAMING);
+    if (!asset) {
+        LOGE("LUT not found in assets: %s", path.c_str());
+        return false;
+    }
+
+    uint32_t header[2];
+    if (AAsset_read(asset, header, sizeof(header)) != sizeof(header)) {
+        LOGE("Failed to read LUT header from asset: %s", path.c_str());
+        AAsset_close(asset);
+        return false;
+    }
+
     lut.size = static_cast<int32_t>(header[0]);
-    if (lut.size <= 0) {
-        LOGE("Invalid LUT size: %d", lut.size);
-        return false;
-    }
-    const size_t count = static_cast<size_t>(lut.size) * static_cast<size_t>(lut.size) * static_cast<size_t>(lut.size) * 3u;
+    const size_t count = static_cast<size_t>(lut.size) * lut.size * lut.size * 3u;
     lut.data.resize(count);
-    f.read(reinterpret_cast<char *>(lut.data.data()), count * sizeof(float));
-    if (!f) {
-        LOGE("Failed to read LUT data: %s", path.c_str());
+    const ssize_t bytesRead = AAsset_read(asset, lut.data.data(), count * sizeof(float));
+    AAsset_close(asset);
+
+    if (bytesRead != static_cast<ssize_t>(count * sizeof(float))) {
+        LOGE("Failed to read LUT data from asset: %s", path.c_str());
         return false;
     }
+
     if (lut.valid()) {
-        LOGI("Loaded LUT (size=%d) from %s", lut.size, path.c_str());
+        LOGI("✅ LUT loaded from assets/%s (size=%d)", path.c_str(), lut.size);
         return true;
     }
-    LOGE("Invalid LUT content: %s", path.c_str());
+    LOGE("Invalid LUT data from asset: %s", path.c_str());
     return false;
 }
 
@@ -223,9 +270,6 @@ static std::string s_lastLutPath; // cache LUT path đã apply gần nhất
 // =============================================================
 // ⚙️ JNI helpers
 // =============================================================
-static inline void DeleteLocalRefSafely(JNIEnv* env, jobject obj) {
-    if (obj) env->DeleteLocalRef(obj);
-}
 
 static float getFieldF(JNIEnv *env, jobject obj, const char *name) {
     jclass cls = env->GetObjectClass(obj);
@@ -464,6 +508,7 @@ static void processRange(void *basePixels,
 extern "C"
 JNIEXPORT jboolean JNICALL
 Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*thiz*/,
+                                                       jobject context,
                                                        jobject bitmap,
                                                        jobject paramsObj, jobject progressCb) {
     if (!bitmap || !paramsObj) return JNI_FALSE;
@@ -548,7 +593,7 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
         } else {
             LOGI("🎨 Applying LUT from path: %s", lutPath.c_str());
             Lut3D lut;
-            if (loadTableFile(lutPath, lut)) {
+            if (loadTableFile(env, context, lutPath, lut)) {
                 s_lastLutPath = lutPath; // remember last LUT
                 uint8_t *base = reinterpret_cast<uint8_t *>(pixels);
                 for (int32_t y = 0; y < static_cast<int32_t>(info.height); ++y) {

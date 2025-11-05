@@ -29,7 +29,12 @@ add_library(adjust SHARED
 # Android system libs
 find_library(log-lib log)
 find_library(jnigraphics-lib jnigraphics)
-target_link_libraries(adjust PRIVATE ${log-lib} ${jnigraphics-lib})
+find_library(android-lib android)
+target_link_libraries(adjust PRIVATE
+        ${log-lib}
+        ${jnigraphics-lib}
+        ${android-lib}
+)
 
 # =========================
 # Visibility & PIC

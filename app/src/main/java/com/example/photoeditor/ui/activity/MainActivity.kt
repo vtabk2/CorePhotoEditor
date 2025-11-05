@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val shareAdjustViewModel: ShareAdjustViewModel by viewModels {
-        ShareAdjustViewModel.Factory(lifecycleScope)
+        ShareAdjustViewModel.Factory(this, lifecycleScope)
     }
 
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri: Uri? ->

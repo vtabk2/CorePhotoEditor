@@ -35,7 +35,7 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
 
         filterCategoryAdapter = FilterCategoryAdapter { index ->
             filterAdapter?.getPositionForGroup(index)?.let { pos ->
-                bindingView.rvFilterCategory.smoothScrollToPosition(pos)
+                bindingView.rvFilter.smoothScrollToPosition(pos)
             }
         }
 
@@ -43,7 +43,7 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
             filterCategoryAdapter?.setSelected(groupIndex)
             bindingView.rvFilterCategory.smoothScrollToPosition(groupIndex)
         }, onFilterSelected = { filter ->
-            shareAdjustViewModel.params.lutPath = "file:///android_asset/filters/${filter.file}"
+            shareAdjustViewModel.params.lutPath = "filters/${filter.file}"
             shareAdjustViewModel.applyAdjust()
         })
 

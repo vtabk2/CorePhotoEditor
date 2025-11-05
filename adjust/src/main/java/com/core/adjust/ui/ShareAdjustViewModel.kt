@@ -1,5 +1,6 @@
 package com.core.adjust.ui
 
+import android.content.Context
 import android.graphics.Bitmap
 import androidx.lifecycle.LifecycleCoroutineScope
 import androidx.lifecycle.LiveData
@@ -61,9 +62,12 @@ class ShareAdjustViewModel(val manager: AdjustManager) : ViewModel() {
         }
     }
 
-    class Factory(private val scope: LifecycleCoroutineScope) : ViewModelProvider.Factory {
+    class Factory(
+        private val context: Context,
+        private val scope: LifecycleCoroutineScope
+    ) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            val manager = AdjustManager(scope)
+            val manager = AdjustManager(context.applicationContext, scope)
             return ShareAdjustViewModel(manager) as T
         }
     }

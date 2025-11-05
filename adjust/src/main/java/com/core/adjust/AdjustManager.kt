@@ -1,5 +1,6 @@
 package com.core.adjust
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LifecycleCoroutineScope
@@ -12,7 +13,10 @@ import kotlinx.coroutines.withContext
  * AdjustManager chịu trách nhiệm quản lý ảnh gốc, ảnh preview và thông số chỉnh ảnh.
  * Tất cả thay đổi sẽ non-destructive (không làm hỏng ảnh gốc).
  */
-class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
+class AdjustManager(
+    private val context: Context,
+    private val lifecycleScope: LifecycleCoroutineScope
+) {
 
     private var originalBitmap: Bitmap? = null
     private var previewBitmap: Bitmap? = null
@@ -50,7 +54,7 @@ class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
 
             try {
                 Log.d("TAG5", "AdjustManager_applyAdjust: ")
-                val changed = AdjustProcessor.applyAdjust(work, params, progress = object : AdjustProgress {
+                val changed = AdjustProcessor.applyAdjust(context, work, params, progress = object : AdjustProgress {
                     override fun onProgress(percent: Int) {
                         Log.d("TAG5", "AdjustManager_onProgress: percent = $percent")
                     }
@@ -71,37 +75,6 @@ class AdjustManager(private val lifecycleScope: LifecycleCoroutineScope) {
                 isProcessing = false
             }
         }
-    }
-
-    fun resetLight() {
-        params.exposure = 0f
-        params.brightness = 0f
-        params.contrast = 0f
-        params.highlights = 0f
-        params.shadows = 0f
-        params.whites = 0f
-        params.blacks = 0f
-    }
-
-    fun resetColor() {
-        params.temperature = 0f
-        params.tint = 0f
-        params.vibrance = 0f
-        params.saturation = 0f
-    }
-
-    fun resetEffects() {
-        params.texture = 0f
-        params.clarity = 0f
-        params.dehaze = 0f
-        params.vignette = 0f
-        params.grain = 0f
-    }
-
-    fun resetHsl() {
-        params.hslHue = FloatArray(8)
-        params.hslSaturation = FloatArray(8)
-        params.hslLuminance = FloatArray(8)
     }
 
     /**
