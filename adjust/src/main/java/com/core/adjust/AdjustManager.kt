@@ -64,6 +64,9 @@ class AdjustManager(
                     withContext(Dispatchers.Main) {
                         previewBitmap?.recycle()
                         previewBitmap = work
+                        //
+                        Log.d("TAG5", "AdjustManager_applyAdjust: areBitmapsDifferent = " + areBitmapsDifferent(base, work))
+                        //
                         onUpdated(work)
                     }
                 } else {
@@ -75,6 +78,14 @@ class AdjustManager(
                 isProcessing = false
             }
         }
+    }
+
+    fun areBitmapsDifferent(b1: Bitmap?, b2: Bitmap?): Boolean {
+        if (b1 == null || b2 == null) return true
+        if (b1.width != b2.width || b1.height != b2.height) return true
+
+        val same = b1.sameAs(b2)
+        return !same
     }
 
     /**
