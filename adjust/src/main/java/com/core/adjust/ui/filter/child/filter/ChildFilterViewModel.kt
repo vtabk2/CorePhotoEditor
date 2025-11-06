@@ -34,7 +34,8 @@ class ChildFilterViewModel(application: Application) : AndroidViewModel(applicat
                     filterList.add(item)
                 }
             }
-
+            Log.d("TAG5", "ChildFilterViewModel_loadData: filterList.size = " + filterList.size)
+            Log.d("TAG5", "ChildFilterViewModel_loadData: --------------------------------------")
             filterCategoryListLiveData.postValue(filterCategoryList)
             filterListLiveData.postValue(filterList)
         }

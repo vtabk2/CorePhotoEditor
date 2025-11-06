@@ -14,6 +14,54 @@
         {
           "name": "TableSoftglow",
           "file": "TableSoftglow.table"
+        },
+        {
+          "name": "TableCreamyLight",
+          "file": "TableCreamyLight.table"
+        },
+        {
+          "name": "TableRosyTone",
+          "file": "TableRosyTone.table"
+        },
+        {
+          "name": "TableWarmTan",
+          "file": "TableWarmTan.table"
+        },
+        {
+          "name": "TableCoolShade",
+          "file": "TableCoolShade.table"
+        },
+        {
+          "name": "TableNeutralSkin",
+          "file": "TableNeutralSkin.table"
+        },
+        {
+          "name": "TableSmoothLight",
+          "file": "TableSmoothLight.table"
+        },
+        {
+          "name": "TableMatteLook",
+          "file": "TableMatteLook.table"
+        },
+        {
+          "name": "TablePastelSkin",
+          "file": "TablePastelSkin.table"
+        },
+        {
+          "name": "TableBrightSoft",
+          "file": "TableBrightSoft.table"
+        },
+        {
+          "name": "TableGlowFilm",
+          "file": "TableGlowFilm.table"
+        },
+        {
+          "name": "TablePorcelain",
+          "file": "TablePorcelain.table"
+        },
+        {
+          "name": "TableWarmIvory",
+          "file": "TableWarmIvory.table"
         }
       ]
     },
@@ -27,6 +75,58 @@
         {
           "name": "TableTealorange",
           "file": "TableTealorange.table"
+        },
+        {
+          "name": "TableMagentaMood",
+          "file": "TableMagentaMood.table"
+        },
+        {
+          "name": "TableCinematicBlue",
+          "file": "TableCinematicBlue.table"
+        },
+        {
+          "name": "TableEmeraldGlow",
+          "file": "TableEmeraldGlow.table"
+        },
+        {
+          "name": "TableRoseFade",
+          "file": "TableRoseFade.table"
+        },
+        {
+          "name": "TableFirelight",
+          "file": "TableFirelight.table"
+        },
+        {
+          "name": "TableSunsetTone",
+          "file": "TableSunsetTone.table"
+        },
+        {
+          "name": "TableRetroWave",
+          "file": "TableRetroWave.table"
+        },
+        {
+          "name": "TableVioletDream",
+          "file": "TableVioletDream.table"
+        },
+        {
+          "name": "TableCandyTone",
+          "file": "TableCandyTone.table"
+        },
+        {
+          "name": "TableCopperMood",
+          "file": "TableCopperMood.table"
+        },
+        {
+          "name": "TableMysticFog",
+          "file": "TableMysticFog.table"
+        },
+        {
+          "name": "TableOceanDeep",
+          "file": "TableOceanDeep.table"
+        },
+        {
+          "name": "TableBloomWarm",
+          "file": "TableBloomWarm.table"
         }
       ]
     },
@@ -52,6 +152,46 @@
         {
           "name": "TableVintagenoise",
           "file": "TableVintagenoise.table"
+        },
+        {
+          "name": "TableVin2SoftFade",
+          "file": "TableVin2SoftFade.table"
+        },
+        {
+          "name": "TableVin5Polaroid",
+          "file": "TableVin5Polaroid.table"
+        },
+        {
+          "name": "TableVin6Dusty",
+          "file": "TableVin6Dusty.table"
+        },
+        {
+          "name": "TableVin7GrainWarm",
+          "file": "TableVin7GrainWarm.table"
+        },
+        {
+          "name": "TableVin8GoldenFilm",
+          "file": "TableVin8GoldenFilm.table"
+        },
+        {
+          "name": "TableVin9Kodachrome",
+          "file": "TableVin9Kodachrome.table"
+        },
+        {
+          "name": "TableVin10MattePastel",
+          "file": "TableVin10MattePastel.table"
+        },
+        {
+          "name": "TableVin11OldCinema",
+          "file": "TableVin11OldCinema.table"
+        },
+        {
+          "name": "TableVin12Colorwash",
+          "file": "TableVin12Colorwash.table"
+        },
+        {
+          "name": "TableVin13SoftTone",
+          "file": "TableVin13SoftTone.table"
         }
       ]
     },
@@ -65,6 +205,58 @@
         {
           "name": "TableMono",
           "file": "TableMono.table"
+        },
+        {
+          "name": "TableBWSoftContrast",
+          "file": "TableBWSoftContrast.table"
+        },
+        {
+          "name": "TableBWHighContrast",
+          "file": "TableBWHighContrast.table"
+        },
+        {
+          "name": "TableBWFilmGrain",
+          "file": "TableBWFilmGrain.table"
+        },
+        {
+          "name": "TableBWMatte",
+          "file": "TableBWMatte.table"
+        },
+        {
+          "name": "TableBWPlatinum",
+          "file": "TableBWPlatinum.table"
+        },
+        {
+          "name": "TableBWInfrared",
+          "file": "TableBWInfrared.table"
+        },
+        {
+          "name": "TableBWNoirFilm",
+          "file": "TableBWNoirFilm.table"
+        },
+        {
+          "name": "TableBWNeutral",
+          "file": "TableBWNeutral.table"
+        },
+        {
+          "name": "TableBWSharp",
+          "file": "TableBWSharp.table"
+        },
+        {
+          "name": "TableBWSoftLight",
+          "file": "TableBWSoftLight.table"
+        },
+        {
+          "name": "TableBWStudio",
+          "file": "TableBWStudio.table"
+        },
+        {
+          "name": "TableBWSilver",
+          "file": "TableBWSilver.table"
+        },
+        {
+          "name": "TableBWCharcoal",
+          "file": "TableBWCharcoal.table"
         }
       ]
     },
@@ -74,6 +266,62 @@
         {
           "name": "TableCream",
           "file": "TableCream.table"
+        },
+        {
+          "name": "TableMorningLight",
+          "file": "TableMorningLight.table"
+        },
+        {
+          "name": "TableSoftHome",
+          "file": "TableSoftHome.table"
+        },
+        {
+          "name": "TableCafeTone",
+          "file": "TableCafeTone.table"
+        },
+        {
+          "name": "TablePastelLife",
+          "file": "TablePastelLife.table"
+        },
+        {
+          "name": "TableFreshAir",
+          "file": "TableFreshAir.table"
+        },
+        {
+          "name": "TableMinimalWarm",
+          "file": "TableMinimalWarm.table"
+        },
+        {
+          "name": "TableDaydream",
+          "file": "TableDaydream.table"
+        },
+        {
+          "name": "TableCottage",
+          "file": "TableCottage.table"
+        },
+        {
+          "name": "TableMistyMorning",
+          "file": "TableMistyMorning.table"
+        },
+        {
+          "name": "TablePineTone",
+          "file": "TablePineTone.table"
+        },
+        {
+          "name": "TableGoldenDay",
+          "file": "TableGoldenDay.table"
+        },
+        {
+          "name": "TableCozyRoom",
+          "file": "TableCozyRoom.table"
+        },
+        {
+          "name": "TableNaturalHome",
+          "file": "TableNaturalHome.table"
+        },
+        {
+          "name": "TableExtra15",
+          "file": "TableExtra15.table"
         }
       ]
     },
@@ -83,6 +331,62 @@
         {
           "name": "TableDreamy",
           "file": "TableDreamy.table"
+        },
+        {
+          "name": "TableFantasy",
+          "file": "TableFantasy.table"
+        },
+        {
+          "name": "TableFairyGlow",
+          "file": "TableFairyGlow.table"
+        },
+        {
+          "name": "TableGalaxyTone",
+          "file": "TableGalaxyTone.table"
+        },
+        {
+          "name": "TablePainterly",
+          "file": "TablePainterly.table"
+        },
+        {
+          "name": "TableSoftBlur",
+          "file": "TableSoftBlur.table"
+        },
+        {
+          "name": "TableVividPop",
+          "file": "TableVividPop.table"
+        },
+        {
+          "name": "TableIllusion",
+          "file": "TableIllusion.table"
+        },
+        {
+          "name": "TableWhimsy",
+          "file": "TableWhimsy.table"
+        },
+        {
+          "name": "TableCanvasTone",
+          "file": "TableCanvasTone.table"
+        },
+        {
+          "name": "TableCelestial",
+          "file": "TableCelestial.table"
+        },
+        {
+          "name": "TableFloralGlow",
+          "file": "TableFloralGlow.table"
+        },
+        {
+          "name": "TableLightVerse",
+          "file": "TableLightVerse.table"
+        },
+        {
+          "name": "TableDreamSketch",
+          "file": "TableDreamSketch.table"
+        },
+        {
+          "name": "TableSurreal",
+          "file": "TableSurreal.table"
         }
       ]
     },
@@ -92,6 +396,62 @@
         {
           "name": "TableGrainy",
           "file": "TableGrainy.table"
+        },
+        {
+          "name": "TableTropical",
+          "file": "TableTropical.table"
+        },
+        {
+          "name": "TableSunsetGlow",
+          "file": "TableSunsetGlow.table"
+        },
+        {
+          "name": "TableWanderWarm",
+          "file": "TableWanderWarm.table"
+        },
+        {
+          "name": "TableOceanSky",
+          "file": "TableOceanSky.table"
+        },
+        {
+          "name": "TableCanyon",
+          "file": "TableCanyon.table"
+        },
+        {
+          "name": "TableDesertTone",
+          "file": "TableDesertTone.table"
+        },
+        {
+          "name": "TableRainyCity",
+          "file": "TableRainyCity.table"
+        },
+        {
+          "name": "TableForestLight",
+          "file": "TableForestLight.table"
+        },
+        {
+          "name": "TableCoastal",
+          "file": "TableCoastal.table"
+        },
+        {
+          "name": "TableMountainAir",
+          "file": "TableMountainAir.table"
+        },
+        {
+          "name": "TableJourney",
+          "file": "TableJourney.table"
+        },
+        {
+          "name": "TableRoadtrip",
+          "file": "TableRoadtrip.table"
+        },
+        {
+          "name": "TableTravelMood",
+          "file": "TableTravelMood.table"
+        },
+        {
+          "name": "TableIslandBreeze",
+          "file": "TableIslandBreeze.table"
         }
       ]
     },
@@ -105,6 +465,58 @@
         {
           "name": "TableVin2FadedWarm",
           "file": "TableVin2FadedWarm.table"
+        },
+        {
+          "name": "TableFoggy",
+          "file": "TableFoggy.table"
+        },
+        {
+          "name": "TableNightMood",
+          "file": "TableNightMood.table"
+        },
+        {
+          "name": "TableBlueHaze",
+          "file": "TableBlueHaze.table"
+        },
+        {
+          "name": "TableCandleTone",
+          "file": "TableCandleTone.table"
+        },
+        {
+          "name": "TableGoldenHour",
+          "file": "TableGoldenHour.table"
+        },
+        {
+          "name": "TableOvercast",
+          "file": "TableOvercast.table"
+        },
+        {
+          "name": "TableMoodyFade",
+          "file": "TableMoodyFade.table"
+        },
+        {
+          "name": "TableSilverAir",
+          "file": "TableSilverAir.table"
+        },
+        {
+          "name": "TableTwilight",
+          "file": "TableTwilight.table"
+        },
+        {
+          "name": "TableSmoky",
+          "file": "TableSmoky.table"
+        },
+        {
+          "name": "TableShadow",
+          "file": "TableShadow.table"
+        },
+        {
+          "name": "TableChill",
+          "file": "TableChill.table"
+        },
+        {
+          "name": "TableAtmospheric",
+          "file": "TableAtmospheric.table"
         }
       ]
     },
@@ -122,11 +534,59 @@
         {
           "name": "TableUrban",
           "file": "TableUrban.table"
+        },
+        {
+          "name": "TableStreetNeon",
+          "file": "TableStreetNeon.table"
+        },
+        {
+          "name": "TableColdSteel",
+          "file": "TableColdSteel.table"
+        },
+        {
+          "name": "TableShadowBlue",
+          "file": "TableShadowBlue.table"
+        },
+        {
+          "name": "TableConcrete",
+          "file": "TableConcrete.table"
+        },
+        {
+          "name": "TableCyberCity",
+          "file": "TableCyberCity.table"
+        },
+        {
+          "name": "TableChromeTone",
+          "file": "TableChromeTone.table"
+        },
+        {
+          "name": "TableDustyStreet",
+          "file": "TableDustyStreet.table"
+        },
+        {
+          "name": "TableDarkFilm",
+          "file": "TableDarkFilm.table"
+        },
+        {
+          "name": "TableMetropolitan",
+          "file": "TableMetropolitan.table"
+        },
+        {
+          "name": "TableSodiumLight",
+          "file": "TableSodiumLight.table"
+        },
+        {
+          "name": "TableSteelCool",
+          "file": "TableSteelCool.table"
+        },
+        {
+          "name": "TableRainStreet",
+          "file": "TableRainStreet.table"
         }
       ]
     },
     {
-      "name": "Misc",
+      "name": "Essentials",
       "filters": [
         {
           "name": "TableAqua",
@@ -137,80 +597,20 @@
           "file": "TableBeige.table"
         },
         {
-          "name": "TableBlush",
-          "file": "TableBlush.table"
-        },
-        {
-          "name": "TableBreeze",
-          "file": "TableBreeze.table"
-        },
-        {
-          "name": "TableBronze",
-          "file": "TableBronze.table"
-        },
-        {
-          "name": "TableCandy",
-          "file": "TableCandy.table"
-        },
-        {
-          "name": "TableCin90",
-          "file": "TableCin90.table"
-        },
-        {
           "name": "TableCloud",
           "file": "TableCloud.table"
-        },
-        {
-          "name": "TableCyber",
-          "file": "TableCyber.table"
-        },
-        {
-          "name": "TableDrama",
-          "file": "TableDrama.table"
         },
         {
           "name": "TableFade",
           "file": "TableFade.table"
         },
         {
-          "name": "TableFairy",
-          "file": "TableFairy.table"
-        },
-        {
-          "name": "TableFluffy",
-          "file": "TableFluffy.table"
-        },
-        {
-          "name": "TableFuji400H",
-          "file": "TableFuji400H.table"
-        },
-        {
-          "name": "TableGlitch",
-          "file": "TableGlitch.table"
-        },
-        {
-          "name": "TableHiCon",
-          "file": "TableHiCon.table"
-        },
-        {
           "name": "TableHoney",
           "file": "TableHoney.table"
         },
         {
-          "name": "TableIcy",
-          "file": "TableIcy.table"
-        },
-        {
-          "name": "TableLavender",
-          "file": "TableLavender.table"
-        },
-        {
           "name": "TableMint",
           "file": "TableMint.table"
-        },
-        {
-          "name": "TableNoir",
-          "file": "TableNoir.table"
         },
         {
           "name": "TablePeachy",
@@ -221,12 +621,126 @@
           "file": "TablePearl.table"
         },
         {
-          "name": "TablePortra",
-          "file": "TablePortra.table"
+          "name": "TableSummer",
+          "file": "TableSummer.table"
         },
         {
-          "name": "TableSepia",
-          "file": "TableSepia.table"
+          "name": "TableSunny",
+          "file": "TableSunny.table"
+        },
+        {
+          "name": "TableCream",
+          "file": "TableCream.table"
+        },
+        {
+          "name": "TableSoftLight",
+          "file": "TableSoftLight.table"
+        },
+        {
+          "name": "TableNatural",
+          "file": "TableNatural.table"
+        },
+        {
+          "name": "TableWarmLight",
+          "file": "TableWarmLight.table"
+        },
+        {
+          "name": "TableClean",
+          "file": "TableClean.table"
+        }
+      ]
+    },
+    {
+      "name": "Pastel",
+      "filters": [
+        {
+          "name": "TableBlush",
+          "file": "TableBlush.table"
+        },
+        {
+          "name": "TableBreeze",
+          "file": "TableBreeze.table"
+        },
+        {
+          "name": "TableCandy",
+          "file": "TableCandy.table"
+        },
+        {
+          "name": "TableFairy",
+          "file": "TableFairy.table"
+        },
+        {
+          "name": "TableFluffy",
+          "file": "TableFluffy.table"
+        },
+        {
+          "name": "TableLavender",
+          "file": "TableLavender.table"
+        },
+        {
+          "name": "TablePastelBlue",
+          "file": "TablePastelBlue.table"
+        },
+        {
+          "name": "TablePastelPink",
+          "file": "TablePastelPink.table"
+        },
+        {
+          "name": "TablePastelGreen",
+          "file": "TablePastelGreen.table"
+        },
+        {
+          "name": "TablePastelPeach",
+          "file": "TablePastelPeach.table"
+        },
+        {
+          "name": "TablePastelViolet",
+          "file": "TablePastelViolet.table"
+        },
+        {
+          "name": "TableMarshmallow",
+          "file": "TableMarshmallow.table"
+        },
+        {
+          "name": "TableCotton",
+          "file": "TableCotton.table"
+        },
+        {
+          "name": "TableBabyBlue",
+          "file": "TableBabyBlue.table"
+        },
+        {
+          "name": "TableSnowBlush",
+          "file": "TableSnowBlush.table"
+        }
+      ]
+    },
+    {
+      "name": "Cinematic",
+      "filters": [
+        {
+          "name": "TableCyber",
+          "file": "TableCyber.table"
+        },
+        {
+          "name": "TableDrama",
+          "file": "TableDrama.table"
+        },
+        {
+          "name": "TableGlitch",
+          "file": "TableGlitch.table"
+        },
+        {
+          "name": "TableHiCon",
+          "file": "TableHiCon.table"
+        },
+        {
+          "name": "TableIcy",
+          "file": "TableIcy.table"
+        },
+        {
+          "name": "TableNoir",
+          "file": "TableNoir.table"
         },
         {
           "name": "TableSkyline",
@@ -241,12 +755,93 @@
           "file": "TableSteel.table"
         },
         {
-          "name": "TableSummer",
-          "file": "TableSummer.table"
+          "name": "TableCineTeal",
+          "file": "TableCineTeal.table"
         },
         {
-          "name": "TableSunny",
-          "file": "TableSunny.table"
+          "name": "TableCineGold",
+          "file": "TableCineGold.table"
+        },
+        {
+          "name": "TableCineAmber",
+          "file": "TableCineAmber.table"
+        },
+        {
+          "name": "TableCineBlue",
+          "file": "TableCineBlue.table"
+        },
+        {
+          "name": "TableCineMatte",
+          "file": "TableCineMatte.table"
+        },
+        {
+          "name": "TableCineFade",
+          "file": "TableCineFade.table"
+        }
+      ]
+    },
+    {
+      "name": "Studio",
+      "filters": [
+        {
+          "name": "TableBronze",
+          "file": "TableBronze.table"
+        },
+        {
+          "name": "TableCin90",
+          "file": "TableCin90.table"
+        },
+        {
+          "name": "TableFuji400H",
+          "file": "TableFuji400H.table"
+        },
+        {
+          "name": "TablePortra",
+          "file": "TablePortra.table"
+        },
+        {
+          "name": "TableSepia",
+          "file": "TableSepia.table"
+        },
+        {
+          "name": "TableStudioNeutral",
+          "file": "TableStudioNeutral.table"
+        },
+        {
+          "name": "TableStudioWarm",
+          "file": "TableStudioWarm.table"
+        },
+        {
+          "name": "TableStudioCool",
+          "file": "TableStudioCool.table"
+        },
+        {
+          "name": "TableStudioSoft",
+          "file": "TableStudioSoft.table"
+        },
+        {
+          "name": "TableStudioHard",
+          "file": "TableStudioHard.table"
+        },
+        {
+          "name": "TableStudioMatte",
+          "file": "TableStudioMatte.table"
+        },
+        {
+          "name": "TableStudioPro",
+          "file": "TableStudioPro.table"
+        },
+        {
+          "name": "TableStudioFilm",
+          "file": "TableStudioFilm.table"
+        },
+        {
+          "name": "TableStudioAnalog",
+          "file": "TableStudioAnalog.table"
+        },
+        {
+          "name": "TableStudioFine",
+          "file": "TableStudioFine.table"
         }
       ]
     }
