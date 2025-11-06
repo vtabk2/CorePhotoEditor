@@ -19,7 +19,7 @@
             android:id="@+id/seekBarFilter"
             android:layout_width="0dp"
             android:layout_height="26dp"
-            android:max="200"
+            android:max="100"
             android:minHeight="0dp"
             android:progress="100"
             android:progressTint="#FFFFFF"

@@ -29,7 +29,8 @@ data class AdjustParams(
     var hslLuminance: FloatArray = FloatArray(8),
 
     // LUT
-    var lutPath: String? = null
+    var lutPath: String? = null,
+    var lutAmount: Float = 1f,   // 0f..1f  (0 = tắt LUT, 1 = full LUT)
     ) {
     companion object {
         fun buildMask(p: AdjustParams, eps: Float = 1e-6f): Long {
@@ -49,7 +50,7 @@ data class AdjustParams(
                 p.hslLuminance.any { it != 0f }) {
                 m = m or AdjustMask.MASK_HSL
             }
-            if (!p.lutPath.isNullOrBlank()) {
+            if (!p.lutPath.isNullOrBlank() && p.lutAmount > 0.001f) {
                 m = m or AdjustMask.MASK_LUT
             }
             return m

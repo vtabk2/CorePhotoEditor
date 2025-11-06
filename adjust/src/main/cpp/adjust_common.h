@@ -44,6 +44,7 @@ struct AdjustParams {
 
     // --- LUT ---
     std::string lutPath;
+    float lutAmount = 1.0f;
 };
 
 static inline float clampf(float v, float lo = 0.f, float hi = 1.f) {

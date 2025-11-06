@@ -2,6 +2,7 @@ package com.core.adjust.ui.filter.child.filter
 
 import android.os.Bundle
 import android.view.View
+import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
@@ -29,6 +30,22 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
         context?.let {
 
             _bindingView = FFragmentChildFilterBinding.bind(view)
+
+            bindingView.seekBarFilter.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onStartTrackingTouch(seekBar: SeekBar?) {}
+
+                override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                    if (!fromUser) return
+                    bindingView.tvValueFilter.text = progress.toString()
+                }
+
+                override fun onStopTrackingTouch(seekBar: SeekBar?) {
+                    seekBar?.progress?.let { progress ->
+                        shareAdjustViewModel.params.lutAmount = progress / 100f
+                        shareAdjustViewModel.applyAdjust()
+                    }
+                }
+            })
 
             val customScrollLinearLayoutManager = CustomScrollLinearLayoutManager(it)
 
