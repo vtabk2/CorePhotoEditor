@@ -6,7 +6,6 @@ import android.util.Log
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.core.adjust.ui.ShareAdjustViewModel
 import com.core.adjust.ui.filter.FilterFragment
@@ -18,7 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -37,9 +36,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.btnPickImage.setOnClickListener {
-            pickImageLauncher.launch(
-                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
-            )
+
+            checkPermission(callback = { granted ->
+                if (granted) {
+                    pickImageLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
+                }
+            })
         }
 
         shareAdjustViewModel.previewBitmap.observe(this) { bmp ->
@@ -54,6 +56,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         FilterFragment.showFilterFragment(this, R.id.flBottom)
+    }
+
+    override fun goToOtherHasWriteStoragePermission() {
+        pickImageLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
 
     private fun onImagePicked(uri: Uri) {

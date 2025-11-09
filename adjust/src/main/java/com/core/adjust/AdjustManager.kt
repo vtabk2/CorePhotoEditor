@@ -128,20 +128,33 @@ class AdjustManager(
      * Tạo thumbnail LUT và lưu vào DCIM/LUT_Thumbs
      */
     fun generateLutThumbsToDCIM(lutList: List<LutFilter>) {
+        Log.d("TAG5", "AdjustManager_generateLutThumbsToDCIM: generateLutThumbsToDCIM.originalBitmap = $originalBitmap")
         originalBitmap?.let { bitmap ->
             // ✅ Thư mục lưu thumb
             val outputDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "LUT_Thumbs")
             if (!outputDir.exists()) outputDir.mkdirs()
 
+            Log.d("TAG5", "AdjustManager_generateLutThumbsToDCIM: lutList.size = " + lutList.size)
             lutList.forEach { lut ->
                 try {
                     if (lut.file.isBlank()) return@forEach
 
                     val thumbFile = File(outputDir, "${lut.name}.jpg")
+
+                    Log.d("TAG5", "AdjustManager_generateLutThumbsToDCIM: thumbFile = $thumbFile")
+
+                    // 🧹 Xóa sạch nếu có tồn tại
                     if (thumbFile.exists()) {
-                        lut.thumbPath = thumbFile.absolutePath
-                        return@forEach
+                        if (thumbFile.isDirectory) {
+                            thumbFile.deleteRecursively()
+                        } else {
+                            val deleted = thumbFile.delete()
+                            if (!deleted) Log.w("LutThumb", "⚠️ Không thể xóa file cũ: ${thumbFile.absolutePath}")
+                        }
                     }
+
+                    // ✅ Đảm bảo file mới được tạo
+                    thumbFile.createNewFile()
 
                     // 🔹 Tạo bitmap nhỏ để áp LUT
                     val scaled = bitmap.scaleAndCropToExactSize(300, 300)
@@ -155,13 +168,13 @@ class AdjustManager(
                             result.compress(Bitmap.CompressFormat.JPEG, 90, it)
                         }
                         lut.thumbPath = thumbFile.absolutePath
-                        Log.d("LutThumb", "✅ Saved ${lut.name} -> ${thumbFile.absolutePath}")
+                        Log.d("TAG5", "✅ Saved ${lut.name} -> ${thumbFile.absolutePath}")
                     } else {
-                        Log.w("LutThumb", "⚠️ Failed to apply LUT: ${lut.name}")
+                        Log.w("TAG5", "⚠️ Failed to apply LUT: ${lut.name}")
                     }
 
                 } catch (e: Exception) {
-                    Log.e("LutThumb", "❌ Error creating thumb for ${lut.name}", e)
+                    Log.e("TAG5", "❌ Error creating thumb for ${lut.name}", e)
                 }
             }
         }

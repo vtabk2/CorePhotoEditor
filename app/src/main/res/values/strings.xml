@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">PhotoEditor</string>
+
+    <string name="msg_write_storage">To make it more convenient to use the application, you can grant permissions to the application at \n\n[Setting] &gt; [Permission] &gt; \n[Photos and videos] &gt; [Always allow all]</string>
+    <string name="msg_permission">"If you reject the permissions, you cannot use this app\n\nPlease turn on permissions at [Setting] > [Permission]"</string>
+    <string name="text_skip">Skip</string>
+    <string name="text_grant_permission">Grant permission</string>
+    <string name="text_close">Close</string>
+    <string name="text_settings">Settings</string>
 </resources>
