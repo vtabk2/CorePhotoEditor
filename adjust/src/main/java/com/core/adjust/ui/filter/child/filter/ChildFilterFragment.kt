@@ -62,7 +62,7 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
 
             filterAdapter = FilterAdapter(
                 onFilterSelected = { filter ->
-                    shareAdjustViewModel.params.lutPath = "filters/${filter.file}"
+                    shareAdjustViewModel.params.lutPath = "filters/${filter.filePath}"
                     shareAdjustViewModel.applyAdjust()
                 },
                 callbackScroll = { index ->
@@ -118,7 +118,7 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
                     if (requiredCreateThumb) {
                         Log.d("TAG5", "ChildFilterFragment_onViewCreated: requiredCreateThumb")
                         childFilterViewModel.filterListLiveData.value?.let { filterList ->
-                            shareAdjustViewModel.manager.generateLutThumbsToDCIM(filterList)
+                            shareAdjustViewModel.manager.generateLutThumbsToDownloads(filterList)
                         }
                     }
                 }

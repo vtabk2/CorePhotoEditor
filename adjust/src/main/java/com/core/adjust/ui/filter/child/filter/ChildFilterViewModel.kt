@@ -37,7 +37,7 @@ class ChildFilterViewModel(application: Application) : AndroidViewModel(applicat
     }
 
     private fun loadGroupedLutPresets(context: Context): LutPresetRoot {
-        val json = context.assets.getTextFromAsset("filters/lut_presets.json")
+        val json = context.assets.getTextFromAsset("lut_presets.json")
         return json?.convertToObject<LutPresetRoot>() ?: LutPresetRoot()
     }
 }

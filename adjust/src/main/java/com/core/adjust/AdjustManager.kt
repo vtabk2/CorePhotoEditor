@@ -1,9 +1,13 @@
 package com.core.adjust
 
+import android.content.ContentUris
+import android.content.ContentValues
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Matrix
+import android.os.Build
 import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.LifecycleCoroutineScope
 import com.core.adjust.model.lut.LutFilter
@@ -11,8 +15,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.FileOutputStream
 import kotlin.math.max
 import kotlin.math.min
 
@@ -125,56 +127,69 @@ class AdjustManager(
     }
 
     /**
-     * Tạo thumbnail LUT và lưu vào DCIM/LUT_Thumbs
+     * Tạo thumbnail LUT và lưu vào Downloads/LUT_Thumbs (Android 10+ safe)
      */
-    fun generateLutThumbsToDCIM(lutList: List<LutFilter>) {
-        Log.d("TAG5", "AdjustManager_generateLutThumbsToDCIM: generateLutThumbsToDCIM.originalBitmap = $originalBitmap")
-        originalBitmap?.let { bitmap ->
-            // ✅ Thư mục lưu thumb
-            val outputDir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "LUT_Thumbs")
-            if (!outputDir.exists()) outputDir.mkdirs()
+    fun generateLutThumbsToDownloads(lutList: List<LutFilter>) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val resolver = context.contentResolver
+            val collection = MediaStore.Downloads.EXTERNAL_CONTENT_URI
+            val relativePath = Environment.DIRECTORY_DOWNLOADS + "/LUT_Thumbs"
 
-            Log.d("TAG5", "AdjustManager_generateLutThumbsToDCIM: lutList.size = " + lutList.size)
-            lutList.forEach { lut ->
-                try {
-                    if (lut.file.isBlank()) return@forEach
+            Log.d("TAG5", "AdjustManager_generateLutThumbsToDownloads: lutList.size = ${lutList.size}")
 
-                    val thumbFile = File(outputDir, "${lut.name}.jpg")
+            originalBitmap?.let { bitmap ->
+                lutList.forEach { lut ->
+                    try {
+                        if (lut.filePath.isBlank()) return@forEach
 
-                    Log.d("TAG5", "AdjustManager_generateLutThumbsToDCIM: thumbFile = $thumbFile")
+                        val fileName = "${lut.name}.jpg"
 
-                    // 🧹 Xóa sạch nếu có tồn tại
-                    if (thumbFile.exists()) {
-                        if (thumbFile.isDirectory) {
-                            thumbFile.deleteRecursively()
+                        // 🧹 1️⃣ Xóa file cũ nếu trùng tên
+                        val projection = arrayOf(MediaStore.MediaColumns._ID)
+                        val selection = "${MediaStore.MediaColumns.DISPLAY_NAME}=? AND ${MediaStore.MediaColumns.RELATIVE_PATH}=?"
+                        val selectionArgs = arrayOf(fileName, "$relativePath/")
+
+                        resolver.query(collection, projection, selection, selectionArgs, null)?.use { cursor ->
+                            if (cursor.moveToFirst()) {
+                                val id = cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.MediaColumns._ID))
+                                val oldUri = ContentUris.withAppendedId(collection, id)
+                                resolver.delete(oldUri, null, null)
+                                Log.d("TAG5", "🧹 Deleted old LUT thumb: $fileName")
+                            }
+                        }
+
+                        // 🔹 2️⃣ Tạo entry mới trong MediaStore
+                        val values = ContentValues().apply {
+                            put(MediaStore.MediaColumns.DISPLAY_NAME, fileName)
+                            put(MediaStore.MediaColumns.MIME_TYPE, "image/jpeg")
+                            put(MediaStore.MediaColumns.RELATIVE_PATH, relativePath)
+                        }
+
+                        val uri = resolver.insert(collection, values)
+                        if (uri == null) {
+                            Log.w("TAG5", "⚠️ Không thể tạo MediaStore entry cho $fileName")
+                            return@forEach
+                        }
+
+                        // 🔹 3️⃣ Tạo thumbnail LUT
+                        val scaled = bitmap.scaleAndCropToExactSize(300, 300)
+                        val params = AdjustParams(lutPath = "filters/${lut.filePath}")
+                        val result = scaled.copy(Bitmap.Config.ARGB_8888, true)
+                        val success = AdjustProcessor.applyAdjust(context, result, params, null)
+
+                        if (success) {
+                            resolver.openOutputStream(uri)?.use { out ->
+                                result.compress(Bitmap.CompressFormat.JPEG, 90, out)
+                            }
+                            lut.thumbPath = uri.toString()
+                            Log.d("TAG5", "✅ Saved LUT thumb: $fileName to $relativePath")
                         } else {
-                            val deleted = thumbFile.delete()
-                            if (!deleted) Log.w("LutThumb", "⚠️ Không thể xóa file cũ: ${thumbFile.absolutePath}")
+                            Log.w("TAG5", "⚠️ Failed to apply LUT: ${lut.name}")
                         }
+
+                    } catch (e: Exception) {
+                        Log.e("TAG5", "❌ Error creating thumb for ${lut.name}", e)
                     }
-
-                    // ✅ Đảm bảo file mới được tạo
-                    thumbFile.createNewFile()
-
-                    // 🔹 Tạo bitmap nhỏ để áp LUT
-                    val scaled = bitmap.scaleAndCropToExactSize(300, 300)
-
-                    val params = AdjustParams(lutPath = lut.file)
-                    val result = scaled.copy(Bitmap.Config.ARGB_8888, true)
-                    val success = AdjustProcessor.applyAdjust(context, result, params, null)
-
-                    if (success) {
-                        FileOutputStream(thumbFile).use {
-                            result.compress(Bitmap.CompressFormat.JPEG, 90, it)
-                        }
-                        lut.thumbPath = thumbFile.absolutePath
-                        Log.d("TAG5", "✅ Saved ${lut.name} -> ${thumbFile.absolutePath}")
-                    } else {
-                        Log.w("TAG5", "⚠️ Failed to apply LUT: ${lut.name}")
-                    }
-
-                } catch (e: Exception) {
-                    Log.e("TAG5", "❌ Error creating thumb for ${lut.name}", e)
                 }
             }
         }
