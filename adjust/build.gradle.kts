@@ -56,7 +56,8 @@ dependencies {
     implementation(libs.gson)
 
     implementation(libs.gscore)
+    implementation(libs.glide)
 
     implementation(libs.play.services.mlkit.face.detection)
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.7.3")
+    implementation(libs.coroutines.play.services)
 }

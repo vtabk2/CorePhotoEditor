@@ -61,6 +61,7 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
                 })
 
             filterAdapter = FilterAdapter(
+                context = it,
                 onFilterSelected = { filter ->
                     shareAdjustViewModel.params.lutPath = "filters/${filter.filePath}"
                     shareAdjustViewModel.applyAdjust()
@@ -91,10 +92,10 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
             }
 
             childFilterViewModel.loadData()
-            childFilterViewModel.filterCategoryListLiveData.observe(this) { filterCategoryList ->
+            childFilterViewModel.filterCategoryListLiveData.observe(viewLifecycleOwner) { filterCategoryList ->
                 filterCategoryAdapter?.submitList(filterCategoryList)
             }
-            childFilterViewModel.filterListLiveData.observe(this) { filterList ->
+            childFilterViewModel.filterListLiveData.observe(viewLifecycleOwner) { filterList ->
                 filterAdapter?.submitList(filterList)
             }
 

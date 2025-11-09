@@ -4,79 +4,79 @@
       "name": "Portrait",
       "filters": [
         {
-          "name": "TableBrightskin",
-          "filePath": "filters/TableBrightskin.table",
-          "thumbPath": "thumb/TableBrightskin.jpg"
+          "name": "Brightskin",
+          "filePath": "filters/Brightskin.table",
+          "thumbPath": "thumb/Brightskin.jpg"
         },
         {
-          "name": "TableNatural",
-          "filePath": "filters/TableNatural.table",
-          "thumbPath": "thumb/TableNatural.jpg"
+          "name": "Natural",
+          "filePath": "filters/Natural.table",
+          "thumbPath": "thumb/Natural.jpg"
         },
         {
-          "name": "TableSoftglow",
-          "filePath": "filters/TableSoftglow.table",
-          "thumbPath": "thumb/TableSoftglow.jpg"
+          "name": "Softglow",
+          "filePath": "filters/Softglow.table",
+          "thumbPath": "thumb/Softglow.jpg"
         },
         {
-          "name": "TableCreamyLight",
-          "filePath": "filters/TableCreamyLight.table",
-          "thumbPath": "thumb/TableCreamyLight.jpg"
+          "name": "CreamyLight",
+          "filePath": "filters/CreamyLight.table",
+          "thumbPath": "thumb/CreamyLight.jpg"
         },
         {
-          "name": "TableRosyTone",
-          "filePath": "filters/TableRosyTone.table",
-          "thumbPath": "thumb/TableRosyTone.jpg"
+          "name": "RosyTone",
+          "filePath": "filters/RosyTone.table",
+          "thumbPath": "thumb/RosyTone.jpg"
         },
         {
-          "name": "TableWarmTan",
-          "filePath": "filters/TableWarmTan.table",
-          "thumbPath": "thumb/TableWarmTan.jpg"
+          "name": "WarmTan",
+          "filePath": "filters/WarmTan.table",
+          "thumbPath": "thumb/WarmTan.jpg"
         },
         {
-          "name": "TableCoolShade",
-          "filePath": "filters/TableCoolShade.table",
-          "thumbPath": "thumb/TableCoolShade.jpg"
+          "name": "CoolShade",
+          "filePath": "filters/CoolShade.table",
+          "thumbPath": "thumb/CoolShade.jpg"
         },
         {
-          "name": "TableNeutralSkin",
-          "filePath": "filters/TableNeutralSkin.table",
-          "thumbPath": "thumb/TableNeutralSkin.jpg"
+          "name": "NeutralSkin",
+          "filePath": "filters/NeutralSkin.table",
+          "thumbPath": "thumb/NeutralSkin.jpg"
         },
         {
-          "name": "TableSmoothLight",
-          "filePath": "filters/TableSmoothLight.table",
-          "thumbPath": "thumb/TableSmoothLight.jpg"
+          "name": "SmoothLight",
+          "filePath": "filters/SmoothLight.table",
+          "thumbPath": "thumb/SmoothLight.jpg"
         },
         {
-          "name": "TableMatteLook",
-          "filePath": "filters/TableMatteLook.table",
-          "thumbPath": "thumb/TableMatteLook.jpg"
+          "name": "MatteLook",
+          "filePath": "filters/MatteLook.table",
+          "thumbPath": "thumb/MatteLook.jpg"
         },
         {
-          "name": "TablePastelSkin",
-          "filePath": "filters/TablePastelSkin.table",
-          "thumbPath": "thumb/TablePastelSkin.jpg"
+          "name": "PastelSkin",
+          "filePath": "filters/PastelSkin.table",
+          "thumbPath": "thumb/PastelSkin.jpg"
         },
         {
-          "name": "TableBrightSoft",
-          "filePath": "filters/TableBrightSoft.table",
-          "thumbPath": "thumb/TableBrightSoft.jpg"
+          "name": "BrightSoft",
+          "filePath": "filters/BrightSoft.table",
+          "thumbPath": "thumb/BrightSoft.jpg"
         },
         {
-          "name": "TableGlowFilm",
-          "filePath": "filters/TableGlowFilm.table",
-          "thumbPath": "thumb/TableGlowFilm.jpg"
+          "name": "GlowFilm",
+          "filePath": "filters/GlowFilm.table",
+          "thumbPath": "thumb/GlowFilm.jpg"
         },
         {
-          "name": "TablePorcelain",
-          "filePath": "filters/TablePorcelain.table",
-          "thumbPath": "thumb/TablePorcelain.jpg"
+          "name": "Porcelain",
+          "filePath": "filters/Porcelain.table",
+          "thumbPath": "thumb/Porcelain.jpg"
         },
         {
-          "name": "TableWarmIvory",
-          "filePath": "filters/TableWarmIvory.table",
-          "thumbPath": "thumb/TableWarmIvory.jpg"
+          "name": "WarmIvory",
+          "filePath": "filters/WarmIvory.table",
+          "thumbPath": "thumb/WarmIvory.jpg"
         }
       ]
     },
@@ -84,79 +84,79 @@
       "name": "Creative",
       "filters": [
         {
-          "name": "TableGolden",
-          "filePath": "filters/TableGolden.table",
-          "thumbPath": "thumb/TableGolden.jpg"
+          "name": "Golden",
+          "filePath": "filters/Golden.table",
+          "thumbPath": "thumb/Golden.jpg"
         },
         {
-          "name": "TableTealorange",
-          "filePath": "filters/TableTealorange.table",
-          "thumbPath": "thumb/TableTealorange.jpg"
+          "name": "Tealorange",
+          "filePath": "filters/Tealorange.table",
+          "thumbPath": "thumb/Tealorange.jpg"
         },
         {
-          "name": "TableMagentaMood",
-          "filePath": "filters/TableMagentaMood.table",
-          "thumbPath": "thumb/TableMagentaMood.jpg"
+          "name": "MagentaMood",
+          "filePath": "filters/MagentaMood.table",
+          "thumbPath": "thumb/MagentaMood.jpg"
         },
         {
-          "name": "TableCinematicBlue",
-          "filePath": "filters/TableCinematicBlue.table",
-          "thumbPath": "thumb/TableCinematicBlue.jpg"
+          "name": "CinematicBlue",
+          "filePath": "filters/CinematicBlue.table",
+          "thumbPath": "thumb/CinematicBlue.jpg"
         },
         {
-          "name": "TableEmeraldGlow",
-          "filePath": "filters/TableEmeraldGlow.table",
-          "thumbPath": "thumb/TableEmeraldGlow.jpg"
+          "name": "EmeraldGlow",
+          "filePath": "filters/EmeraldGlow.table",
+          "thumbPath": "thumb/EmeraldGlow.jpg"
         },
         {
-          "name": "TableRoseFade",
-          "filePath": "filters/TableRoseFade.table",
-          "thumbPath": "thumb/TableRoseFade.jpg"
+          "name": "RoseFade",
+          "filePath": "filters/RoseFade.table",
+          "thumbPath": "thumb/RoseFade.jpg"
         },
         {
-          "name": "TableFirelight",
-          "filePath": "filters/TableFirelight.table",
-          "thumbPath": "thumb/TableFirelight.jpg"
+          "name": "Firelight",
+          "filePath": "filters/Firelight.table",
+          "thumbPath": "thumb/Firelight.jpg"
         },
         {
-          "name": "TableSunsetTone",
-          "filePath": "filters/TableSunsetTone.table",
-          "thumbPath": "thumb/TableSunsetTone.jpg"
+          "name": "SunsetTone",
+          "filePath": "filters/SunsetTone.table",
+          "thumbPath": "thumb/SunsetTone.jpg"
         },
         {
-          "name": "TableRetroWave",
-          "filePath": "filters/TableRetroWave.table",
-          "thumbPath": "thumb/TableRetroWave.jpg"
+          "name": "RetroWave",
+          "filePath": "filters/RetroWave.table",
+          "thumbPath": "thumb/RetroWave.jpg"
         },
         {
-          "name": "TableVioletDream",
-          "filePath": "filters/TableVioletDream.table",
-          "thumbPath": "thumb/TableVioletDream.jpg"
+          "name": "VioletDream",
+          "filePath": "filters/VioletDream.table",
+          "thumbPath": "thumb/VioletDream.jpg"
         },
         {
-          "name": "TableCandyTone",
-          "filePath": "filters/TableCandyTone.table",
-          "thumbPath": "thumb/TableCandyTone.jpg"
+          "name": "CandyTone",
+          "filePath": "filters/CandyTone.table",
+          "thumbPath": "thumb/CandyTone.jpg"
         },
         {
-          "name": "TableCopperMood",
-          "filePath": "filters/TableCopperMood.table",
-          "thumbPath": "thumb/TableCopperMood.jpg"
+          "name": "CopperMood",
+          "filePath": "filters/CopperMood.table",
+          "thumbPath": "thumb/CopperMood.jpg"
         },
         {
-          "name": "TableMysticFog",
-          "filePath": "filters/TableMysticFog.table",
-          "thumbPath": "thumb/TableMysticFog.jpg"
+          "name": "MysticFog",
+          "filePath": "filters/MysticFog.table",
+          "thumbPath": "thumb/MysticFog.jpg"
         },
         {
-          "name": "TableOceanDeep",
-          "filePath": "filters/TableOceanDeep.table",
-          "thumbPath": "thumb/TableOceanDeep.jpg"
+          "name": "OceanDeep",
+          "filePath": "filters/OceanDeep.table",
+          "thumbPath": "thumb/OceanDeep.jpg"
         },
         {
-          "name": "TableBloomWarm",
-          "filePath": "filters/TableBloomWarm.table",
-          "thumbPath": "thumb/TableBloomWarm.jpg"
+          "name": "BloomWarm",
+          "filePath": "filters/BloomWarm.table",
+          "thumbPath": "thumb/BloomWarm.jpg"
         }
       ]
     },
@@ -164,79 +164,79 @@
       "name": "Vintage & Film",
       "filters": [
         {
-          "name": "TableRetropop",
-          "filePath": "filters/TableRetropop.table",
-          "thumbPath": "thumb/TableRetropop.jpg"
+          "name": "Retropop",
+          "filePath": "filters/Retropop.table",
+          "thumbPath": "thumb/Retropop.jpg"
         },
         {
-          "name": "TableVin1ClassicFilm",
-          "filePath": "filters/TableVin1ClassicFilm.table",
-          "thumbPath": "thumb/TableVin1ClassicFilm.jpg"
+          "name": "Vin1ClassicFilm",
+          "filePath": "filters/Vin1ClassicFilm.table",
+          "thumbPath": "thumb/Vin1ClassicFilm.jpg"
         },
         {
-          "name": "TableVin3ColdRetro",
-          "filePath": "filters/TableVin3ColdRetro.table",
-          "thumbPath": "thumb/TableVin3ColdRetro.jpg"
+          "name": "Vin3ColdRetro",
+          "filePath": "filters/Vin3ColdRetro.table",
+          "thumbPath": "thumb/Vin3ColdRetro.jpg"
         },
         {
-          "name": "TableVin4AntiqueGrain",
-          "filePath": "filters/TableVin4AntiqueGrain.table",
-          "thumbPath": "thumb/TableVin4AntiqueGrain.jpg"
+          "name": "Vin4AntiqueGrain",
+          "filePath": "filters/Vin4AntiqueGrain.table",
+          "thumbPath": "thumb/Vin4AntiqueGrain.jpg"
         },
         {
-          "name": "TableVintagenoise",
-          "filePath": "filters/TableVintagenoise.table",
-          "thumbPath": "thumb/TableVintagenoise.jpg"
+          "name": "Vintagenoise",
+          "filePath": "filters/Vintagenoise.table",
+          "thumbPath": "thumb/Vintagenoise.jpg"
         },
         {
-          "name": "TableVin2SoftFade",
-          "filePath": "filters/TableVin2SoftFade.table",
-          "thumbPath": "thumb/TableVin2SoftFade.jpg"
+          "name": "Vin2SoftFade",
+          "filePath": "filters/Vin2SoftFade.table",
+          "thumbPath": "thumb/Vin2SoftFade.jpg"
         },
         {
-          "name": "TableVin5Polaroid",
-          "filePath": "filters/TableVin5Polaroid.table",
-          "thumbPath": "thumb/TableVin5Polaroid.jpg"
+          "name": "Vin5Polaroid",
+          "filePath": "filters/Vin5Polaroid.table",
+          "thumbPath": "thumb/Vin5Polaroid.jpg"
         },
         {
-          "name": "TableVin6Dusty",
-          "filePath": "filters/TableVin6Dusty.table",
-          "thumbPath": "thumb/TableVin6Dusty.jpg"
+          "name": "Vin6Dusty",
+          "filePath": "filters/Vin6Dusty.table",
+          "thumbPath": "thumb/Vin6Dusty.jpg"
         },
         {
-          "name": "TableVin7GrainWarm",
-          "filePath": "filters/TableVin7GrainWarm.table",
-          "thumbPath": "thumb/TableVin7GrainWarm.jpg"
+          "name": "Vin7GrainWarm",
+          "filePath": "filters/Vin7GrainWarm.table",
+          "thumbPath": "thumb/Vin7GrainWarm.jpg"
         },
         {
-          "name": "TableVin8GoldenFilm",
-          "filePath": "filters/TableVin8GoldenFilm.table",
-          "thumbPath": "thumb/TableVin8GoldenFilm.jpg"
+          "name": "Vin8GoldenFilm",
+          "filePath": "filters/Vin8GoldenFilm.table",
+          "thumbPath": "thumb/Vin8GoldenFilm.jpg"
         },
         {
-          "name": "TableVin9Kodachrome",
-          "filePath": "filters/TableVin9Kodachrome.table",
-          "thumbPath": "thumb/TableVin9Kodachrome.jpg"
+          "name": "Vin9Kodachrome",
+          "filePath": "filters/Vin9Kodachrome.table",
+          "thumbPath": "thumb/Vin9Kodachrome.jpg"
         },
         {
-          "name": "TableVin10MattePastel",
-          "filePath": "filters/TableVin10MattePastel.table",
-          "thumbPath": "thumb/TableVin10MattePastel.jpg"
+          "name": "Vin10MattePastel",
+          "filePath": "filters/Vin10MattePastel.table",
+          "thumbPath": "thumb/Vin10MattePastel.jpg"
         },
         {
-          "name": "TableVin11OldCinema",
-          "filePath": "filters/TableVin11OldCinema.table",
-          "thumbPath": "thumb/TableVin11OldCinema.jpg"
+          "name": "Vin11OldCinema",
+          "filePath": "filters/Vin11OldCinema.table",
+          "thumbPath": "thumb/Vin11OldCinema.jpg"
         },
         {
-          "name": "TableVin12Colorwash",
-          "filePath": "filters/TableVin12Colorwash.table",
-          "thumbPath": "thumb/TableVin12Colorwash.jpg"
+          "name": "Vin12Colorwash",
+          "filePath": "filters/Vin12Colorwash.table",
+          "thumbPath": "thumb/Vin12Colorwash.jpg"
         },
         {
-          "name": "TableVin13SoftTone",
-          "filePath": "filters/TableVin13SoftTone.table",
-          "thumbPath": "thumb/TableVin13SoftTone.jpg"
+          "name": "Vin13SoftTone",
+          "filePath": "filters/Vin13SoftTone.table",
+          "thumbPath": "thumb/Vin13SoftTone.jpg"
         }
       ]
     },
@@ -244,79 +244,79 @@
       "name": "Black & White",
       "filters": [
         {
-          "name": "TableClassicbw",
-          "filePath": "filters/TableClassicbw.table",
-          "thumbPath": "thumb/TableClassicbw.jpg"
+          "name": "Classicbw",
+          "filePath": "filters/Classicbw.table",
+          "thumbPath": "thumb/Classicbw.jpg"
         },
         {
-          "name": "TableMono",
-          "filePath": "filters/TableMono.table",
-          "thumbPath": "thumb/TableMono.jpg"
+          "name": "Mono",
+          "filePath": "filters/Mono.table",
+          "thumbPath": "thumb/Mono.jpg"
         },
         {
-          "name": "TableBWSoftContrast",
-          "filePath": "filters/TableBWSoftContrast.table",
-          "thumbPath": "thumb/TableBWSoftContrast.jpg"
+          "name": "BWSoftContrast",
+          "filePath": "filters/BWSoftContrast.table",
+          "thumbPath": "thumb/BWSoftContrast.jpg"
         },
         {
-          "name": "TableBWHighContrast",
-          "filePath": "filters/TableBWHighContrast.table",
-          "thumbPath": "thumb/TableBWHighContrast.jpg"
+          "name": "BWHighContrast",
+          "filePath": "filters/BWHighContrast.table",
+          "thumbPath": "thumb/BWHighContrast.jpg"
         },
         {
-          "name": "TableBWFilmGrain",
-          "filePath": "filters/TableBWFilmGrain.table",
-          "thumbPath": "thumb/TableBWFilmGrain.jpg"
+          "name": "BWFilmGrain",
+          "filePath": "filters/BWFilmGrain.table",
+          "thumbPath": "thumb/BWFilmGrain.jpg"
         },
         {
-          "name": "TableBWMatte",
-          "filePath": "filters/TableBWMatte.table",
-          "thumbPath": "thumb/TableBWMatte.jpg"
+          "name": "BWMatte",
+          "filePath": "filters/BWMatte.table",
+          "thumbPath": "thumb/BWMatte.jpg"
         },
         {
-          "name": "TableBWPlatinum",
-          "filePath": "filters/TableBWPlatinum.table",
-          "thumbPath": "thumb/TableBWPlatinum.jpg"
+          "name": "BWPlatinum",
+          "filePath": "filters/BWPlatinum.table",
+          "thumbPath": "thumb/BWPlatinum.jpg"
         },
         {
-          "name": "TableBWInfrared",
-          "filePath": "filters/TableBWInfrared.table",
-          "thumbPath": "thumb/TableBWInfrared.jpg"
+          "name": "BWInfrared",
+          "filePath": "filters/BWInfrared.table",
+          "thumbPath": "thumb/BWInfrared.jpg"
         },
         {
-          "name": "TableBWNoirFilm",
-          "filePath": "filters/TableBWNoirFilm.table",
-          "thumbPath": "thumb/TableBWNoirFilm.jpg"
+          "name": "BWNoirFilm",
+          "filePath": "filters/BWNoirFilm.table",
+          "thumbPath": "thumb/BWNoirFilm.jpg"
         },
         {
-          "name": "TableBWNeutral",
-          "filePath": "filters/TableBWNeutral.table",
-          "thumbPath": "thumb/TableBWNeutral.jpg"
+          "name": "BWNeutral",
+          "filePath": "filters/BWNeutral.table",
+          "thumbPath": "thumb/BWNeutral.jpg"
         },
         {
-          "name": "TableBWSharp",
-          "filePath": "filters/TableBWSharp.table",
-          "thumbPath": "thumb/TableBWSharp.jpg"
+          "name": "BWSharp",
+          "filePath": "filters/BWSharp.table",
+          "thumbPath": "thumb/BWSharp.jpg"
         },
         {
-          "name": "TableBWSoftLight",
-          "filePath": "filters/TableBWSoftLight.table",
-          "thumbPath": "thumb/TableBWSoftLight.jpg"
+          "name": "BWSoftLight",
+          "filePath": "filters/BWSoftLight.table",
+          "thumbPath": "thumb/BWSoftLight.jpg"
         },
         {
-          "name": "TableBWStudio",
-          "filePath": "filters/TableBWStudio.table",
-          "thumbPath": "thumb/TableBWStudio.jpg"
+          "name": "BWStudio",
+          "filePath": "filters/BWStudio.table",
+          "thumbPath": "thumb/BWStudio.jpg"
         },
         {
-          "name": "TableBWSilver",
-          "filePath": "filters/TableBWSilver.table",
-          "thumbPath": "thumb/TableBWSilver.jpg"
+          "name": "BWSilver",
+          "filePath": "filters/BWSilver.table",
+          "thumbPath": "thumb/BWSilver.jpg"
         },
         {
-          "name": "TableBWCharcoal",
-          "filePath": "filters/TableBWCharcoal.table",
-          "thumbPath": "thumb/TableBWCharcoal.jpg"
+          "name": "BWCharcoal",
+          "filePath": "filters/BWCharcoal.table",
+          "thumbPath": "thumb/BWCharcoal.jpg"
         }
       ]
     },
@@ -324,79 +324,79 @@
       "name": "Lifestyle",
       "filters": [
         {
-          "name": "TableCream",
-          "filePath": "filters/TableCream.table",
-          "thumbPath": "thumb/TableCream.jpg"
+          "name": "Cream",
+          "filePath": "filters/Cream.table",
+          "thumbPath": "thumb/Cream.jpg"
         },
         {
-          "name": "TableMorningLight",
-          "filePath": "filters/TableMorningLight.table",
-          "thumbPath": "thumb/TableMorningLight.jpg"
+          "name": "MorningLight",
+          "filePath": "filters/MorningLight.table",
+          "thumbPath": "thumb/MorningLight.jpg"
         },
         {
-          "name": "TableSoftHome",
-          "filePath": "filters/TableSoftHome.table",
-          "thumbPath": "thumb/TableSoftHome.jpg"
+          "name": "SoftHome",
+          "filePath": "filters/SoftHome.table",
+          "thumbPath": "thumb/SoftHome.jpg"
         },
         {
-          "name": "TableCafeTone",
-          "filePath": "filters/TableCafeTone.table",
-          "thumbPath": "thumb/TableCafeTone.jpg"
+          "name": "CafeTone",
+          "filePath": "filters/CafeTone.table",
+          "thumbPath": "thumb/CafeTone.jpg"
         },
         {
-          "name": "TablePastelLife",
-          "filePath": "filters/TablePastelLife.table",
-          "thumbPath": "thumb/TablePastelLife.jpg"
+          "name": "PastelLife",
+          "filePath": "filters/PastelLife.table",
+          "thumbPath": "thumb/PastelLife.jpg"
         },
         {
-          "name": "TableFreshAir",
-          "filePath": "filters/TableFreshAir.table",
-          "thumbPath": "thumb/TableFreshAir.jpg"
+          "name": "FreshAir",
+          "filePath": "filters/FreshAir.table",
+          "thumbPath": "thumb/FreshAir.jpg"
         },
         {
-          "name": "TableMinimalWarm",
-          "filePath": "filters/TableMinimalWarm.table",
-          "thumbPath": "thumb/TableMinimalWarm.jpg"
+          "name": "MinimalWarm",
+          "filePath": "filters/MinimalWarm.table",
+          "thumbPath": "thumb/MinimalWarm.jpg"
         },
         {
-          "name": "TableDaydream",
-          "filePath": "filters/TableDaydream.table",
-          "thumbPath": "thumb/TableDaydream.jpg"
+          "name": "Daydream",
+          "filePath": "filters/Daydream.table",
+          "thumbPath": "thumb/Daydream.jpg"
         },
         {
-          "name": "TableCottage",
-          "filePath": "filters/TableCottage.table",
-          "thumbPath": "thumb/TableCottage.jpg"
+          "name": "Cottage",
+          "filePath": "filters/Cottage.table",
+          "thumbPath": "thumb/Cottage.jpg"
         },
         {
-          "name": "TableMistyMorning",
-          "filePath": "filters/TableMistyMorning.table",
-          "thumbPath": "thumb/TableMistyMorning.jpg"
+          "name": "MistyMorning",
+          "filePath": "filters/MistyMorning.table",
+          "thumbPath": "thumb/MistyMorning.jpg"
         },
         {
-          "name": "TablePineTone",
-          "filePath": "filters/TablePineTone.table",
-          "thumbPath": "thumb/TablePineTone.jpg"
+          "name": "PineTone",
+          "filePath": "filters/PineTone.table",
+          "thumbPath": "thumb/PineTone.jpg"
         },
         {
-          "name": "TableGoldenDay",
-          "filePath": "filters/TableGoldenDay.table",
-          "thumbPath": "thumb/TableGoldenDay.jpg"
+          "name": "GoldenDay",
+          "filePath": "filters/GoldenDay.table",
+          "thumbPath": "thumb/GoldenDay.jpg"
         },
         {
-          "name": "TableCozyRoom",
-          "filePath": "filters/TableCozyRoom.table",
-          "thumbPath": "thumb/TableCozyRoom.jpg"
+          "name": "CozyRoom",
+          "filePath": "filters/CozyRoom.table",
+          "thumbPath": "thumb/CozyRoom.jpg"
         },
         {
-          "name": "TableNaturalHome",
-          "filePath": "filters/TableNaturalHome.table",
-          "thumbPath": "thumb/TableNaturalHome.jpg"
+          "name": "NaturalHome",
+          "filePath": "filters/NaturalHome.table",
+          "thumbPath": "thumb/NaturalHome.jpg"
         },
         {
-          "name": "TableExtra15",
-          "filePath": "filters/TableExtra15.table",
-          "thumbPath": "thumb/TableExtra15.jpg"
+          "name": "Extra15",
+          "filePath": "filters/Extra15.table",
+          "thumbPath": "thumb/Extra15.jpg"
         }
       ]
     },
@@ -404,79 +404,79 @@
       "name": "Artistic",
       "filters": [
         {
-          "name": "TableDreamy",
-          "filePath": "filters/TableDreamy.table",
-          "thumbPath": "thumb/TableDreamy.jpg"
+          "name": "Dreamy",
+          "filePath": "filters/Dreamy.table",
+          "thumbPath": "thumb/Dreamy.jpg"
         },
         {
-          "name": "TableFantasy",
-          "filePath": "filters/TableFantasy.table",
-          "thumbPath": "thumb/TableFantasy.jpg"
+          "name": "Fantasy",
+          "filePath": "filters/Fantasy.table",
+          "thumbPath": "thumb/Fantasy.jpg"
         },
         {
-          "name": "TableFairyGlow",
-          "filePath": "filters/TableFairyGlow.table",
-          "thumbPath": "thumb/TableFairyGlow.jpg"
+          "name": "FairyGlow",
+          "filePath": "filters/FairyGlow.table",
+          "thumbPath": "thumb/FairyGlow.jpg"
         },
         {
-          "name": "TableGalaxyTone",
-          "filePath": "filters/TableGalaxyTone.table",
-          "thumbPath": "thumb/TableGalaxyTone.jpg"
+          "name": "GalaxyTone",
+          "filePath": "filters/GalaxyTone.table",
+          "thumbPath": "thumb/GalaxyTone.jpg"
         },
         {
-          "name": "TablePainterly",
-          "filePath": "filters/TablePainterly.table",
-          "thumbPath": "thumb/TablePainterly.jpg"
+          "name": "Painterly",
+          "filePath": "filters/Painterly.table",
+          "thumbPath": "thumb/Painterly.jpg"
         },
         {
-          "name": "TableSoftBlur",
-          "filePath": "filters/TableSoftBlur.table",
-          "thumbPath": "thumb/TableSoftBlur.jpg"
+          "name": "SoftBlur",
+          "filePath": "filters/SoftBlur.table",
+          "thumbPath": "thumb/SoftBlur.jpg"
         },
         {
-          "name": "TableVividPop",
-          "filePath": "filters/TableVividPop.table",
-          "thumbPath": "thumb/TableVividPop.jpg"
+          "name": "VividPop",
+          "filePath": "filters/VividPop.table",
+          "thumbPath": "thumb/VividPop.jpg"
         },
         {
-          "name": "TableIllusion",
-          "filePath": "filters/TableIllusion.table",
-          "thumbPath": "thumb/TableIllusion.jpg"
+          "name": "Illusion",
+          "filePath": "filters/Illusion.table",
+          "thumbPath": "thumb/Illusion.jpg"
         },
         {
-          "name": "TableWhimsy",
-          "filePath": "filters/TableWhimsy.table",
-          "thumbPath": "thumb/TableWhimsy.jpg"
+          "name": "Whimsy",
+          "filePath": "filters/Whimsy.table",
+          "thumbPath": "thumb/Whimsy.jpg"
         },
         {
-          "name": "TableCanvasTone",
-          "filePath": "filters/TableCanvasTone.table",
-          "thumbPath": "thumb/TableCanvasTone.jpg"
+          "name": "CanvasTone",
+          "filePath": "filters/CanvasTone.table",
+          "thumbPath": "thumb/CanvasTone.jpg"
         },
         {
-          "name": "TableCelestial",
-          "filePath": "filters/TableCelestial.table",
-          "thumbPath": "thumb/TableCelestial.jpg"
+          "name": "Celestial",
+          "filePath": "filters/Celestial.table",
+          "thumbPath": "thumb/Celestial.jpg"
         },
         {
-          "name": "TableFloralGlow",
-          "filePath": "filters/TableFloralGlow.table",
-          "thumbPath": "thumb/TableFloralGlow.jpg"
+          "name": "FloralGlow",
+          "filePath": "filters/FloralGlow.table",
+          "thumbPath": "thumb/FloralGlow.jpg"
         },
         {
-          "name": "TableLightVerse",
-          "filePath": "filters/TableLightVerse.table",
-          "thumbPath": "thumb/TableLightVerse.jpg"
+          "name": "LightVerse",
+          "filePath": "filters/LightVerse.table",
+          "thumbPath": "thumb/LightVerse.jpg"
         },
         {
-          "name": "TableDreamSketch",
-          "filePath": "filters/TableDreamSketch.table",
-          "thumbPath": "thumb/TableDreamSketch.jpg"
+          "name": "DreamSketch",
+          "filePath": "filters/DreamSketch.table",
+          "thumbPath": "thumb/DreamSketch.jpg"
         },
         {
-          "name": "TableSurreal",
-          "filePath": "filters/TableSurreal.table",
-          "thumbPath": "thumb/TableSurreal.jpg"
+          "name": "Surreal",
+          "filePath": "filters/Surreal.table",
+          "thumbPath": "thumb/Surreal.jpg"
         }
       ]
     },
@@ -484,79 +484,79 @@
       "name": "Travel",
       "filters": [
         {
-          "name": "TableGrainy",
-          "filePath": "filters/TableGrainy.table",
-          "thumbPath": "thumb/TableGrainy.jpg"
+          "name": "Grainy",
+          "filePath": "filters/Grainy.table",
+          "thumbPath": "thumb/Grainy.jpg"
         },
         {
-          "name": "TableTropical",
-          "filePath": "filters/TableTropical.table",
-          "thumbPath": "thumb/TableTropical.jpg"
+          "name": "Tropical",
+          "filePath": "filters/Tropical.table",
+          "thumbPath": "thumb/Tropical.jpg"
         },
         {
-          "name": "TableSunsetGlow",
-          "filePath": "filters/TableSunsetGlow.table",
-          "thumbPath": "thumb/TableSunsetGlow.jpg"
+          "name": "SunsetGlow",
+          "filePath": "filters/SunsetGlow.table",
+          "thumbPath": "thumb/SunsetGlow.jpg"
         },
         {
-          "name": "TableWanderWarm",
-          "filePath": "filters/TableWanderWarm.table",
-          "thumbPath": "thumb/TableWanderWarm.jpg"
+          "name": "WanderWarm",
+          "filePath": "filters/WanderWarm.table",
+          "thumbPath": "thumb/WanderWarm.jpg"
         },
         {
-          "name": "TableOceanSky",
-          "filePath": "filters/TableOceanSky.table",
-          "thumbPath": "thumb/TableOceanSky.jpg"
+          "name": "OceanSky",
+          "filePath": "filters/OceanSky.table",
+          "thumbPath": "thumb/OceanSky.jpg"
         },
         {
-          "name": "TableCanyon",
-          "filePath": "filters/TableCanyon.table",
-          "thumbPath": "thumb/TableCanyon.jpg"
+          "name": "Canyon",
+          "filePath": "filters/Canyon.table",
+          "thumbPath": "thumb/Canyon.jpg"
         },
         {
-          "name": "TableDesertTone",
-          "filePath": "filters/TableDesertTone.table",
-          "thumbPath": "thumb/TableDesertTone.jpg"
+          "name": "DesertTone",
+          "filePath": "filters/DesertTone.table",
+          "thumbPath": "thumb/DesertTone.jpg"
         },
         {
-          "name": "TableRainyCity",
-          "filePath": "filters/TableRainyCity.table",
-          "thumbPath": "thumb/TableRainyCity.jpg"
+          "name": "RainyCity",
+          "filePath": "filters/RainyCity.table",
+          "thumbPath": "thumb/RainyCity.jpg"
         },
         {
-          "name": "TableForestLight",
-          "filePath": "filters/TableForestLight.table",
-          "thumbPath": "thumb/TableForestLight.jpg"
+          "name": "ForestLight",
+          "filePath": "filters/ForestLight.table",
+          "thumbPath": "thumb/ForestLight.jpg"
         },
         {
-          "name": "TableCoastal",
-          "filePath": "filters/TableCoastal.table",
-          "thumbPath": "thumb/TableCoastal.jpg"
+          "name": "Coastal",
+          "filePath": "filters/Coastal.table",
+          "thumbPath": "thumb/Coastal.jpg"
         },
         {
-          "name": "TableMountainAir",
-          "filePath": "filters/TableMountainAir.table",
-          "thumbPath": "thumb/TableMountainAir.jpg"
+          "name": "MountainAir",
+          "filePath": "filters/MountainAir.table",
+          "thumbPath": "thumb/MountainAir.jpg"
         },
         {
-          "name": "TableJourney",
-          "filePath": "filters/TableJourney.table",
-          "thumbPath": "thumb/TableJourney.jpg"
+          "name": "Journey",
+          "filePath": "filters/Journey.table",
+          "thumbPath": "thumb/Journey.jpg"
         },
         {
-          "name": "TableRoadtrip",
-          "filePath": "filters/TableRoadtrip.table",
-          "thumbPath": "thumb/TableRoadtrip.jpg"
+          "name": "Roadtrip",
+          "filePath": "filters/Roadtrip.table",
+          "thumbPath": "thumb/Roadtrip.jpg"
         },
         {
-          "name": "TableTravelMood",
-          "filePath": "filters/TableTravelMood.table",
-          "thumbPath": "thumb/TableTravelMood.jpg"
+          "name": "TravelMood",
+          "filePath": "filters/TravelMood.table",
+          "thumbPath": "thumb/TravelMood.jpg"
         },
         {
-          "name": "TableIslandBreeze",
-          "filePath": "filters/TableIslandBreeze.table",
-          "thumbPath": "thumb/TableIslandBreeze.jpg"
+          "name": "IslandBreeze",
+          "filePath": "filters/IslandBreeze.table",
+          "thumbPath": "thumb/IslandBreeze.jpg"
         }
       ]
     },
@@ -564,79 +564,79 @@
       "name": "Mood & Atmosphere",
       "filters": [
         {
-          "name": "TableMist",
-          "filePath": "filters/TableMist.table",
-          "thumbPath": "thumb/TableMist.jpg"
+          "name": "Mist",
+          "filePath": "filters/Mist.table",
+          "thumbPath": "thumb/Mist.jpg"
         },
         {
-          "name": "TableVin2FadedWarm",
-          "filePath": "filters/TableVin2FadedWarm.table",
-          "thumbPath": "thumb/TableVin2FadedWarm.jpg"
+          "name": "Vin2FadedWarm",
+          "filePath": "filters/Vin2FadedWarm.table",
+          "thumbPath": "thumb/Vin2FadedWarm.jpg"
         },
         {
-          "name": "TableFoggy",
-          "filePath": "filters/TableFoggy.table",
-          "thumbPath": "thumb/TableFoggy.jpg"
+          "name": "Foggy",
+          "filePath": "filters/Foggy.table",
+          "thumbPath": "thumb/Foggy.jpg"
         },
         {
-          "name": "TableNightMood",
-          "filePath": "filters/TableNightMood.table",
-          "thumbPath": "thumb/TableNightMood.jpg"
+          "name": "NightMood",
+          "filePath": "filters/NightMood.table",
+          "thumbPath": "thumb/NightMood.jpg"
         },
         {
-          "name": "TableBlueHaze",
-          "filePath": "filters/TableBlueHaze.table",
-          "thumbPath": "thumb/TableBlueHaze.jpg"
+          "name": "BlueHaze",
+          "filePath": "filters/BlueHaze.table",
+          "thumbPath": "thumb/BlueHaze.jpg"
         },
         {
-          "name": "TableCandleTone",
-          "filePath": "filters/TableCandleTone.table",
-          "thumbPath": "thumb/TableCandleTone.jpg"
+          "name": "CandleTone",
+          "filePath": "filters/CandleTone.table",
+          "thumbPath": "thumb/CandleTone.jpg"
         },
         {
-          "name": "TableGoldenHour",
-          "filePath": "filters/TableGoldenHour.table",
-          "thumbPath": "thumb/TableGoldenHour.jpg"
+          "name": "GoldenHour",
+          "filePath": "filters/GoldenHour.table",
+          "thumbPath": "thumb/GoldenHour.jpg"
         },
         {
-          "name": "TableOvercast",
-          "filePath": "filters/TableOvercast.table",
-          "thumbPath": "thumb/TableOvercast.jpg"
+          "name": "Overcast",
+          "filePath": "filters/Overcast.table",
+          "thumbPath": "thumb/Overcast.jpg"
         },
         {
-          "name": "TableMoodyFade",
-          "filePath": "filters/TableMoodyFade.table",
-          "thumbPath": "thumb/TableMoodyFade.jpg"
+          "name": "MoodyFade",
+          "filePath": "filters/MoodyFade.table",
+          "thumbPath": "thumb/MoodyFade.jpg"
         },
         {
-          "name": "TableSilverAir",
-          "filePath": "filters/TableSilverAir.table",
-          "thumbPath": "thumb/TableSilverAir.jpg"
+          "name": "SilverAir",
+          "filePath": "filters/SilverAir.table",
+          "thumbPath": "thumb/SilverAir.jpg"
         },
         {
-          "name": "TableTwilight",
-          "filePath": "filters/TableTwilight.table",
-          "thumbPath": "thumb/TableTwilight.jpg"
+          "name": "Twilight",
+          "filePath": "filters/Twilight.table",
+          "thumbPath": "thumb/Twilight.jpg"
         },
         {
-          "name": "TableSmoky",
-          "filePath": "filters/TableSmoky.table",
-          "thumbPath": "thumb/TableSmoky.jpg"
+          "name": "Smoky",
+          "filePath": "filters/Smoky.table",
+          "thumbPath": "thumb/Smoky.jpg"
         },
         {
-          "name": "TableShadow",
-          "filePath": "filters/TableShadow.table",
-          "thumbPath": "thumb/TableShadow.jpg"
+          "name": "Shadow",
+          "filePath": "filters/Shadow.table",
+          "thumbPath": "thumb/Shadow.jpg"
         },
         {
-          "name": "TableChill",
-          "filePath": "filters/TableChill.table",
-          "thumbPath": "thumb/TableChill.jpg"
+          "name": "Chill",
+          "filePath": "filters/Chill.table",
+          "thumbPath": "thumb/Chill.jpg"
         },
         {
-          "name": "TableAtmospheric",
-          "filePath": "filters/TableAtmospheric.table",
-          "thumbPath": "thumb/TableAtmospheric.jpg"
+          "name": "Atmospheric",
+          "filePath": "filters/Atmospheric.table",
+          "thumbPath": "thumb/Atmospheric.jpg"
         }
       ]
     },
@@ -644,79 +644,79 @@
       "name": "Urban & Street",
       "filters": [
         {
-          "name": "TableMoody",
-          "filePath": "filters/TableMoody.table",
-          "thumbPath": "thumb/TableMoody.jpg"
+          "name": "Moody",
+          "filePath": "filters/Moody.table",
+          "thumbPath": "thumb/Moody.jpg"
         },
         {
-          "name": "TableNightcity",
-          "filePath": "filters/TableNightcity.table",
-          "thumbPath": "thumb/TableNightcity.jpg"
+          "name": "Nightcity",
+          "filePath": "filters/Nightcity.table",
+          "thumbPath": "thumb/Nightcity.jpg"
         },
         {
-          "name": "TableUrban",
-          "filePath": "filters/TableUrban.table",
-          "thumbPath": "thumb/TableUrban.jpg"
+          "name": "Urban",
+          "filePath": "filters/Urban.table",
+          "thumbPath": "thumb/Urban.jpg"
         },
         {
-          "name": "TableStreetNeon",
-          "filePath": "filters/TableStreetNeon.table",
-          "thumbPath": "thumb/TableStreetNeon.jpg"
+          "name": "StreetNeon",
+          "filePath": "filters/StreetNeon.table",
+          "thumbPath": "thumb/StreetNeon.jpg"
         },
         {
-          "name": "TableColdSteel",
-          "filePath": "filters/TableColdSteel.table",
-          "thumbPath": "thumb/TableColdSteel.jpg"
+          "name": "ColdSteel",
+          "filePath": "filters/ColdSteel.table",
+          "thumbPath": "thumb/ColdSteel.jpg"
         },
         {
-          "name": "TableShadowBlue",
-          "filePath": "filters/TableShadowBlue.table",
-          "thumbPath": "thumb/TableShadowBlue.jpg"
+          "name": "ShadowBlue",
+          "filePath": "filters/ShadowBlue.table",
+          "thumbPath": "thumb/ShadowBlue.jpg"
         },
         {
-          "name": "TableConcrete",
-          "filePath": "filters/TableConcrete.table",
-          "thumbPath": "thumb/TableConcrete.jpg"
+          "name": "Concrete",
+          "filePath": "filters/Concrete.table",
+          "thumbPath": "thumb/Concrete.jpg"
         },
         {
-          "name": "TableCyberCity",
-          "filePath": "filters/TableCyberCity.table",
-          "thumbPath": "thumb/TableCyberCity.jpg"
+          "name": "CyberCity",
+          "filePath": "filters/CyberCity.table",
+          "thumbPath": "thumb/CyberCity.jpg"
         },
         {
-          "name": "TableChromeTone",
-          "filePath": "filters/TableChromeTone.table",
-          "thumbPath": "thumb/TableChromeTone.jpg"
+          "name": "ChromeTone",
+          "filePath": "filters/ChromeTone.table",
+          "thumbPath": "thumb/ChromeTone.jpg"
         },
         {
-          "name": "TableDustyStreet",
-          "filePath": "filters/TableDustyStreet.table",
-          "thumbPath": "thumb/TableDustyStreet.jpg"
+          "name": "DustyStreet",
+          "filePath": "filters/DustyStreet.table",
+          "thumbPath": "thumb/DustyStreet.jpg"
         },
         {
-          "name": "TableDarkFilm",
-          "filePath": "filters/TableDarkFilm.table",
-          "thumbPath": "thumb/TableDarkFilm.jpg"
+          "name": "DarkFilm",
+          "filePath": "filters/DarkFilm.table",
+          "thumbPath": "thumb/DarkFilm.jpg"
         },
         {
-          "name": "TableMetropolitan",
-          "filePath": "filters/TableMetropolitan.table",
-          "thumbPath": "thumb/TableMetropolitan.jpg"
+          "name": "Metropolitan",
+          "filePath": "filters/Metropolitan.table",
+          "thumbPath": "thumb/Metropolitan.jpg"
         },
         {
-          "name": "TableSodiumLight",
-          "filePath": "filters/TableSodiumLight.table",
-          "thumbPath": "thumb/TableSodiumLight.jpg"
+          "name": "SodiumLight",
+          "filePath": "filters/SodiumLight.table",
+          "thumbPath": "thumb/SodiumLight.jpg"
         },
         {
-          "name": "TableSteelCool",
-          "filePath": "filters/TableSteelCool.table",
-          "thumbPath": "thumb/TableSteelCool.jpg"
+          "name": "SteelCool",
+          "filePath": "filters/SteelCool.table",
+          "thumbPath": "thumb/SteelCool.jpg"
         },
         {
-          "name": "TableRainStreet",
-          "filePath": "filters/TableRainStreet.table",
-          "thumbPath": "thumb/TableRainStreet.jpg"
+          "name": "RainStreet",
+          "filePath": "filters/RainStreet.table",
+          "thumbPath": "thumb/RainStreet.jpg"
         }
       ]
     },
@@ -724,79 +724,79 @@
       "name": "Essentials",
       "filters": [
         {
-          "name": "TableAqua",
-          "filePath": "filters/TableAqua.table",
-          "thumbPath": "thumb/TableAqua.jpg"
+          "name": "Aqua",
+          "filePath": "filters/Aqua.table",
+          "thumbPath": "thumb/Aqua.jpg"
         },
         {
-          "name": "TableBeige",
-          "filePath": "filters/TableBeige.table",
-          "thumbPath": "thumb/TableBeige.jpg"
+          "name": "Beige",
+          "filePath": "filters/Beige.table",
+          "thumbPath": "thumb/Beige.jpg"
         },
         {
-          "name": "TableCloud",
-          "filePath": "filters/TableCloud.table",
-          "thumbPath": "thumb/TableCloud.jpg"
+          "name": "Cloud",
+          "filePath": "filters/Cloud.table",
+          "thumbPath": "thumb/Cloud.jpg"
         },
         {
-          "name": "TableFade",
-          "filePath": "filters/TableFade.table",
-          "thumbPath": "thumb/TableFade.jpg"
+          "name": "Fade",
+          "filePath": "filters/Fade.table",
+          "thumbPath": "thumb/Fade.jpg"
         },
         {
-          "name": "TableHoney",
-          "filePath": "filters/TableHoney.table",
-          "thumbPath": "thumb/TableHoney.jpg"
+          "name": "Honey",
+          "filePath": "filters/Honey.table",
+          "thumbPath": "thumb/Honey.jpg"
         },
         {
-          "name": "TableMint",
-          "filePath": "filters/TableMint.table",
-          "thumbPath": "thumb/TableMint.jpg"
+          "name": "Mint",
+          "filePath": "filters/Mint.table",
+          "thumbPath": "thumb/Mint.jpg"
         },
         {
-          "name": "TablePeachy",
-          "filePath": "filters/TablePeachy.table",
-          "thumbPath": "thumb/TablePeachy.jpg"
+          "name": "Peachy",
+          "filePath": "filters/Peachy.table",
+          "thumbPath": "thumb/Peachy.jpg"
         },
         {
-          "name": "TablePearl",
-          "filePath": "filters/TablePearl.table",
-          "thumbPath": "thumb/TablePearl.jpg"
+          "name": "Pearl",
+          "filePath": "filters/Pearl.table",
+          "thumbPath": "thumb/Pearl.jpg"
         },
         {
-          "name": "TableSummer",
-          "filePath": "filters/TableSummer.table",
-          "thumbPath": "thumb/TableSummer.jpg"
+          "name": "Summer",
+          "filePath": "filters/Summer.table",
+          "thumbPath": "thumb/Summer.jpg"
         },
         {
-          "name": "TableSunny",
-          "filePath": "filters/TableSunny.table",
-          "thumbPath": "thumb/TableSunny.jpg"
+          "name": "Sunny",
+          "filePath": "filters/Sunny.table",
+          "thumbPath": "thumb/Sunny.jpg"
         },
         {
-          "name": "TableCream",
-          "filePath": "filters/TableCream.table",
-          "thumbPath": "thumb/TableCream.jpg"
+          "name": "Cream",
+          "filePath": "filters/Cream.table",
+          "thumbPath": "thumb/Cream.jpg"
         },
         {
-          "name": "TableSoftLight",
-          "filePath": "filters/TableSoftLight.table",
-          "thumbPath": "thumb/TableSoftLight.jpg"
+          "name": "SoftLight",
+          "filePath": "filters/SoftLight.table",
+          "thumbPath": "thumb/SoftLight.jpg"
         },
         {
-          "name": "TableNatural",
-          "filePath": "filters/TableNatural.table",
-          "thumbPath": "thumb/TableNatural.jpg"
+          "name": "Natural",
+          "filePath": "filters/Natural.table",
+          "thumbPath": "thumb/Natural.jpg"
         },
         {
-          "name": "TableWarmLight",
-          "filePath": "filters/TableWarmLight.table",
-          "thumbPath": "thumb/TableWarmLight.jpg"
+          "name": "WarmLight",
+          "filePath": "filters/WarmLight.table",
+          "thumbPath": "thumb/WarmLight.jpg"
         },
         {
-          "name": "TableClean",
-          "filePath": "filters/TableClean.table",
-          "thumbPath": "thumb/TableClean.jpg"
+          "name": "Clean",
+          "filePath": "filters/Clean.table",
+          "thumbPath": "thumb/Clean.jpg"
         }
       ]
     },
@@ -804,79 +804,79 @@
       "name": "Pastel",
       "filters": [
         {
-          "name": "TableBlush",
-          "filePath": "filters/TableBlush.table",
-          "thumbPath": "thumb/TableBlush.jpg"
+          "name": "Blush",
+          "filePath": "filters/Blush.table",
+          "thumbPath": "thumb/Blush.jpg"
         },
         {
-          "name": "TableBreeze",
-          "filePath": "filters/TableBreeze.table",
-          "thumbPath": "thumb/TableBreeze.jpg"
+          "name": "Breeze",
+          "filePath": "filters/Breeze.table",
+          "thumbPath": "thumb/Breeze.jpg"
         },
         {
-          "name": "TableCandy",
-          "filePath": "filters/TableCandy.table",
-          "thumbPath": "thumb/TableCandy.jpg"
+          "name": "Candy",
+          "filePath": "filters/Candy.table",
+          "thumbPath": "thumb/Candy.jpg"
         },
         {
-          "name": "TableFairy",
-          "filePath": "filters/TableFairy.table",
-          "thumbPath": "thumb/TableFairy.jpg"
+          "name": "Fairy",
+          "filePath": "filters/Fairy.table",
+          "thumbPath": "thumb/Fairy.jpg"
         },
         {
-          "name": "TableFluffy",
-          "filePath": "filters/TableFluffy.table",
-          "thumbPath": "thumb/TableFluffy.jpg"
+          "name": "Fluffy",
+          "filePath": "filters/Fluffy.table",
+          "thumbPath": "thumb/Fluffy.jpg"
         },
         {
-          "name": "TableLavender",
-          "filePath": "filters/TableLavender.table",
-          "thumbPath": "thumb/TableLavender.jpg"
+          "name": "Lavender",
+          "filePath": "filters/Lavender.table",
+          "thumbPath": "thumb/Lavender.jpg"
         },
         {
-          "name": "TablePastelBlue",
-          "filePath": "filters/TablePastelBlue.table",
-          "thumbPath": "thumb/TablePastelBlue.jpg"
+          "name": "PastelBlue",
+          "filePath": "filters/PastelBlue.table",
+          "thumbPath": "thumb/PastelBlue.jpg"
         },
         {
-          "name": "TablePastelPink",
-          "filePath": "filters/TablePastelPink.table",
-          "thumbPath": "thumb/TablePastelPink.jpg"
+          "name": "PastelPink",
+          "filePath": "filters/PastelPink.table",
+          "thumbPath": "thumb/PastelPink.jpg"
         },
         {
-          "name": "TablePastelGreen",
-          "filePath": "filters/TablePastelGreen.table",
-          "thumbPath": "thumb/TablePastelGreen.jpg"
+          "name": "PastelGreen",
+          "filePath": "filters/PastelGreen.table",
+          "thumbPath": "thumb/PastelGreen.jpg"
         },
         {
-          "name": "TablePastelPeach",
-          "filePath": "filters/TablePastelPeach.table",
-          "thumbPath": "thumb/TablePastelPeach.jpg"
+          "name": "PastelPeach",
+          "filePath": "filters/PastelPeach.table",
+          "thumbPath": "thumb/PastelPeach.jpg"
         },
         {
-          "name": "TablePastelViolet",
-          "filePath": "filters/TablePastelViolet.table",
-          "thumbPath": "thumb/TablePastelViolet.jpg"
+          "name": "PastelViolet",
+          "filePath": "filters/PastelViolet.table",
+          "thumbPath": "thumb/PastelViolet.jpg"
         },
         {
-          "name": "TableMarshmallow",
-          "filePath": "filters/TableMarshmallow.table",
-          "thumbPath": "thumb/TableMarshmallow.jpg"
+          "name": "Marshmallow",
+          "filePath": "filters/Marshmallow.table",
+          "thumbPath": "thumb/Marshmallow.jpg"
         },
         {
-          "name": "TableCotton",
-          "filePath": "filters/TableCotton.table",
-          "thumbPath": "thumb/TableCotton.jpg"
+          "name": "Cotton",
+          "filePath": "filters/Cotton.table",
+          "thumbPath": "thumb/Cotton.jpg"
         },
         {
-          "name": "TableBabyBlue",
-          "filePath": "filters/TableBabyBlue.table",
-          "thumbPath": "thumb/TableBabyBlue.jpg"
+          "name": "BabyBlue",
+          "filePath": "filters/BabyBlue.table",
+          "thumbPath": "thumb/BabyBlue.jpg"
         },
         {
-          "name": "TableSnowBlush",
-          "filePath": "filters/TableSnowBlush.table",
-          "thumbPath": "thumb/TableSnowBlush.jpg"
+          "name": "SnowBlush",
+          "filePath": "filters/SnowBlush.table",
+          "thumbPath": "thumb/SnowBlush.jpg"
         }
       ]
     },
@@ -884,79 +884,79 @@
       "name": "Cinematic",
       "filters": [
         {
-          "name": "TableCyber",
-          "filePath": "filters/TableCyber.table",
-          "thumbPath": "thumb/TableCyber.jpg"
+          "name": "Cyber",
+          "filePath": "filters/Cyber.table",
+          "thumbPath": "thumb/Cyber.jpg"
         },
         {
-          "name": "TableDrama",
-          "filePath": "filters/TableDrama.table",
-          "thumbPath": "thumb/TableDrama.jpg"
+          "name": "Drama",
+          "filePath": "filters/Drama.table",
+          "thumbPath": "thumb/Drama.jpg"
         },
         {
-          "name": "TableGlitch",
-          "filePath": "filters/TableGlitch.table",
-          "thumbPath": "thumb/TableGlitch.jpg"
+          "name": "Glitch",
+          "filePath": "filters/Glitch.table",
+          "thumbPath": "thumb/Glitch.jpg"
         },
         {
-          "name": "TableHiCon",
-          "filePath": "filters/TableHiCon.table",
-          "thumbPath": "thumb/TableHiCon.jpg"
+          "name": "HiCon",
+          "filePath": "filters/HiCon.table",
+          "thumbPath": "thumb/HiCon.jpg"
         },
         {
-          "name": "TableIcy",
-          "filePath": "filters/TableIcy.table",
-          "thumbPath": "thumb/TableIcy.jpg"
+          "name": "Icy",
+          "filePath": "filters/Icy.table",
+          "thumbPath": "thumb/Icy.jpg"
         },
         {
-          "name": "TableNoir",
-          "filePath": "filters/TableNoir.table",
-          "thumbPath": "thumb/TableNoir.jpg"
+          "name": "Noir",
+          "filePath": "filters/Noir.table",
+          "thumbPath": "thumb/Noir.jpg"
         },
         {
-          "name": "TableSkyline",
-          "filePath": "filters/TableSkyline.table",
-          "thumbPath": "thumb/TableSkyline.jpg"
+          "name": "Skyline",
+          "filePath": "filters/Skyline.table",
+          "thumbPath": "thumb/Skyline.jpg"
         },
         {
-          "name": "TableSoul",
-          "filePath": "filters/TableSoul.table",
-          "thumbPath": "thumb/TableSoul.jpg"
+          "name": "Soul",
+          "filePath": "filters/Soul.table",
+          "thumbPath": "thumb/Soul.jpg"
         },
         {
-          "name": "TableSteel",
-          "filePath": "filters/TableSteel.table",
-          "thumbPath": "thumb/TableSteel.jpg"
+          "name": "Steel",
+          "filePath": "filters/Steel.table",
+          "thumbPath": "thumb/Steel.jpg"
         },
         {
-          "name": "TableCineTeal",
-          "filePath": "filters/TableCineTeal.table",
-          "thumbPath": "thumb/TableCineTeal.jpg"
+          "name": "CineTeal",
+          "filePath": "filters/CineTeal.table",
+          "thumbPath": "thumb/CineTeal.jpg"
         },
         {
-          "name": "TableCineGold",
-          "filePath": "filters/TableCineGold.table",
-          "thumbPath": "thumb/TableCineGold.jpg"
+          "name": "CineGold",
+          "filePath": "filters/CineGold.table",
+          "thumbPath": "thumb/CineGold.jpg"
         },
         {
-          "name": "TableCineAmber",
-          "filePath": "filters/TableCineAmber.table",
-          "thumbPath": "thumb/TableCineAmber.jpg"
+          "name": "CineAmber",
+          "filePath": "filters/CineAmber.table",
+          "thumbPath": "thumb/CineAmber.jpg"
         },
         {
-          "name": "TableCineBlue",
-          "filePath": "filters/TableCineBlue.table",
-          "thumbPath": "thumb/TableCineBlue.jpg"
+          "name": "CineBlue",
+          "filePath": "filters/CineBlue.table",
+          "thumbPath": "thumb/CineBlue.jpg"
         },
         {
-          "name": "TableCineMatte",
-          "filePath": "filters/TableCineMatte.table",
-          "thumbPath": "thumb/TableCineMatte.jpg"
+          "name": "CineMatte",
+          "filePath": "filters/CineMatte.table",
+          "thumbPath": "thumb/CineMatte.jpg"
         },
         {
-          "name": "TableCineFade",
-          "filePath": "filters/TableCineFade.table",
-          "thumbPath": "thumb/TableCineFade.jpg"
+          "name": "CineFade",
+          "filePath": "filters/CineFade.table",
+          "thumbPath": "thumb/CineFade.jpg"
         }
       ]
     },
@@ -964,79 +964,79 @@
       "name": "Studio",
       "filters": [
         {
-          "name": "TableBronze",
-          "filePath": "filters/TableBronze.table",
-          "thumbPath": "thumb/TableBronze.jpg"
+          "name": "Bronze",
+          "filePath": "filters/Bronze.table",
+          "thumbPath": "thumb/Bronze.jpg"
         },
         {
-          "name": "TableCin90",
-          "filePath": "filters/TableCin90.table",
-          "thumbPath": "thumb/TableCin90.jpg"
+          "name": "Cin90",
+          "filePath": "filters/Cin90.table",
+          "thumbPath": "thumb/Cin90.jpg"
         },
         {
-          "name": "TableFuji400H",
-          "filePath": "filters/TableFuji400H.table",
-          "thumbPath": "thumb/TableFuji400H.jpg"
+          "name": "Fuji400H",
+          "filePath": "filters/Fuji400H.table",
+          "thumbPath": "thumb/Fuji400H.jpg"
         },
         {
-          "name": "TablePortra",
-          "filePath": "filters/TablePortra.table",
-          "thumbPath": "thumb/TablePortra.jpg"
+          "name": "Portra",
+          "filePath": "filters/Portra.table",
+          "thumbPath": "thumb/Portra.jpg"
         },
         {
-          "name": "TableSepia",
-          "filePath": "filters/TableSepia.table",
-          "thumbPath": "thumb/TableSepia.jpg"
+          "name": "Sepia",
+          "filePath": "filters/Sepia.table",
+          "thumbPath": "thumb/Sepia.jpg"
         },
         {
-          "name": "TableStudioNeutral",
-          "filePath": "filters/TableStudioNeutral.table",
-          "thumbPath": "thumb/TableStudioNeutral.jpg"
+          "name": "StudioNeutral",
+          "filePath": "filters/StudioNeutral.table",
+          "thumbPath": "thumb/StudioNeutral.jpg"
         },
         {
-          "name": "TableStudioWarm",
-          "filePath": "filters/TableStudioWarm.table",
-          "thumbPath": "thumb/TableStudioWarm.jpg"
+          "name": "StudioWarm",
+          "filePath": "filters/StudioWarm.table",
+          "thumbPath": "thumb/StudioWarm.jpg"
         },
         {
-          "name": "TableStudioCool",
-          "filePath": "filters/TableStudioCool.table",
-          "thumbPath": "thumb/TableStudioCool.jpg"
+          "name": "StudioCool",
+          "filePath": "filters/StudioCool.table",
+          "thumbPath": "thumb/StudioCool.jpg"
         },
         {
-          "name": "TableStudioSoft",
-          "filePath": "filters/TableStudioSoft.table",
-          "thumbPath": "thumb/TableStudioSoft.jpg"
+          "name": "StudioSoft",
+          "filePath": "filters/StudioSoft.table",
+          "thumbPath": "thumb/StudioSoft.jpg"
         },
         {
-          "name": "TableStudioHard",
-          "filePath": "filters/TableStudioHard.table",
-          "thumbPath": "thumb/TableStudioHard.jpg"
+          "name": "StudioHard",
+          "filePath": "filters/StudioHard.table",
+          "thumbPath": "thumb/StudioHard.jpg"
         },
         {
-          "name": "TableStudioMatte",
-          "filePath": "filters/TableStudioMatte.table",
-          "thumbPath": "thumb/TableStudioMatte.jpg"
+          "name": "StudioMatte",
+          "filePath": "filters/StudioMatte.table",
+          "thumbPath": "thumb/StudioMatte.jpg"
         },
         {
-          "name": "TableStudioPro",
-          "filePath": "filters/TableStudioPro.table",
-          "thumbPath": "thumb/TableStudioPro.jpg"
+          "name": "StudioPro",
+          "filePath": "filters/StudioPro.table",
+          "thumbPath": "thumb/StudioPro.jpg"
         },
         {
-          "name": "TableStudioFilm",
-          "filePath": "filters/TableStudioFilm.table",
-          "thumbPath": "thumb/TableStudioFilm.jpg"
+          "name": "StudioFilm",
+          "filePath": "filters/StudioFilm.table",
+          "thumbPath": "thumb/StudioFilm.jpg"
         },
         {
-          "name": "TableStudioAnalog",
-          "filePath": "filters/TableStudioAnalog.table",
-          "thumbPath": "thumb/TableStudioAnalog.jpg"
+          "name": "StudioAnalog",
+          "filePath": "filters/StudioAnalog.table",
+          "thumbPath": "thumb/StudioAnalog.jpg"
         },
         {
-          "name": "TableStudioFine",
-          "filePath": "filters/TableStudioFine.table",
-          "thumbPath": "thumb/TableStudioFine.jpg"
+          "name": "StudioFine",
+          "filePath": "filters/StudioFine.table",
+          "thumbPath": "thumb/StudioFine.jpg"
         }
       ]
     }

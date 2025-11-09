@@ -1,12 +1,15 @@
 package com.core.adjust.ui.filter.child.filter
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.core.adjust.databinding.ItemFilterBinding
 import com.core.adjust.model.lut.LutFilter
+import com.core.adjust.utils.loadLutThumb
 
 class FilterAdapter(
+    private val context: Context,
     private val onFilterSelected: (LutFilter) -> Unit,
     private val callbackScroll: (index: Int) -> Unit,
 ) : RecyclerView.Adapter<FilterAdapter.FilterVH>() {
@@ -19,6 +22,8 @@ class FilterAdapter(
         fun bind(filter: LutFilter, isSelected: Boolean) {
             binding.tvFilter.text = filter.name
             binding.tvFilter.isSelected = isSelected
+
+            binding.imageFilter.loadLutThumb(context, filter.thumbPath)
 
             binding.root.setOnClickListener {
                 val old = selectedPos
