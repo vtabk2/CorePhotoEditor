@@ -63,7 +63,7 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
             filterAdapter = FilterAdapter(
                 context = it,
                 onFilterSelected = { filter ->
-                    shareAdjustViewModel.params.lutPath = "filters/${filter.filePath}"
+                    shareAdjustViewModel.params.lutPath = filter.filePath
                     shareAdjustViewModel.applyAdjust()
                 },
                 callbackScroll = { index ->

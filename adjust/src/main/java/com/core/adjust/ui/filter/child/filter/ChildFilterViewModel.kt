@@ -27,7 +27,6 @@ class ChildFilterViewModel(application: Application) : AndroidViewModel(applicat
             list.forEach {
                 filterCategoryList.add(it.apply { index = filterList.size })
                 it.filters.forEach { item ->
-                    item.name = item.name.replace("Table", "")
                     filterList.add(item)
                 }
             }

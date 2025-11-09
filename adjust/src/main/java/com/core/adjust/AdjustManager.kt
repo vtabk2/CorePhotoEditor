@@ -173,7 +173,7 @@ class AdjustManager(
 
                         // 🔹 3️⃣ Tạo thumbnail LUT
                         val scaled = bitmap.scaleAndCropToExactSize(300, 300)
-                        val params = AdjustParams(lutPath = "filters/${lut.filePath}")
+                        val params = AdjustParams(lutPath = lut.filePath)
                         val result = scaled.copy(Bitmap.Config.ARGB_8888, true)
                         val success = AdjustProcessor.applyAdjust(context, result, params, null)
 
