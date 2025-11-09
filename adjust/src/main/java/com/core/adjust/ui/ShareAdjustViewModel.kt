@@ -25,11 +25,17 @@ class ShareAdjustViewModel(val manager: AdjustManager) : ViewModel() {
     private val _closeFlow = MutableSharedFlow<Boolean>()
     val closeFlow: SharedFlow<Boolean> = _closeFlow
 
+    private val _requiredCreateThumbFlow = MutableSharedFlow<Boolean>()
+    val requiredCreateThumbFlow: SharedFlow<Boolean> = _requiredCreateThumbFlow
+
     val params get() = manager.params
 
-    fun setOriginal(bitmap: Bitmap) {
+    fun setOriginal(bitmap: Bitmap, requiredCreateThumb: Boolean = false) {
         manager.setOriginalBitmap(bitmap)
         _previewBitmap.value = bitmap
+        viewModelScope.launch(Dispatchers.IO) {
+            _requiredCreateThumbFlow.emit(requiredCreateThumb)
+        }
     }
 
     fun applyAdjust() {

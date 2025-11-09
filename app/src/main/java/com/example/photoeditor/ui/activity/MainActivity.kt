@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity() {
             binding.tvSuggestion.text = "Đề xuất: ${suggested.joinToString(", ")}"
 
             Log.d("TAG5", "MainActivity_onImagePicked: " + shareAdjustViewModel.params)
-            shareAdjustViewModel.setOriginal(src)
+            shareAdjustViewModel.setOriginal(src, requiredCreateThumb = true)
             shareAdjustViewModel.applyAdjust()
         }
     }

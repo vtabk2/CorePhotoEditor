@@ -1,6 +1,7 @@
 package com.core.adjust.ui.filter.child.filter
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
@@ -107,6 +108,17 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
 
                             shareAdjustViewModel.params.lutPath = null
                             shareAdjustViewModel.applyAdjust()
+                        }
+                    }
+                }
+            }
+
+            viewLifecycleOwner.lifecycleScope.launch {
+                shareAdjustViewModel.requiredCreateThumbFlow.collect { requiredCreateThumb ->
+                    if (requiredCreateThumb) {
+                        Log.d("TAG5", "ChildFilterFragment_onViewCreated: requiredCreateThumb")
+                        childFilterViewModel.filterListLiveData.value?.let { filterList ->
+                            shareAdjustViewModel.manager.generateLutThumbsToDCIM(filterList)
                         }
                     }
                 }
