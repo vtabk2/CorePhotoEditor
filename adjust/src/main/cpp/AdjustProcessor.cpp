@@ -431,7 +431,7 @@ static bool isNoOp(const AdjustParams& p, bool hasLut) {
 }
 
 // =============================================================
-// 🧮 processRange
+// 🧮 processRange (adjust stage)
 // =============================================================
 static void processRange(void *basePixels,
                          int64_t start, int64_t end,
@@ -511,6 +511,70 @@ static void processRange(void *basePixels,
 }
 
 // =============================================================
+// 🎨 processLutRange (LUT stage, multi-thread)
+// =============================================================
+static void processLutRange(void *basePixels,
+                            int64_t start, int64_t end,
+                            int32_t width,
+                            size_t strideBytes,
+                            const AdjustParams &p,
+                            const Lut3D &lut,
+                            bool premultiplied) {
+    auto *base = reinterpret_cast<uint8_t *>(basePixels);
+    const float t = clampf(p.lutAmount, 0.f, 1.f);
+
+    for (int64_t idx = start; idx < end; ++idx) {
+        const int32_t y = static_cast<int32_t>(idx / width);
+        const int32_t x = static_cast<int32_t>(idx % width);
+
+        auto *row = reinterpret_cast<uint32_t *>(base + static_cast<size_t>(y) * strideBytes);
+        const uint32_t c = row[x];
+
+        const uint8_t a = static_cast<uint8_t>((c >> 24) & 0xFFu);
+        float r = static_cast<float>((c >> 16) & 0xFFu) / 255.0f;
+        float g = static_cast<float>((c >>  8) & 0xFFu) / 255.0f;
+        float b = static_cast<float>( c        & 0xFFu) / 255.0f;
+
+        float rOrig = r, gOrig = g, bOrig = b;
+
+        if (premultiplied && a > 0u) {
+            const float af  = static_cast<float>(a) / 255.0f;
+            const float inv = (af > 0.0f ? (1.0f / af) : 0.0f);
+            r = std::min(1.0f, r * inv);
+            g = std::min(1.0f, g * inv);
+            b = std::min(1.0f, b * inv);
+            rOrig = std::min(1.0f, rOrig * inv);
+            gOrig = std::min(1.0f, gOrig * inv);
+            bOrig = std::min(1.0f, bOrig * inv);
+        }
+
+        float rr, gg, bb;
+        sampleLUT(lut, r, g, b, rr, gg, bb);
+
+        rr = std::clamp(rr, 0.0f, 1.0f);
+        gg = std::clamp(gg, 0.0f, 1.0f);
+        bb = std::clamp(bb, 0.0f, 1.0f);
+
+        // blend theo lutAmount
+        rr = rOrig * (1.0f - t) + rr * t;
+        gg = gOrig * (1.0f - t) + gg * t;
+        bb = bOrig * (1.0f - t) + bb * t;
+
+        if (premultiplied && a > 0u) {
+            const float af = static_cast<float>(a) / 255.0f;
+            rr = std::clamp(rr * af, 0.0f, 1.0f);
+            gg = std::clamp(gg * af, 0.0f, 1.0f);
+            bb = std::clamp(bb * af, 0.0f, 1.0f);
+        }
+
+        row[x] = (static_cast<uint32_t>(a) << 24)
+                 | (static_cast<uint32_t>(static_cast<uint8_t>(rr * 255.0f)) << 16)
+                 | (static_cast<uint32_t>(static_cast<uint8_t>(gg * 255.0f)) <<  8)
+                 |  static_cast<uint32_t>(static_cast<uint8_t>(bb * 255.0f));
+    }
+}
+
+// =============================================================
 // 🔗 JNI: applyAdjustNative
 // =============================================================
 extern "C"
@@ -565,9 +629,6 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
         return JNI_FALSE;
     }
 
-    // ❌ (Removed) old optimization "onlyLut && sameLutPath => skip"
-    // Lý do: lutAmount có thể thay đổi, cần render lại ngay cả khi path không đổi.
-
     // 5) Prepare progress callback
     jmethodID onProgress = nullptr;
     if (progressCb) {
@@ -593,58 +654,27 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
         Lut3D lut;
         if (loadTableFile(env, context, lutPath, lut)) {
             s_lastLutPath = lutPath; // remember last LUT path
-            const float t = clampf(p.lutAmount, 0.f, 1.f);
 
-            uint8_t *base = reinterpret_cast<uint8_t *>(pixels);
-            for (int32_t y = 0; y < static_cast<int32_t>(info.height); ++y) {
-                auto *row = reinterpret_cast<uint32_t *>(base + static_cast<size_t>(y) * static_cast<size_t>(info.stride));
-                for (int32_t x = 0; x < static_cast<int32_t>(info.width); ++x) {
-                    const uint32_t c = row[x];
-                    const uint8_t  a = static_cast<uint8_t>((c >> 24) & 0xFFu);
-                    float r = static_cast<float>((c >> 16) & 0xFFu) / 255.0f;
-                    float g = static_cast<float>((c >>  8) & 0xFFu) / 255.0f;
-                    float b = static_cast<float>( c        & 0xFFu) / 255.0f;
+            const int32_t W = static_cast<int32_t>(info.width);
+            const int32_t H = static_cast<int32_t>(info.height);
+            const int64_t total = static_cast<int64_t>(W) * static_cast<int64_t>(H);
+            const size_t stride = static_cast<size_t>(info.stride);
 
-                    float rOrig = r, gOrig = g, bOrig = b;
+            const unsigned int nThreads = std::max(1u, std::thread::hardware_concurrency());
+            const int64_t chunk = (total + static_cast<int64_t>(nThreads) - 1) / static_cast<int64_t>(nThreads);
 
-                    if (premultiplied && a > 0u) {
-                        const float af = static_cast<float>(a) / 255.0f;
-                        const float inv = (af > 0.0f ? (1.0f / af) : 0.0f);
-                        r = std::min(1.0f, r * inv);
-                        g = std::min(1.0f, g * inv);
-                        b = std::min(1.0f, b * inv);
-                        // giữ bản sao origin không premultiplied
-                        rOrig = std::min(1.0f, rOrig * inv);
-                        gOrig = std::min(1.0f, gOrig * inv);
-                        bOrig = std::min(1.0f, bOrig * inv);
-                    }
+            for (unsigned int tIdx = 0; tIdx < nThreads; ++tIdx) {
+                const int64_t start = static_cast<int64_t>(tIdx) * chunk;
+                const int64_t end   = std::min<int64_t>(total, start + chunk);
+                if (start >= end) break;
 
-                    float rr, gg, bb;
-                    sampleLUT(lut, r, g, b, rr, gg, bb);
-
-                    rr = std::clamp(rr, 0.0f, 1.0f);
-                    gg = std::clamp(gg, 0.0f, 1.0f);
-                    bb = std::clamp(bb, 0.0f, 1.0f);
-
-                    // 🌈 blend theo lutAmount với màu gốc (linear)
-                    rr = rOrig * (1.0f - t) + rr * t;
-                    gg = gOrig * (1.0f - t) + gg * t;
-                    bb = bOrig * (1.0f - t) + bb * t;
-
-                    if (premultiplied && a > 0u) {
-                        const float af = static_cast<float>(a) / 255.0f;
-                        rr = std::clamp(rr * af, 0.0f, 1.0f);
-                        gg = std::clamp(gg * af, 0.0f, 1.0f);
-                        bb = std::clamp(bb * af, 0.0f, 1.0f);
-                    }
-
-                    row[x] = (static_cast<uint32_t>(a) << 24)
-                             | (static_cast<uint32_t>(static_cast<uint8_t>(rr * 255.0f)) << 16)
-                             | (static_cast<uint32_t>(static_cast<uint8_t>(gg * 255.0f)) <<  8)
-                             |  static_cast<uint32_t>(static_cast<uint8_t>(bb * 255.0f));
-                }
+                gPool->enqueue([pixels, premultiplied, start, end, W, stride, &p, &lut]() {
+                    processLutRange(pixels, start, end, W, stride, p, lut, premultiplied);
+                });
             }
-            LOGI("✅ LUT applied successfully");
+
+            gPool->waitAll();
+            LOGI("✅ LUT applied successfully (multi-thread)");
         } else {
             LOGE("❌ Failed to load LUT file: %s", lutPath.c_str());
         }
@@ -654,17 +684,19 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
 
     // Sau khi đã áp LUT (nếu có), vẫn có thể còn mask khác
     uint64_t effectiveMask = p.activeMask;
-    // KHÔNG loại MASK_LUT dựa trên sameLutPath nữa – đã xử lý bằng hash + amount
-    // if ((p.activeMask & MASK_LUT) && sameLutPath) { effectiveMask &= ~MASK_LUT; }
 
-    if (effectiveMask == 0 || (effectiveMask == MASK_LUT && p.lutAmount <= 0.0f)) {
+    // Bỏ LUT ra để xem còn mask nào khác không
+    const uint64_t nonLutMask = effectiveMask & ~MASK_LUT;
+
+    // Nếu chỉ có LUT, không còn LIGHT/COLOR/DETAIL... thì không cần pass thứ 2
+    if (nonLutMask == 0) {
         AndroidBitmap_unlockPixels(env, bitmap);
-        LOGI("Nothing else to do after LUT stage -> early return");
-        return JNI_FALSE;
+        LOGI("Only LUT active -> skip adjust stage");
+        return JNI_TRUE; // ảnh đã thay đổi thật sự
     }
 
     // ---------------------------------------------------------
-    // APPLY ADJUSTS (multi-threaded)
+    // APPLY ADJUSTS (multi-threaded) cho các mask còn lại (không gồm LUT)
     // ---------------------------------------------------------
     const int32_t W = static_cast<int32_t>(info.width);
     const int32_t H = static_cast<int32_t>(info.height);
@@ -675,22 +707,26 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
     const unsigned int nThreads = std::max(1u, std::thread::hardware_concurrency());
     const int64_t chunk = (total + static_cast<int64_t>(nThreads) - 1) / static_cast<int64_t>(nThreads);
 
+    // tạo bản sao params chỉ chứa nonLutMask
+    AdjustParams p2 = p;
+    p2.activeMask = nonLutMask;
+
     for (unsigned int t = 0; t < nThreads; ++t) {
         const int64_t start = static_cast<int64_t>(t) * chunk;
         const int64_t end   = std::min<int64_t>(total, start + chunk);
         if (start >= end) break;
-        gPool->enqueue([p, pixels, premultiplied, start, end, W, H, stride, &doneCounter]() {
-            processRange(pixels, start, end, W, H, stride, p, doneCounter, premultiplied);
+        gPool->enqueue([p2, pixels, premultiplied, start, end, W, H, stride, &doneCounter]() {
+            processRange(pixels, start, end, W, H, stride, p2, doneCounter, premultiplied);
         });
     }
 
-    // Progress polling
+    // Progress polling (giảm spam: sleep lâu hơn, chỉ update khi nhảy >= 3%)
     int32_t lastPct = 0;
     while (doneCounter.load(std::memory_order_relaxed) < total) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(6));
+        std::this_thread::sleep_for(std::chrono::milliseconds(12));
         const int64_t done = doneCounter.load(std::memory_order_relaxed);
         const int32_t pct = static_cast<int32_t>((done * 100) / std::max<int64_t>(total, 1));
-        if (onProgress && pct > lastPct) {
+        if (onProgress && pct - lastPct >= 3) {
             lastPct = pct;
             env->CallVoidMethod(progressCb, onProgress, static_cast<jint>(pct));
             if (env->ExceptionCheck()) env->ExceptionClear();
