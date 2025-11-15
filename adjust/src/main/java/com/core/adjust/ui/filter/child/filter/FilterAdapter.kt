@@ -11,7 +11,8 @@ import com.core.adjust.utils.loadLutThumb
 class FilterAdapter(
     private val context: Context,
     private val onFilterSelected: (LutFilter) -> Unit,
-    private val callbackScroll: (index: Int) -> Unit,
+    private val onSelectedAgain: (LutFilter) -> Unit,
+    private val onAutoScroll: (index: Int) -> Unit,
 ) : RecyclerView.Adapter<FilterAdapter.FilterVH>() {
 
     private val filterList = mutableListOf<LutFilter>()
@@ -26,10 +27,22 @@ class FilterAdapter(
             binding.imageFilter.loadLutThumb(context, filter.thumbPath)
 
             binding.root.setOnClickListener {
+                val pos = bindingAdapterPosition
+                if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
+
+                if (pos == selectedPos) {
+                    onSelectedAgain(filter)
+                    return@setOnClickListener
+                }
+
                 val old = selectedPos
-                selectedPos = bindingAdapterPosition
-                notifyItemChanged(old)
+                selectedPos = pos
+
+                if (old != RecyclerView.NO_POSITION) {
+                    notifyItemChanged(old)
+                }
                 notifyItemChanged(selectedPos)
+
                 onFilterSelected(filter)
             }
         }
@@ -55,7 +68,8 @@ class FilterAdapter(
     }
 
     fun unSelectedAll() {
+        val old = selectedPos
         selectedPos = RecyclerView.NO_POSITION
-        notifyDataSetChanged()
+        if (old != RecyclerView.NO_POSITION) notifyItemChanged(old)
     }
 }

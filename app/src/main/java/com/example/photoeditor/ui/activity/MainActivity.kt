@@ -81,7 +81,6 @@ class MainActivity : BaseActivity() {
 
             Log.d("TAG5", "MainActivity_onImagePicked: " + shareAdjustViewModel.params)
             shareAdjustViewModel.setOriginal(src, requiredCreateThumb = false)
-            shareAdjustViewModel.applyAdjust()
         }
     }
 

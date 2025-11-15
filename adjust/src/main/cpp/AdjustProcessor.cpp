@@ -344,6 +344,11 @@ static void loadParamsFromJava(JNIEnv *env, jobject paramsObj, AdjustParams &p) 
 
     p.activeMask = getLongField(env, paramsObj, "activeMask");
 
+    // --- LUT specific ---
+    p.lutAmount = getFieldF(env, paramsObj, "lutAmount");
+    // clamp defensively
+    p.lutAmount = clampf(p.lutAmount, 0.f, 1.f);
+
     // Clamp input defensively
     p.vignette = clampf(p.vignette, 0.f, 1.f);
     p.grain    = std::max(0.f, p.grain);
@@ -387,6 +392,8 @@ static uint64_t computeAdjustHash(const AdjustParams &p) {
     // 🔗 MIX LUT khi có bật MASK_LUT và có đường dẫn
     if ((p.activeMask & MASK_LUT) && !p.lutPath.empty()) {
         for (unsigned char c : p.lutPath) mix(static_cast<uint64_t>(c));
+        // ✅ tham gia cả lutAmount để đổi slider vẫn re-render
+        mix(bitsOfFloat(p.lutAmount));
     }
     return h;
 }
@@ -417,7 +424,8 @@ static bool isNoOp(const AdjustParams& p, bool hasLut) {
     if ((p.activeMask & MASK_VIGNETTE) && !nearZero(p.vignette)) return false;
     if ((p.activeMask & MASK_GRAIN) && !nearZero(p.grain))       return false;
 
-    if ((p.activeMask & MASK_LUT) && hasLut) return false;
+    // 🔄 LUT chỉ có tác dụng khi amount khác 0
+    if ((p.activeMask & MASK_LUT) && hasLut && !nearZero(p.lutAmount)) return false;
 
     return true;
 }
@@ -550,21 +558,15 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
     }
     s_lastHash.store(hash, std::memory_order_relaxed);
 
-    // 4) No-op guard (reset = 0 and no LUT)
+    // 4) No-op guard (reset = 0 or LUT amount == 0)
     const bool hasLut = ((p.activeMask & MASK_LUT) && !lutPath.empty());
     if (isNoOp(p, hasLut)) {
-        LOGI("No-op: all params 0 and no LUT -> skip");
+        LOGI("No-op: all params 0 or LUT amount==0 -> skip");
         return JNI_FALSE;
     }
 
-    // 🔴 FIX: Nếu chỉ có LUT và LUT không đổi, bỏ qua toàn bộ (không lockPixels, không progress)
-    const bool onlyLut = (p.activeMask == MASK_LUT);
-    const bool sameLutPath = (hasLut && lutPath == s_lastLutPath);
-    if (onlyLut && sameLutPath) {
-        LOGI("Only LUT active and unchanged -> skip everything");
-        return JNI_FALSE;
-    }
-
+    // ❌ (Removed) old optimization "onlyLut && sameLutPath => skip"
+    // Lý do: lutAmount có thể thay đổi, cần render lại ngay cả khi path không đổi.
 
     // 5) Prepare progress callback
     jmethodID onProgress = nullptr;
@@ -584,72 +586,80 @@ Java_com_core_adjust_AdjustProcessor_applyAdjustNative(JNIEnv *env, jobject /*th
     const bool premultiplied = (info.flags & ANDROID_BITMAP_FLAGS_ALPHA_PREMUL) != 0;
 
     // ---------------------------------------------------------
-    // 🎨 LUT Stage (apply BEFORE other adjusts)
+    // 🎨 LUT Stage (apply BEFORE other adjusts) + lutAmount blend
     // ---------------------------------------------------------
-    if ((p.activeMask & MASK_LUT) && !lutPath.empty()) {
-        const bool sameLutPath = (lutPath == s_lastLutPath);
-        if (sameLutPath) {
-            LOGI("🎨 LUT unchanged (%s) — skip LUT reapply", lutPath.c_str());
-        } else {
-            LOGI("🎨 Applying LUT from path: %s", lutPath.c_str());
-            Lut3D lut;
-            if (loadTableFile(env, context, lutPath, lut)) {
-                s_lastLutPath = lutPath; // remember last LUT
-                uint8_t *base = reinterpret_cast<uint8_t *>(pixels);
-                for (int32_t y = 0; y < static_cast<int32_t>(info.height); ++y) {
-                    auto *row = reinterpret_cast<uint32_t *>(base + static_cast<size_t>(y) * static_cast<size_t>(info.stride));
-                    for (int32_t x = 0; x < static_cast<int32_t>(info.width); ++x) {
-                        const uint32_t c = row[x];
-                        const uint8_t  a = static_cast<uint8_t>((c >> 24) & 0xFFu);
-                        float r = static_cast<float>((c >> 16) & 0xFFu) / 255.0f;
-                        float g = static_cast<float>((c >>  8) & 0xFFu) / 255.0f;
-                        float b = static_cast<float>( c        & 0xFFu) / 255.0f;
+    if ((p.activeMask & MASK_LUT) && !lutPath.empty() && p.lutAmount > 0.0f) {
+        LOGI("🎨 Applying LUT from path: %s with lutAmount=%.3f", lutPath.c_str(), p.lutAmount);
+        Lut3D lut;
+        if (loadTableFile(env, context, lutPath, lut)) {
+            s_lastLutPath = lutPath; // remember last LUT path
+            const float t = clampf(p.lutAmount, 0.f, 1.f);
 
-                        if (premultiplied && a > 0u) {
-                            const float af = static_cast<float>(a) / 255.0f;
-                            const float inv = (af > 0.0f ? (1.0f / af) : 0.0f);
-                            r = std::min(1.0f, r * inv);
-                            g = std::min(1.0f, g * inv);
-                            b = std::min(1.0f, b * inv);
-                        }
+            uint8_t *base = reinterpret_cast<uint8_t *>(pixels);
+            for (int32_t y = 0; y < static_cast<int32_t>(info.height); ++y) {
+                auto *row = reinterpret_cast<uint32_t *>(base + static_cast<size_t>(y) * static_cast<size_t>(info.stride));
+                for (int32_t x = 0; x < static_cast<int32_t>(info.width); ++x) {
+                    const uint32_t c = row[x];
+                    const uint8_t  a = static_cast<uint8_t>((c >> 24) & 0xFFu);
+                    float r = static_cast<float>((c >> 16) & 0xFFu) / 255.0f;
+                    float g = static_cast<float>((c >>  8) & 0xFFu) / 255.0f;
+                    float b = static_cast<float>( c        & 0xFFu) / 255.0f;
 
-                        float rr, gg, bb;
-                        sampleLUT(lut, r, g, b, rr, gg, bb);
+                    float rOrig = r, gOrig = g, bOrig = b;
 
-                        rr = std::clamp(rr, 0.0f, 1.0f);
-                        gg = std::clamp(gg, 0.0f, 1.0f);
-                        bb = std::clamp(bb, 0.0f, 1.0f);
-
-                        if (premultiplied && a > 0u) {
-                            const float af = static_cast<float>(a) / 255.0f;
-                            rr = std::clamp(rr * af, 0.0f, 1.0f);
-                            gg = std::clamp(gg * af, 0.0f, 1.0f);
-                            bb = std::clamp(bb * af, 0.0f, 1.0f);
-                        }
-
-                        row[x] = (static_cast<uint32_t>(a) << 24)
-                                 | (static_cast<uint32_t>(static_cast<uint8_t>(rr * 255.0f)) << 16)
-                                 | (static_cast<uint32_t>(static_cast<uint8_t>(gg * 255.0f)) <<  8)
-                                 |  static_cast<uint32_t>(static_cast<uint8_t>(bb * 255.0f));
+                    if (premultiplied && a > 0u) {
+                        const float af = static_cast<float>(a) / 255.0f;
+                        const float inv = (af > 0.0f ? (1.0f / af) : 0.0f);
+                        r = std::min(1.0f, r * inv);
+                        g = std::min(1.0f, g * inv);
+                        b = std::min(1.0f, b * inv);
+                        // giữ bản sao origin không premultiplied
+                        rOrig = std::min(1.0f, rOrig * inv);
+                        gOrig = std::min(1.0f, gOrig * inv);
+                        bOrig = std::min(1.0f, bOrig * inv);
                     }
+
+                    float rr, gg, bb;
+                    sampleLUT(lut, r, g, b, rr, gg, bb);
+
+                    rr = std::clamp(rr, 0.0f, 1.0f);
+                    gg = std::clamp(gg, 0.0f, 1.0f);
+                    bb = std::clamp(bb, 0.0f, 1.0f);
+
+                    // 🌈 blend theo lutAmount với màu gốc (linear)
+                    rr = rOrig * (1.0f - t) + rr * t;
+                    gg = gOrig * (1.0f - t) + gg * t;
+                    bb = bOrig * (1.0f - t) + bb * t;
+
+                    if (premultiplied && a > 0u) {
+                        const float af = static_cast<float>(a) / 255.0f;
+                        rr = std::clamp(rr * af, 0.0f, 1.0f);
+                        gg = std::clamp(gg * af, 0.0f, 1.0f);
+                        bb = std::clamp(bb * af, 0.0f, 1.0f);
+                    }
+
+                    row[x] = (static_cast<uint32_t>(a) << 24)
+                             | (static_cast<uint32_t>(static_cast<uint8_t>(rr * 255.0f)) << 16)
+                             | (static_cast<uint32_t>(static_cast<uint8_t>(gg * 255.0f)) <<  8)
+                             |  static_cast<uint32_t>(static_cast<uint8_t>(bb * 255.0f));
                 }
-                LOGI("✅ LUT applied successfully");
-            } else {
-                LOGE("❌ Failed to load LUT file: %s", lutPath.c_str());
             }
+            LOGI("✅ LUT applied successfully");
+        } else {
+            LOGE("❌ Failed to load LUT file: %s", lutPath.c_str());
         }
     } else {
-        LOGI("⚠️ No LUT mask active or LUT path empty — skipping LUT stage");
+        LOGI("⚠️ No LUT stage (mask off, empty path, or lutAmount==0)");
     }
 
+    // Sau khi đã áp LUT (nếu có), vẫn có thể còn mask khác
     uint64_t effectiveMask = p.activeMask;
-    if ((p.activeMask & MASK_LUT) && sameLutPath) {
-        effectiveMask &= ~MASK_LUT; // bỏ hiệu ứng LUT vì skip apply
-    }
-    if (effectiveMask == 0) {
-        // Không còn hiệu ứng nào để chạy -> không enqueue thread, không progress
+    // KHÔNG loại MASK_LUT dựa trên sameLutPath nữa – đã xử lý bằng hash + amount
+    // if ((p.activeMask & MASK_LUT) && sameLutPath) { effectiveMask &= ~MASK_LUT; }
+
+    if (effectiveMask == 0 || (effectiveMask == MASK_LUT && p.lutAmount <= 0.0f)) {
         AndroidBitmap_unlockPixels(env, bitmap);
-        LOGI("Nothing else to do after skipping LUT -> early return");
+        LOGI("Nothing else to do after LUT stage -> early return");
         return JNI_FALSE;
     }
 

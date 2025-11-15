@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.core.adjust.R
 import com.core.adjust.databinding.FFragmentChildFilterBinding
 import com.core.adjust.ui.ShareAdjustViewModel
+import com.core.gscore.utils.extensions.visible
 import kotlinx.coroutines.launch
 
 class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
@@ -42,8 +43,7 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
 
                 override fun onStopTrackingTouch(seekBar: SeekBar?) {
                     seekBar?.progress?.let { progress ->
-                        shareAdjustViewModel.params.lutAmount = progress / 100f
-                        shareAdjustViewModel.applyAdjust()
+                        shareAdjustViewModel.updateLutAmount(progress / 100f)
                     }
                 }
             })
@@ -63,10 +63,12 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
             filterAdapter = FilterAdapter(
                 context = it,
                 onFilterSelected = { filter ->
-                    shareAdjustViewModel.params.lutPath = filter.filePath
-                    shareAdjustViewModel.applyAdjust()
+                    shareAdjustViewModel.updateLutPath(filter.filePath)
                 },
-                callbackScroll = { index ->
+                onSelectedAgain = { filter ->
+                    bindingView.clSeekBarFilter.visible()
+                },
+                onAutoScroll = { index ->
                     val position = if (index < 2) 0 else index
                     bindingView.rvFilter.scrollToPosition(position)
                 })

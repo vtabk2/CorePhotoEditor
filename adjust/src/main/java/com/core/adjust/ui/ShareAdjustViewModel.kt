@@ -9,6 +9,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.core.adjust.AdjustManager
+import com.core.adjust.AdjustMask
+import com.core.adjust.AdjustProcessor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -36,6 +38,7 @@ class ShareAdjustViewModel(val manager: AdjustManager) : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             _requiredCreateThumbFlow.emit(requiredCreateThumb)
         }
+        applyAdjust()
     }
 
     fun applyAdjust() {
@@ -51,7 +54,28 @@ class ShareAdjustViewModel(val manager: AdjustManager) : ViewModel() {
         applyAdjust()
     }
 
+    fun updateLutPath(path: String?) {
+        params.lutPath = path
+        params.activeMask = params.activeMask or AdjustMask.MASK_LUT
+        AdjustProcessor.clearCache()
+        applyAdjust()
+    }
+
+    fun updateLutAmount(amount: Float) {
+        params.lutAmount = amount
+        params.activeMask = params.activeMask or AdjustMask.MASK_LUT
+
+        if (amount == 0f) {
+            // nếu amount = 0 → coi như tắt LUT
+            params.activeMask = params.activeMask and AdjustMask.MASK_LUT.inv()
+        }
+
+        AdjustProcessor.clearCache()
+        applyAdjust()
+    }
+
     fun reset(mode: Int) {
+        AdjustProcessor.clearCache()
         viewModelScope.launch(Dispatchers.IO) {
             _resetFlow.emit(mode)
         }

@@ -47,7 +47,6 @@ class FilterFragment : Fragment(R.layout.f_fragment_filter) {
             }.attach()
 
             rivReset.setOnSingleClick {
-                AdjustProcessor.clearCache()
                 shareAdjustViewModel.reset(modes[viewPager2.currentItem])
             }
 

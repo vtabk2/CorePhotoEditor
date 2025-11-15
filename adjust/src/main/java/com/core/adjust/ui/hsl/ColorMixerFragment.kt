@@ -116,7 +116,6 @@ class ColorMixerFragment : Fragment(R.layout.f_fragment_color_mixer) {
                     triple.saturation,
                     triple.luminance
                 )
-                shareAdjustViewModel.applyAdjust()
             }
         })
     }
