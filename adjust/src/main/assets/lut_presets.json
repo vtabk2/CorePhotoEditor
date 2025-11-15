@@ -54,6 +54,31 @@
           "thumbPath": "thumb/MatteLook.jpg"
         },
         {
+          "name": "KoreanBrightMatte",
+          "filePath": "filters/KoreanBrightMatte.table",
+          "thumbPath": "thumb/KoreanBrightMatte.jpg"
+        },
+        {
+          "name": "PastelSoftMatte",
+          "filePath": "filters/PastelSoftMatte.table",
+          "thumbPath": "thumb/PastelSoftMatte.jpg"
+        },
+        {
+          "name": "FilmMattePortrait",
+          "filePath": "filters/FilmMattePortrait.table",
+          "thumbPath": "thumb/FilmMattePortrait.jpg"
+        },
+        {
+          "name": "WarmSkinMatte",
+          "filePath": "filters/WarmSkinMatte.table",
+          "thumbPath": "thumb/WarmSkinMatte.jpg"
+        },
+        {
+          "name": "CreamySmoothMatte",
+          "filePath": "filters/CreamySmoothMatte.table",
+          "thumbPath": "thumb/CreamySmoothMatte.jpg"
+        },
+        {
           "name": "PastelSkin",
           "filePath": "filters/PastelSkin.table",
           "thumbPath": "thumb/PastelSkin.jpg"
