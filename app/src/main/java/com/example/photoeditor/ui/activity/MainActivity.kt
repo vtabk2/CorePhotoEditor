@@ -86,6 +86,7 @@ class MainActivity : BaseActivity() {
 
     override fun onDestroy() {
         FilterFragment.destroyFilterFragment(activity = this)
+        shareAdjustViewModel.release()
         super.onDestroy()
     }
 }

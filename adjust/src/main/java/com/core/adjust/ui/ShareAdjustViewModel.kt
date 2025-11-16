@@ -83,6 +83,10 @@ class ShareAdjustViewModel(val manager: AdjustManager) : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
+        release()
+    }
+
+    fun release() {
         manager.release()
     }
 

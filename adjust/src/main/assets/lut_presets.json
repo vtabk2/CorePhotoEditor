@@ -9,11 +9,6 @@
           "thumbPath": "thumb/Brightskin.jpg"
         },
         {
-          "name": "Natural",
-          "filePath": "filters/Natural.table",
-          "thumbPath": "thumb/Natural.jpg"
-        },
-        {
           "name": "Softglow",
           "filePath": "filters/Softglow.table",
           "thumbPath": "thumb/Softglow.jpg"
