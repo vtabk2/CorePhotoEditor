@@ -62,10 +62,8 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
             filterAdapter = FilterAdapter(
                 context = it,
                 onFilterSelected = { filter ->
+                    bindingView.seekBarFilter.isEnabled = true
                     shareAdjustViewModel.updateLutPath(filter.filePath)
-                },
-                onSelectedAgain = { filter ->
-
                 },
                 onAutoScroll = { index ->
                     val position = if (index < 2) 0 else index
@@ -105,6 +103,8 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
                 shareAdjustViewModel.resetFlow.collect { mode ->
                     when (mode) {
                         ShareAdjustViewModel.FILTER -> {
+                            bindingView.seekBarFilter.isEnabled = false
+
                             filterCategoryAdapter?.unSelectedAll()
                             filterAdapter?.unSelectedAll()
 

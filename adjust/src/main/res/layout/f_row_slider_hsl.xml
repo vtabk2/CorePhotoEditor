@@ -21,15 +21,12 @@
 
     <!-- SeekBar chiếm phần giữa -->
     <SeekBar
+        style="@style/NormalSeekBar"
         android:id="@+id/seekBar"
         android:layout_width="0dp"
         android:layout_height="26dp"
         android:max="200"
-        android:minHeight="0dp"
         android:progress="100"
-        android:progressTint="#FFFFFF"
-        android:splitTrack="false"
-        android:thumbTint="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/tvValue"
         app:layout_constraintHorizontal_weight="1"

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="NormalSeekBar">
+        <item name="android:paddingLeft">10.0dp</item>
+        <item name="android:paddingRight">10.0dp</item>
+        <item name="android:layout_width">0.0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:maxHeight">2.0dp</item>
+        <item name="android:max">100</item>
+        <item name="android:progressDrawable">@drawable/f_seekbar_style</item>
+        <item name="android:minHeight">2.0dp</item>
+        <item name="android:thumb">@drawable/f_ic_seek_thumb</item>
+        <item name="android:layout_weight">6.0</item>
+        <item name="android:layout_gravity">center_vertical</item>
+    </style>
+</resources>

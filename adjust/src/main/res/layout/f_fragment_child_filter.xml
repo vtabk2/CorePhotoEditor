@@ -15,14 +15,10 @@
 
         <SeekBar
             android:id="@+id/seekBarFilter"
+            style="@style/NormalSeekBar"
             android:layout_width="0dp"
             android:layout_height="26dp"
-            android:max="100"
-            android:minHeight="0dp"
             android:progress="100"
-            android:progressTint="#FFFFFF"
-            android:splitTrack="false"
-            android:thumbTint="#FFFFFF"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tvValueFilter"
             app:layout_constraintStart_toStartOf="parent"

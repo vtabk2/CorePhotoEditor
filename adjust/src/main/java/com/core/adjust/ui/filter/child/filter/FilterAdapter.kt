@@ -11,7 +11,6 @@ import com.core.adjust.utils.loadLutThumb
 class FilterAdapter(
     private val context: Context,
     private val onFilterSelected: (LutFilter) -> Unit,
-    private val onSelectedAgain: (LutFilter) -> Unit,
     private val onAutoScroll: (index: Int) -> Unit,
 ) : RecyclerView.Adapter<FilterAdapter.FilterVH>() {
 
@@ -31,7 +30,6 @@ class FilterAdapter(
                 if (pos == RecyclerView.NO_POSITION) return@setOnClickListener
 
                 if (pos == selectedPos) {
-                    onSelectedAgain(filter)
                     return@setOnClickListener
                 }
 
