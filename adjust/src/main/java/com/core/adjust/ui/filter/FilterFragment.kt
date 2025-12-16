@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.activityViewModels
@@ -75,8 +74,8 @@ class FilterFragment : Fragment(R.layout.f_fragment_filter) {
                         // Animation trượt lên khi show
                         setCustomAnimations(
                             R.anim.slide_in_bottom, // vào
-                            R.anim.fade_out,        // ra
-                            R.anim.fade_in,         // khi back
+                            R.anim.slide_fade_out,  // ra
+                            R.anim.slide_fade_in,   // khi back
                             R.anim.slide_out_bottom // khi back hide
                         )
                     }
@@ -86,17 +85,21 @@ class FilterFragment : Fragment(R.layout.f_fragment_filter) {
                         if (manager != fm && fragment.isAdded) {
                             manager.beginTransaction().remove(fragment)
                                 .commitNowAllowingStateLoss()
-                        } else if (fragment.view?.parent != null) {
-                            (fragment.view?.parent as? ViewGroup)?.removeView(fragment.view)
                             filterFragment = null
                         }
                     }
 
-                    filterFragment?.takeIf { it.isAdded }?.let {
-                        transaction.show(it)
-                    } ?: run {
-                        filterFragment = FilterFragment()
-                        transaction.add(containerId, filterFragment!!, "FilterFragment")
+                    val fragment = filterFragment
+                    if (fragment == null) {
+                        val newFragment = FilterFragment()
+                        filterFragment = newFragment
+                        transaction.add(containerId, newFragment, "FilterFragment")
+                    } else {
+                        if (fragment.isAdded) {
+                            transaction.show(fragment)
+                        } else {
+                            transaction.add(containerId, fragment, "FilterFragment")
+                        }
                     }
 
                     transaction.commitAllowingStateLoss()

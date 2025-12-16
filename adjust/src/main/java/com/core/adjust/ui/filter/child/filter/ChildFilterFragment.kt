@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView.OnScrollListener
 import com.core.adjust.R
 import com.core.adjust.databinding.FFragmentChildFilterBinding
 import com.core.adjust.ui.ShareAdjustViewModel
-import com.core.gscore.utils.extensions.visible
 import kotlinx.coroutines.launch
 
 class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
@@ -66,7 +65,7 @@ class ChildFilterFragment : Fragment(R.layout.f_fragment_child_filter) {
                     shareAdjustViewModel.updateLutPath(filter.filePath)
                 },
                 onSelectedAgain = { filter ->
-                    bindingView.clSeekBarFilter.visible()
+
                 },
                 onAutoScroll = { index ->
                     val position = if (index < 2) 0 else index
